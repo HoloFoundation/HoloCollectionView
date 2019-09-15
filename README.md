@@ -23,13 +23,9 @@ If you want to set the model to your UICollectionViewCell or change it's height 
 
 ```objective-c
 UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
-flowLayout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
-flowLayout.minimumLineSpacing = 10;
-flowLayout.minimumInteritemSpacing = 10;
-flowLayout.itemSize = CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 100);
+flowLayout......
 
 UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
-collectionView.backgroundColor = [UIColor whiteColor];
 [self.view addSubview:collectionView];
 
 [collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
