@@ -79,7 +79,7 @@
                 objc_property_t property = properties[i];
                 const char * propertyAttr = property_getAttributes(property);
                 char t = propertyAttr[1];
-                if (t == 'd' || t == 'B') { // CGFloat or BOOL
+                if (t == 'd' || t == 'B' || t == '{') { // CGFloat or BOOL or CGSize
                     const char *propertyName = property_getName(property);
                     NSString *propertyNameStr = [NSString stringWithCString:propertyName encoding:NSUTF8StringEncoding];
                     id value = [targetRow valueForKey:propertyNameStr];

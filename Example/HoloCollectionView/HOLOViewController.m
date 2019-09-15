@@ -34,7 +34,7 @@
         .footer(@"HoloExampleFooterView").footerReferenceSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100));
     }];
     [self.collectionView holo_makeRowsInSection:@"1" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.row(@"one").tag(@"a");
+        make.row(@"one").tag(@"a").size(CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 200));
         make.row(@"one");
         make.row(@"one");
         make.row(@"one").didSelectHandler(^(id  _Nonnull model) {
@@ -46,9 +46,12 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self.collectionView holo_insertRowsAtIndex:0 inSection:@"1" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.row(@"HoloExampleOneCollectionViewCell").size(CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 200));
+    [self.collectionView holo_updateRows:^(HoloCollectionViewUpdateRowMaker * _Nonnull make) {
+        make.tag(@"a");
     } autoReload:YES];
+//    [self.collectionView holo_insertRowsAtIndex:0 inSection:@"1" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
+//        make.row(@"HoloExampleOneCollectionViewCell").size(CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 200));
+//    } autoReload:YES];
 }
 
 
