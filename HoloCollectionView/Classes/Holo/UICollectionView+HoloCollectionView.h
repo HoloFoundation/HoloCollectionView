@@ -39,9 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Refresh current UICollectionView automatically.
  *
  *  @param block Scope within which you can create some sections which you wish to apply to current UICollectionView.
- *  @param animation A constant that indicates how the insertion is to be animated, for example, fade in or slide in from the left. See BOOL for descriptions of these constants.
+ *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_makeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_makeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewSectionMaker in the callee for current UICollectionView.
@@ -60,9 +60,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param index The index in the array at which to insert sections. If this value is less than 0, insert an first index; if this value is greater than the count of elements in the array, insert an last index.
  *  @param block Scope within which you can create some sections which you wish to apply to current UICollectionView.
- *  @param animation A constant that indicates how the insertion is to be animated, for example, fade in or slide in from the left. See BOOL for descriptions of these constants.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_insertSectionsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_insertSectionsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewSectionMaker in the callee for current UICollectionView.
@@ -81,9 +81,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Refresh current UICollectionView automatically.
  *
  *  @param block Scope within which you can create some sections which you wish to apply to current UICollectionView.
- *  @param animation A constant that indicates how the reloading is to be animated, for example, fade out or slide out from the bottom. See BOOL for descriptions of these constants. The animation constant affects the direction in which both the old and the new section rows slide. For example, if the animation constant is BOOLRight, the old rows slide out to the right and the new cells slide in from the right.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_updateSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_updateSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewSectionMaker in the callee for current UICollectionView.
@@ -102,9 +102,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Refresh current UICollectionView automatically.
  *
  *  @param block Scope within which you can create some sections which you wish to apply to current UICollectionView.
- *  @param animation A constant that indicates how the reloading is to be animated, for example, fade out or slide out from the bottom. See BOOL for descriptions of these constants. The animation constant affects the direction in which both the old and the new section rows slide. For example, if the animation constant is BOOLRight, the old rows slide out to the right and the new cells slide in from the right.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_remakeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_remakeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Remove all sections.
@@ -116,9 +116,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Refresh current UICollectionView automatically.
  *
- *  @param animation A constant that either specifies the kind of animation to perform when deleting the section or requests no animation. See BOOL for descriptions of the constants.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_removeAllSectionsautoReload:(BOOL)animation;
+- (void)holo_removeAllSectionsautoReload:(BOOL)autoReload;
 
 /**
  *  Remove a section according to the tag.
@@ -133,9 +133,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Refresh current UICollectionView automatically.
  *
  *  @param tag The tag of section which you wish to remove.
- *  @param animation A constant that either specifies the kind of animation to perform when deleting the section or requests no animation. See BOOL for descriptions of the constants.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_removeSection:(NSString *)tag autoReload:(BOOL)animation;
+- (void)holo_removeSection:(NSString *)tag autoReload:(BOOL)autoReload;
 
 
 #pragma mark - row
@@ -156,9 +156,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Refresh current UICollectionView automatically.
  *
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
- *  @param animation A constant that either specifies the kind of animation to perform when inserting the cell or requests no animation. See BOOL for descriptions of the constants.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_makeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_makeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewRowMaker in the callee for current UICollectionView.
@@ -179,9 +179,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param tag The tag of section which you wish to append rows.
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
- *  @param animation A constant that either specifies the kind of animation to perform when inserting the cell or requests no animation. See BOOL for descriptions of the constants.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_makeRowsInSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_makeRowsInSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewRowMaker in the callee for current UICollectionView.
@@ -202,9 +202,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param index The index in the array at which to insert rows. If this value is less than 0, insert an first index; if this value is greater than the count of elements in the array, insert an last index.
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
- *  @param animation A constant that either specifies the kind of animation to perform when inserting the cell or requests no animation. See BOOL for descriptions of the constants.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_insertRowsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_insertRowsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewRowMaker in the callee for current UICollectionView.
@@ -227,9 +227,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param index The index in the array at which to insert rows. If this value is less than 0, insert an first index; if this value is greater than the count of elements in the array, insert an last index.
  *  @param tag The tag of section which you wish to append rows.
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
- *  @param animation A constant that either specifies the kind of animation to perform when inserting the cell or requests no animation. See BOOL for descriptions of the constants.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_insertRowsAtIndex:(NSInteger)index inSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_insertRowsAtIndex:(NSInteger)index inSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewUpdateRowMaker in the callee for current UICollectionView.
@@ -248,9 +248,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Refresh current UICollectionView automatically.
  *
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
- *  @param animation A constant that indicates how the reloading is to be animated, for example, fade out or slide out from the bottom. See BOOL for descriptions of these constants. The animation constant affects the direction in which both the old and the new rows slide. For example, if the animation constant is BOOLRight, the old rows slide out to the right and the new cells slide in from the right.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_updateRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_updateRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewUpdateRowMaker in the callee for current UICollectionView.
@@ -269,9 +269,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Refresh current UICollectionView automatically.
  *
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
- *  @param animation A constant that indicates how the reloading is to be animated, for example, fade out or slide out from the bottom. See BOOL for descriptions of these constants. The animation constant affects the direction in which both the old and the new rows slide. For example, if the animation constant is BOOLRight, the old rows slide out to the right and the new cells slide in from the right.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block autoReload:(BOOL)animation;
+- (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
  *  Remove all rows in a section according to the tag.
@@ -284,9 +284,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Remove all rows in a section according to the tag.
  *
  *  @param tag The tag of section which you wish to remove all rows.
- *  @param animation A constant that indicates how the deletion is to be animated, for example, fade out or slide out from the bottom. See BOOL for descriptions of these constants.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_removeAllRowsInSection:(NSString *)tag autoReload:(BOOL)animation;
+- (void)holo_removeAllRowsInSection:(NSString *)tag autoReload:(BOOL)autoReload;
 
 /**
  *  Remove a rows according to the tag in all sections.
@@ -301,9 +301,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Refresh current UICollectionView automatically.
  *
  *  @param tag The tag of row which you wish to remove.
- *  @param animation A constant that indicates how the deletion is to be animated, for example, fade out or slide out from the bottom. See BOOL for descriptions of these constants.
+ *  @param autoReload Auto reload view if YES..
  */
-- (void)holo_removeRow:(NSString *)tag autoReload:(BOOL)animation;
+- (void)holo_removeRow:(NSString *)tag autoReload:(BOOL)autoReload;
 
 @end
 
