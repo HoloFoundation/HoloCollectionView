@@ -23,7 +23,7 @@ If you want to set the model to your UICollectionViewCell or change it's height 
 
 ```objective-c
 UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
-flowLayout......
+flowLayout...
 
 UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
 [self.view addSubview:collectionView];
