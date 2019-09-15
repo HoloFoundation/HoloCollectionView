@@ -25,21 +25,29 @@
     
     [self.collectionView holo_configureCollectionView:^(HoloCollectionViewConfiger * _Nonnull configer) {
         configer.cell(@"one").cls(@"HoloExampleOneCollectionViewCell");
+//        configer.sectionIndexTitles(@[@"A", @"B"]);
     }];
     
-    [self.collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.row(@"one").size(CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 200));
+    [self.collectionView holo_makeSections:^(HoloCollectionViewSectionMaker * _Nonnull make) {
+        make.section(@"1")
+        .header(@"HoloExampleHeaderView").headerReferenceSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
+        .footer(@"HoloExampleFooterView").footerReferenceSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100));
+    }];
+    [self.collectionView holo_makeRowsInSection:@"1" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
+        make.row(@"one").tag(@"a");
         make.row(@"one");
         make.row(@"one");
         make.row(@"one").didSelectHandler(^(id  _Nonnull model) {
             NSLog(@"----%@", model);
         });
     }];
+    
+    [self.collectionView reloadData];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self.collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.row(@"HoloExampleOneCollectionViewCell");
+    [self.collectionView holo_insertRowsAtIndex:0 inSection:@"1" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
+        make.row(@"HoloExampleOneCollectionViewCell").size(CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 200));
     } autoReload:YES];
 }
 
