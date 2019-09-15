@@ -11,6 +11,44 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
+If you want to set the model to your UICollectionViewCell or change it's height according to the model, the UICollectionViewCell could conform to protocol: `HoloCollectionViewCellProtocol` and implement their selectors: 
+
+```objective-c
+- (void)configureCellWithModel:(id)model;
+
++ (CGSize)sizeForCellWithModel:(id)model;
+```
+
+## Usage
+
+```objective-c
+UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+flowLayout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+flowLayout.minimumLineSpacing = 10;
+flowLayout.minimumInteritemSpacing = 10;
+flowLayout.itemSize = CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 100);
+
+UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
+collectionView.backgroundColor = [UIColor whiteColor];
+[self.view addSubview:collectionView];
+
+[collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
+    // one cell
+    make.row(@"OneCollectionViewCell").model(@{@"key":@"value1"});
+    make.row(@"OneCollectionViewCell").model(@{@"key":@"value1"});
+
+    // two cell
+    make.row(@"TwoCollectionViewCell").size(CGSizeMake(100, 200));
+
+    // three cell
+    make.row(@"ThreeCollectionViewCell").didSelectHandler(^(id  _Nonnull model) {
+        NSLog(@"did select row, model: %@", model);
+    });
+} autoReload:YES];
+
+// etc...
+```
+
 ## Installation
 
 HoloCollectionView is available through [CocoaPods](https://cocoapods.org). To install
@@ -27,3 +65,5 @@ gonghonglou, gonghonglou@icloud.com
 ## License
 
 HoloCollectionView is available under the MIT license. See the LICENSE file for more info.
+
+
