@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  HoloCollectionView: c68b725f5429ece04a50bcd36d2b47bf101c1aba
+  HoloCollectionView: 89f6bdc932df8f634af3f62905e70a0c70766128
 
 PODFILE CHECKSUM: ef61e5d475e970bf89353ca9ea8c3adb0df691e7
 

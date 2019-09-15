@@ -1,8 +1,8 @@
 {
   "name": "HoloCollectionView",
   "version": "0.1.0",
-  "summary": "A short description of HoloCollectionView.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "Harness the power of UICollectionView with a simplified, chainable and expressive syntax.",
+  "description": "HoloCollectionView is a light-weight extension for UICollectionView. Harness the power of UICollectionView with a simplified, chainable and expressive syntax.",
   "homepage": "https://github.com/gonghonglou/HoloCollectionView",
   "license": {
     "type": "MIT",
