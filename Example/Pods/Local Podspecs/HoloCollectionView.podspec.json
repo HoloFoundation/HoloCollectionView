@@ -1,0 +1,22 @@
+{
+  "name": "HoloCollectionView",
+  "version": "0.1.0",
+  "summary": "A short description of HoloCollectionView.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/gonghonglou/HoloCollectionView",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "gonghonglou": "gonghonglou@icloud.com"
+  },
+  "source": {
+    "git": "https://github.com/gonghonglou/HoloCollectionView.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "HoloCollectionView/Classes/**/*"
+}

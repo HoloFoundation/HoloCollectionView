@@ -1,0 +1,16 @@
+PODS:
+  - HoloCollectionView (0.1.0)
+
+DEPENDENCIES:
+  - HoloCollectionView (from `../`)
+
+EXTERNAL SOURCES:
+  HoloCollectionView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  HoloCollectionView: c68b725f5429ece04a50bcd36d2b47bf101c1aba
+
+PODFILE CHECKSUM: ef61e5d475e970bf89353ca9ea8c3adb0df691e7
+
+COCOAPODS: 1.7.5
