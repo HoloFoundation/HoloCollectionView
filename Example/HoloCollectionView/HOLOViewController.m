@@ -34,28 +34,41 @@
         .footer(@"HoloExampleFooterView").footerReferenceSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100));
     }];
     [self.collectionView holo_makeRowsInSection:@"1" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.row(@"one").tag(@"a").size(CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 200));
-        make.row(@"one");
-        make.row(@"one");
-        make.row(@"one").didSelectHandler(^(id  _Nonnull model) {
-            NSLog(@"----%@", model);
-        });
+        for (NSDictionary *dict in [self _modelsFromOtherWay]) {
+            make.row(@"one")
+            .model(dict)
+            .didSelectHandler(^(id  _Nonnull model) {
+                NSLog(@"did select model : %@", model);
+            });
+        }
     }];
     
     [self.collectionView reloadData];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self.collectionView holo_updateRows:^(HoloCollectionViewUpdateRowMaker * _Nonnull make) {
-        make.tag(@"a");
-    } autoReload:YES];
-//    [self.collectionView holo_insertRowsAtIndex:0 inSection:@"1" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-//        make.row(@"HoloExampleOneCollectionViewCell").size(CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 200));
+//    [self.collectionView holo_updateRows:^(HoloCollectionViewUpdateRowMaker * _Nonnull make) {
+//        make.tag(@"a");
 //    } autoReload:YES];
+    [self.collectionView holo_insertRowsAtIndex:0 inSection:@"1" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
+        make.row(@"HoloExampleOneCollectionViewCell").size(CGSizeMake((HOLO_SCREEN_WIDTH-30)/2, 200));
+    } autoReload:YES];
 }
 
+- (NSArray *)_modelsFromOtherWay {
+    return @[
+             @{@"bgColor": [UIColor lightGrayColor], @"text": @"cell-1"},
+             @{@"bgColor": [UIColor grayColor],      @"text": @"cell-2"},
+             @{@"bgColor": [UIColor brownColor],     @"text": @"cell-3"},
+             @{@"bgColor": [UIColor cyanColor],      @"text": @"cell-4"},
+             @{@"bgColor": [UIColor orangeColor],    @"text": @"cell-5"},
+             @{@"bgColor": [UIColor yellowColor],    @"text": @"cell-6"},
+             @{@"bgColor": [UIColor darkGrayColor],  @"text": @"cell-7"},
+             @{@"bgColor": [UIColor greenColor],     @"text": @"cell-8"}
+             ];
+}
 
-#pragma mark - getter
+#pragma mark-getter
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
         UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];

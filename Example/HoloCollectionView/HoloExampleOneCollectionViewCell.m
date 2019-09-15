@@ -7,6 +7,13 @@
 //
 
 #import "HoloExampleOneCollectionViewCell.h"
+#import <HoloCollectionView/HoloCollectionViewProtocol.h>
+
+@interface HoloExampleOneCollectionViewCell () <HoloCollectionViewCellProtocol>
+
+@property (nonatomic, strong) UILabel *titleLabel;
+
+@end
 
 @implementation HoloExampleOneCollectionViewCell
 
@@ -14,8 +21,25 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.contentView.backgroundColor = [UIColor redColor];
+        [self.contentView addSubview:self.titleLabel];
     }
     return self;
+}
+
+- (void)configureCellWithModel:(id)model {
+    self.contentView.backgroundColor = model[@"bgColor"] ?: [UIColor redColor];
+    self.titleLabel.text = model[@"text"] ?: nil;
+}
+
+
+#pragma mark - getter
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        _titleLabel = [UILabel new];
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.frame = self.contentView.bounds;
+    }
+    return _titleLabel;
 }
 
 @end
