@@ -16,8 +16,8 @@
     if (self) {
         _rows = [NSArray new];
         _inset = UIEdgeInsetsMake(CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN);
-        _headerReferenceSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
-        _footerReferenceSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
+        _headerSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
+        _footerSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
         _minimumLineSpacing = CGFLOAT_MIN;
         _minimumInteritemSpacing = CGFLOAT_MIN;
 #pragma clang diagnostic push
@@ -102,16 +102,16 @@
     };
 }
 
-- (HoloCollectionSectionMaker *(^)(CGSize))headerReferenceSize {
+- (HoloCollectionSectionMaker *(^)(CGSize))headerSize {
     return ^id(CGSize s) {
-        self.section.headerReferenceSize = s;
+        self.section.headerSize = s;
         return self;
     };
 }
 
-- (HoloCollectionSectionMaker *(^)(CGSize))footerReferenceSize {
+- (HoloCollectionSectionMaker *(^)(CGSize))footerSize {
     return ^id(CGSize s) {
-        self.section.footerReferenceSize = s;
+        self.section.footerSize = s;
         return self;
     };
 }

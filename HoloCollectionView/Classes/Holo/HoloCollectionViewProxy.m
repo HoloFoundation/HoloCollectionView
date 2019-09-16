@@ -219,9 +219,9 @@
         return [self _sizeWithMethodSignatureCls:header selector:holoSection.headerFooterSizeSEL model:holoSection.headerModel];
     }
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.headerReferenceSize.width != CGFLOAT_MIN ||
-        holoSection.headerReferenceSize.height != CGFLOAT_MIN) {
-        return holoSection.headerReferenceSize;
+    if (holoSection.headerSize.width != CGFLOAT_MIN ||
+        holoSection.headerSize.height != CGFLOAT_MIN) {
+        return holoSection.headerSize;
     } else {
         return flowLayout.headerReferenceSize;
     }
@@ -238,9 +238,9 @@
         return [self _sizeWithMethodSignatureCls:footer selector:holoSection.headerFooterSizeSEL model:holoSection.footerModel];
     }
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.footerReferenceSize.width != CGFLOAT_MIN ||
-        holoSection.footerReferenceSize.height != CGFLOAT_MIN) {
-        return holoSection.footerReferenceSize;
+    if (holoSection.footerSize.width != CGFLOAT_MIN ||
+        holoSection.footerSize.height != CGFLOAT_MIN) {
+        return holoSection.footerSize;
     } else {
         return flowLayout.footerReferenceSize;
     }

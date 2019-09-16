@@ -25,8 +25,8 @@
     
     [self.collectionView holo_makeSections:^(HoloCollectionViewSectionMaker * _Nonnull make) {
         make.section(@"1")
-        .header(@"HoloExampleHeaderView").headerReferenceSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
-        .footer(@"HoloExampleFooterView").footerReferenceSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100));
+        .header(@"HoloExampleHeaderView").headerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
+        .footer(@"HoloExampleFooterView").footerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100));
     }];
     [self.collectionView holo_makeRowsInSection:@"1" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
         for (NSDictionary *dict in [self _modelsFromOtherWay]) {

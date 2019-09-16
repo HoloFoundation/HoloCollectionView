@@ -37,9 +37,9 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @property (nonatomic, strong) id footerModel;
 
-@property (nonatomic, assign) CGSize headerReferenceSize;
+@property (nonatomic, assign) CGSize headerSize;
 
-@property (nonatomic, assign) CGSize footerReferenceSize;
+@property (nonatomic, assign) CGSize footerSize;
 
 @property (nonatomic, assign) SEL headerFooterConfigSEL;
 
@@ -80,9 +80,9 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerModel)(id footerModel);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerReferenceSize)(CGSize headerReferenceSize);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerSize)(CGSize headerSize);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerReferenceSize)(CGSize footerReferenceSize);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerSize)(CGSize footerSize);
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterConfigSEL)(SEL headerConfigSEL);
 
