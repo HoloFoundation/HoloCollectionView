@@ -20,8 +20,8 @@
         _canMove = YES;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
-        _configSEL = @selector(configureCellWithModel:);
-        _sizeSEL = @selector(sizeForCellWithModel:);
+        _configSEL = @selector(holo_configureCellWithModel:);
+        _sizeSEL = @selector(holo_sizeForCellWithModel:);
 #pragma clang diagnostic pop
     }
     

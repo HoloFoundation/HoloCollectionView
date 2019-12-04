@@ -14,9 +14,9 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 If you want to set the model to your UICollectionViewCell or change it's height according to the model, the UICollectionViewCell could conform to protocol: `HoloCollectionViewCellProtocol` and implement their selectors: 
 
 ```objective-c
-- (void)configureCellWithModel:(id)model;
+- (void)holo_configureCellWithModel:(id)model;
 
-+ (CGSize)sizeForCellWithModel:(id)model;
++ (CGSize)holo_sizeForCellWithModel:(id)model;
 ```
 
 ## Usage

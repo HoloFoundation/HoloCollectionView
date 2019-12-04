@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
-- (void)configureCellWithModel:(id)model;
+- (void)holo_configureCellWithModel:(id)model;
 
-+ (CGSize)sizeForCellWithModel:(id)model;
++ (CGSize)holo_sizeForCellWithModel:(id)model;
 
 @end
 
@@ -27,9 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
-- (void)configureHeaderFooterWithModel:(id)model;
+- (void)holo_configureHeaderFooterWithModel:(id)model;
 
-+ (CGSize)sizeForHeaderFooterWithModel:(id)model;
++ (CGSize)holo_sizeForHeaderFooterWithModel:(id)model;
 
 @end
 

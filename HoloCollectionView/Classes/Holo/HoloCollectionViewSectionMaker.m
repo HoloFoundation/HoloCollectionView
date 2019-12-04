@@ -22,8 +22,8 @@
         _minimumInteritemSpacing = CGFLOAT_MIN;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
-        _headerFooterConfigSEL = @selector(configureHeaderFooterWithModel:);
-        _headerFooterSizeSEL = @selector(sizeForHeaderFooterWithModel:);
+        _headerFooterConfigSEL = @selector(holo_configureHeaderFooterWithModel:);
+        _headerFooterSizeSEL = @selector(holo_sizeForHeaderFooterWithModel:);
 #pragma clang diagnostic pop
     }
     return self;

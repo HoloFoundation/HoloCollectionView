@@ -26,7 +26,7 @@
     return self;
 }
 
-- (void)configureCellWithModel:(id)model {
+- (void)holo_configureCellWithModel:(id)model {
     self.contentView.backgroundColor = model[@"bgColor"] ?: [UIColor redColor];
     self.titleLabel.text = model[@"text"] ?: nil;
 }
