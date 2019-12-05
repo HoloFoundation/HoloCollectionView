@@ -184,6 +184,15 @@
     };
 }
 
+- (HoloCollectionRowMaker * (^)(Class))rowCls {
+    return ^id(Class cls) {
+        HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
+        rowMaker.row.cell = NSStringFromClass(cls);
+        [self.holoRows addObject:rowMaker.row];
+        return rowMaker;
+    };
+}
+
 - (NSArray<HoloCollectionRow *> *)install {
     return self.holoRows;
 }
