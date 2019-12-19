@@ -1,6 +1,0 @@
-framework module HoloCollectionView {
-  umbrella header "HoloCollectionView-umbrella.h"
-
-  export *
-  module * { export * }
-}
