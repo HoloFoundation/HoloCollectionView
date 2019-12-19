@@ -8,11 +8,26 @@
 #import "HoloCollectionViewConfiger.h"
 
 ////////////////////////////////////////////////////////////
+@interface HoloCollectionViewCellConfiger ()
+
+@property (nonatomic, copy) NSString *row;
+
+@property (nonatomic, copy) NSString *rowName;
+
+@end
+
 @implementation HoloCollectionViewCellConfiger
 
-- (HoloCollectionViewCellConfiger *(^)(NSString *))cls {
+- (HoloCollectionViewCellConfiger *(^)(Class))cls {
+    return ^id(Class cls) {
+        self.rowName = NSStringFromClass(cls);
+        return self;
+    };
+}
+
+- (HoloCollectionViewCellConfiger * (^)(NSString *))clsName {
     return ^id(id obj) {
-        self.clsName = obj;
+        self.rowName = obj;
         return self;
     };
 }
@@ -32,10 +47,10 @@
 
 @implementation HoloCollectionViewConfiger
 
-- (HoloCollectionViewCellConfiger *(^)(NSString *))cell {
+- (HoloCollectionViewCellConfiger * (^)(NSString *))row {
     return ^id(id obj) {
         HoloCollectionViewCellConfiger *configer = [HoloCollectionViewCellConfiger new];
-        configer.cellName = obj;
+        configer.row = obj;
         [self.cellClsConfigers addObject:configer];
         return configer;
     };
@@ -60,7 +75,7 @@
     
     NSMutableDictionary *cellClsMap = [NSMutableDictionary new];
     for (HoloCollectionViewCellConfiger *configer in self.cellClsConfigers) {
-        cellClsMap[configer.cellName] = configer.clsName;
+        cellClsMap[configer.row] = configer.rowName;
     }
     dict[kHoloCellClsMap] = [cellClsMap copy];
     dict[kHoloSectionIndexTitles] = self.sectionIndexTitlesArray;

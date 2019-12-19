@@ -17,18 +17,16 @@ static NSString * const kHoloIndexPathForIndexTitleHandler = @"holo_indexPath_fo
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionViewCellConfiger : NSObject
 
-@property (nonatomic, copy) NSString *cellName;
+@property (nonatomic, copy, readonly) HoloCollectionViewCellConfiger *(^cls)(Class cls);
 
-@property (nonatomic, copy) NSString *clsName;
-
-@property (nonatomic, copy, readonly) HoloCollectionViewCellConfiger *(^cls)(NSString *cls);
+@property (nonatomic, copy, readonly) HoloCollectionViewCellConfiger *(^clsName)(NSString *clsName);
 
 @end
 
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionViewConfiger : NSObject
 
-@property (nonatomic, copy, readonly) HoloCollectionViewCellConfiger *(^cell)(NSString *cell);
+@property (nonatomic, copy, readonly) HoloCollectionViewCellConfiger *(^row)(NSString *row);
 
 @property (nonatomic, copy, readonly) HoloCollectionViewConfiger *(^sectionIndexTitles)(NSArray<NSString *> *sectionIndexTitles);
 
