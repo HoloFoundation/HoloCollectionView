@@ -346,7 +346,9 @@
         [self.holo_delegate collectionView:collectionView didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
     }
     
+    if (indexPath.section >= self.holoSections.count) return;
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
+    if (indexPath.row >= holoSection.rows.count) return;
     HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
     if (holoRow.didEndDisplayingHandler) holoRow.didEndDisplayingHandler(cell, holoRow.model);
 }
@@ -369,6 +371,7 @@
         [self.holo_delegate collectionView:collectionView didEndDisplayingSupplementaryView:view forElementOfKind:elementKind atIndexPath:indexPath];
     }
     
+    if (indexPath.section >= self.holoSections.count) return;
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
     if (elementKind == UICollectionElementKindSectionHeader) {
         if (holoSection.didEndDisplayingHeaderHandler) holoSection.didEndDisplayingHeaderHandler(view, holoSection.headerModel);
