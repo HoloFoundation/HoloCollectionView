@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'HoloCollectionView'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'Harness the power of UICollectionView with a simplified, chainable and expressive syntax.'
 
 # This description is used to generate tags and improve search results.
