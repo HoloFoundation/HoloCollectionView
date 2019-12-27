@@ -88,6 +88,20 @@
     };
 }
 
+- (HoloCollectionSectionMaker * (^)(Class))headerCls {
+    return ^id(Class cls) {
+        self.section.header = NSStringFromClass(cls);
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(Class))footerCls {
+    return ^id(Class cls) {
+        self.section.footer = NSStringFromClass(cls);
+        return self;
+    };
+}
+
 - (HoloCollectionSectionMaker * (^)(id))headerModel {
     return ^id(id obj) {
         self.section.headerModel = obj;

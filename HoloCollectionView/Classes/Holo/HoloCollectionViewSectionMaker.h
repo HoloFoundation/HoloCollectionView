@@ -76,6 +76,10 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footer)(NSString *footer);
 
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerCls)(Class headerCls);
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerCls)(Class footerCls);
+
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerModel)(id headerModel);
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerModel)(id footerModel);
