@@ -40,7 +40,9 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
     make.row(@"ThreeCollectionViewCell").didSelectHandler(^(id  _Nonnull model) {
         NSLog(@"did select row, model: %@", model);
     });
-} autoReload:YES];
+}];
+
+[self.collectionView reloadData];
 
 // etc...
 ```
