@@ -196,12 +196,11 @@
         _isRemark = isRemark;
         
         for (HoloCollectionSection *section in self.targetSections) {
-            
             NSString *dictKey = section.tag ?: kHoloSectionTagNil;
             if (self.sectionIndexsDict[dictKey]) continue;
             
             NSMutableDictionary *dict = @{kHoloTargetSection : section}.mutableCopy;
-            dict[kHoloTargetIndex] = [NSNumber numberWithInteger:[self.targetSections indexOfObject:section]];
+            dict[kHoloTargetIndex] = @([self.targetSections indexOfObject:section]);
             self.sectionIndexsDict[dictKey] = [dict copy];
         }
     }
