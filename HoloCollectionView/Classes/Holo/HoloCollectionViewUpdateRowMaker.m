@@ -12,9 +12,16 @@
 ////////////////////////////////////////////////////////////
 @implementation HoloUpdateCollectionRowMaker
 
-- (HoloUpdateCollectionRowMaker * (^)(NSString *))cell {
+- (HoloUpdateCollectionRowMaker * (^)(NSString *))row {
     return ^id(id obj) {
-        self.row.cell = obj;
+        self.collectionRow.cell = obj;
+        return self;
+    };
+}
+
+- (HoloUpdateCollectionRowMaker * (^)(Class))rowCls {
+    return ^id(Class cls) {
+        self.collectionRow.cell = NSStringFromClass(cls);
         return self;
     };
 }
@@ -63,7 +70,7 @@
 - (HoloUpdateCollectionRowMaker *(^)(NSString *))tag {
     return ^id(NSString *tag) {
         HoloUpdateCollectionRowMaker *rowMaker = [HoloUpdateCollectionRowMaker new];
-        HoloCollectionRow *updateRow = rowMaker.row;
+        HoloCollectionRow *updateRow = rowMaker.collectionRow;
         updateRow.tag = tag;
         
         NSString *dictKey = tag ?: kHoloRowTagNil;

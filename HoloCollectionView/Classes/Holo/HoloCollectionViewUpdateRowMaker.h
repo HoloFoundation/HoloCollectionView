@@ -20,7 +20,9 @@ static NSString * const kHoloRowTagNil = @"holo_row_tag_nil";
 ////////////////////////////////////////////////////////////
 @interface HoloUpdateCollectionRowMaker : HoloCollectionRowMaker
 
-@property (nonatomic, copy, readonly) HoloUpdateCollectionRowMaker *(^cell)(NSString *cell);
+@property (nonatomic, copy, readonly) HoloUpdateCollectionRowMaker *(^row)(NSString *rowName);
+
+@property (nonatomic, copy, readonly) HoloUpdateCollectionRowMaker *(^rowCls)(Class rowCls);
 
 @end
 

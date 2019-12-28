@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionRowMaker : NSObject
 
-@property (nonatomic, strong, readonly) HoloCollectionRow *row;
+@property (nonatomic, strong, readonly) HoloCollectionRow *collectionRow;
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^model)(id model);
 
