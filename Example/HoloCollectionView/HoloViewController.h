@@ -1,5 +1,5 @@
 //
-//  HOLOViewController.h
+//  HoloViewController.h
 //  HoloCollectionView
 //
 //  Created by gonghonglou on 09/13/2019.
@@ -8,6 +8,6 @@
 
 @import UIKit;
 
-@interface HOLOViewController : UIViewController
+@interface HoloViewController : UIViewController
 
 @end

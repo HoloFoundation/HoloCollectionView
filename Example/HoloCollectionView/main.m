@@ -7,11 +7,11 @@
 //
 
 @import UIKit;
-#import "HOLOAppDelegate.h"
+#import "HoloAppDelegate.h"
 
 int main(int argc, char * argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([HOLOAppDelegate class]));
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([HoloAppDelegate class]));
     }
 }

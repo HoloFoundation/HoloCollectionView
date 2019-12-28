@@ -1,14 +1,14 @@
 //
-//  HOLOAppDelegate.m
+//  HoloAppDelegate.m
 //  HoloCollectionView
 //
 //  Created by gonghonglou on 09/13/2019.
 //  Copyright (c) 2019 gonghonglou. All rights reserved.
 //
 
-#import "HOLOAppDelegate.h"
+#import "HoloAppDelegate.h"
 
-@implementation HOLOAppDelegate
+@implementation HoloAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
