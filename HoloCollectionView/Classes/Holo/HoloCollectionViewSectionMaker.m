@@ -7,6 +7,7 @@
 
 #import "HoloCollectionViewSectionMaker.h"
 #import <objc/runtime.h>
+#import "HoloCollectionViewRowMaker.h"
 
 ////////////////////////////////////////////////////////////
 @implementation HoloCollectionSection
@@ -172,6 +173,16 @@
     };
 }
 
+- (HoloCollectionSectionMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *)))makeRows {
+    return ^id(void(^block)(HoloCollectionViewRowMaker *make)) {
+        HoloCollectionViewRowMaker *maker = [HoloCollectionViewRowMaker new];
+        if (block) block(maker);
+        
+        [self.section holo_insertRows:[maker install] atIndex:NSIntegerMax];
+        return self;
+    };
+}
+
 @end
 
 ////////////////////////////////////////////////////////////
@@ -227,9 +238,10 @@
                 objc_property_t property = properties[i];
                 const char * propertyAttr = property_getAttributes(property);
                 char t = propertyAttr[1];
-                if (t == 'd' || t == 'B' || t == '{') { // CGFloat or BOOL or CGSize
-                    const char *propertyName = property_getName(property);
-                    NSString *propertyNameStr = [NSString stringWithCString:propertyName encoding:NSUTF8StringEncoding];
+                const char *propertyName = property_getName(property);
+                NSString *propertyNameStr = [NSString stringWithCString:propertyName encoding:NSUTF8StringEncoding];
+                // CGFloat or BOOL or CGSize or rows
+                if (t == 'd' || t == 'B' || t == '{' || [propertyNameStr isEqualToString:@"rows"]) {
                     id value = [targetSection valueForKey:propertyNameStr];
                     if (value) [updateSection setValue:value forKey:propertyNameStr];
                 }

@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class HoloCollectionRow;
+@class HoloCollectionRow, HoloCollectionViewRowMaker;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -99,6 +99,8 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^didEndDisplayingHeaderHandler)(void(^)(UIView *header, id model));
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^didEndDisplayingFooterHandler)(void(^)(UIView *footer, id model));
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^makeRows)(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make));
 
 @end
 
