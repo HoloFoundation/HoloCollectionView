@@ -7,26 +7,8 @@
 
 #import "HoloCollectionViewUpdateRowMaker.h"
 #import <objc/runtime.h>
+#import "HoloCollectionViewRowMaker.h"
 #import "HoloCollectionViewSectionMaker.h"
-
-////////////////////////////////////////////////////////////
-@implementation HoloUpdateCollectionRowMaker
-
-- (HoloUpdateCollectionRowMaker * (^)(NSString *))row {
-    return ^id(id obj) {
-        self.collectionRow.cell = obj;
-        return self;
-    };
-}
-
-- (HoloUpdateCollectionRowMaker * (^)(Class))rowCls {
-    return ^id(Class cls) {
-        self.collectionRow.cell = NSStringFromClass(cls);
-        return self;
-    };
-}
-
-@end
 
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionViewUpdateRowMaker ()
@@ -67,9 +49,9 @@
     return self;
 }
 
-- (HoloUpdateCollectionRowMaker *(^)(NSString *))tag {
+- (HoloCollectionRowMaker *(^)(NSString *))tag {
     return ^id(NSString *tag) {
-        HoloUpdateCollectionRowMaker *rowMaker = [HoloUpdateCollectionRowMaker new];
+        HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
         HoloCollectionRow *updateRow = rowMaker.collectionRow;
         updateRow.tag = tag;
         

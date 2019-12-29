@@ -55,6 +55,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) HoloCollectionRow *collectionRow;
 
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^row)(NSString *rowName);
+
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^rowCls)(Class rowCls);
+
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^model)(id model);
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^size)(CGSize size);

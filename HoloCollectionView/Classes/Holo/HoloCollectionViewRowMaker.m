@@ -41,6 +41,20 @@
     return self;
 }
 
+- (HoloCollectionRowMaker *(^)(NSString *))row {
+    return ^id(id obj) {
+        self.collectionRow.cell = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker * (^)(Class))rowCls {
+    return ^id(Class cls) {
+        self.collectionRow.cell = NSStringFromClass(cls);
+        return self;
+    };
+}
+
 - (HoloCollectionRowMaker *(^)(id))model {
     return ^id(id obj) {
         self.collectionRow.model = obj;

@@ -6,8 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HoloCollectionViewRowMaker.h"
-@class HoloCollectionSection;
+@class HoloCollectionSection, HoloCollectionRowMaker;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,18 +17,9 @@ static NSString * const kHoloRowTagNil = @"holo_row_tag_nil";
 
 
 ////////////////////////////////////////////////////////////
-@interface HoloUpdateCollectionRowMaker : HoloCollectionRowMaker
-
-@property (nonatomic, copy, readonly) HoloUpdateCollectionRowMaker *(^row)(NSString *rowName);
-
-@property (nonatomic, copy, readonly) HoloUpdateCollectionRowMaker *(^rowCls)(Class rowCls);
-
-@end
-
-////////////////////////////////////////////////////////////
 @interface HoloCollectionViewUpdateRowMaker : NSObject
 
-@property (nonatomic, copy, readonly) HoloUpdateCollectionRowMaker *(^tag)(NSString * _Nullable tag);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^tag)(NSString * _Nullable tag);
 
 - (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections isRemark:(BOOL)isRemark;
 
