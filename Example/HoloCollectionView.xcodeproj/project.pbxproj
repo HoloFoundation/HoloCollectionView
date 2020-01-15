@@ -22,7 +22,7 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
-		754D35A5232DF88D00C80A11 /* HoloExampleOneCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 754D35A4232DF88D00C80A11 /* HoloExampleOneCollectionViewCell.m */; };
+		754D35A5232DF88D00C80A11 /* HoloExampleCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 754D35A4232DF88D00C80A11 /* HoloExampleCollectionViewCell.m */; };
 		75AF9FA2232E166300FF4083 /* HoloExampleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 75AF9FA1232E166300FF4083 /* HoloExampleHeaderView.m */; };
 		75AF9FA5232E171B00FF4083 /* HoloExampleFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 75AF9FA4232E171B00FF4083 /* HoloExampleFooterView.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
@@ -63,8 +63,8 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		754D35A3232DF88D00C80A11 /* HoloExampleOneCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HoloExampleOneCollectionViewCell.h; sourceTree = "<group>"; };
-		754D35A4232DF88D00C80A11 /* HoloExampleOneCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloExampleOneCollectionViewCell.m; sourceTree = "<group>"; };
+		754D35A3232DF88D00C80A11 /* HoloExampleCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HoloExampleCollectionViewCell.h; sourceTree = "<group>"; };
+		754D35A4232DF88D00C80A11 /* HoloExampleCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloExampleCollectionViewCell.m; sourceTree = "<group>"; };
 		75AF9FA0232E166300FF4083 /* HoloExampleHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HoloExampleHeaderView.h; sourceTree = "<group>"; };
 		75AF9FA1232E166300FF4083 /* HoloExampleHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloExampleHeaderView.m; sourceTree = "<group>"; };
 		75AF9FA3232E171B00FF4083 /* HoloExampleFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HoloExampleFooterView.h; sourceTree = "<group>"; };
@@ -198,8 +198,8 @@
 		754D35A2232DF85500C80A11 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				754D35A3232DF88D00C80A11 /* HoloExampleOneCollectionViewCell.h */,
-				754D35A4232DF88D00C80A11 /* HoloExampleOneCollectionViewCell.m */,
+				754D35A3232DF88D00C80A11 /* HoloExampleCollectionViewCell.h */,
+				754D35A4232DF88D00C80A11 /* HoloExampleCollectionViewCell.m */,
 				75AF9FA0232E166300FF4083 /* HoloExampleHeaderView.h */,
 				75AF9FA1232E166300FF4083 /* HoloExampleHeaderView.m */,
 				75AF9FA3232E171B00FF4083 /* HoloExampleFooterView.h */,
@@ -367,7 +367,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				754D35A5232DF88D00C80A11 /* HoloExampleOneCollectionViewCell.m in Sources */,
+				754D35A5232DF88D00C80A11 /* HoloExampleCollectionViewCell.m in Sources */,
 				75AF9FA2232E166300FF4083 /* HoloExampleHeaderView.m in Sources */,
 				6003F59E195388D20070C39A /* HoloAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* HoloViewController.m in Sources */,

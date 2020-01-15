@@ -1,21 +1,21 @@
 //
-//  HoloExampleOneCollectionViewCell.m
+//  HoloExampleCollectionViewCell.m
 //  HoloCollectionView_Example
 //
 //  Created by 与佳期 on 2019/9/15.
 //  Copyright © 2019 gonghonglou. All rights reserved.
 //
 
-#import "HoloExampleOneCollectionViewCell.h"
+#import "HoloExampleCollectionViewCell.h"
 #import <HoloCollectionView/HoloCollectionViewProtocol.h>
 
-@interface HoloExampleOneCollectionViewCell () <HoloCollectionViewCellProtocol>
+@interface HoloExampleCollectionViewCell () <HoloCollectionViewCellProtocol>
 
 @property (nonatomic, strong) UILabel *titleLabel;
 
 @end
 
-@implementation HoloExampleOneCollectionViewCell
+@implementation HoloExampleCollectionViewCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];

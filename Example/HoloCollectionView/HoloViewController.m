@@ -8,6 +8,9 @@
 
 #import "HoloViewController.h"
 #import <HoloCollectionView/HoloCollectionView.h>
+#import "HoloExampleHeaderView.h"
+#import "HoloExampleFooterView.h"
+#import "HoloExampleCollectionViewCell.h"
 
 @interface HoloViewController ()
 
@@ -31,16 +34,16 @@
     
     [self.collectionView holo_makeSections:^(HoloCollectionViewSectionMaker * _Nonnull make) {
         make.section(@"a")
-        .header(@"HoloExampleHeaderView").headerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
-        .footer(@"HoloExampleFooterView").footerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
+        .header(HoloExampleHeaderView.class).headerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
+        .footer(HoloExampleFooterView.class).footerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
         .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
-            make.row(@"HoloExampleOneCollectionViewCell").model(@{@"bgColor": [UIColor lightGrayColor], @"text": @"cell"});
+            make.row(HoloExampleCollectionViewCell.class).model(@{@"bgColor": [UIColor lightGrayColor], @"text": @"cell"});
         });
     }];
     
     [self.collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
         for (NSDictionary *dict in [self _modelsFromOtherWay]) {
-            make.row(@"HoloExampleOneCollectionViewCell")
+            make.row(HoloExampleCollectionViewCell.class)
             .model(dict)
             .didSelectHandler(^(id  _Nonnull model) {
                 NSLog(@"did select model : %@", model);
@@ -54,7 +57,7 @@
 #pragma mark - buttonAction
 - (void)buttonAction:(UIButton *)sender {
     [self.collectionView holo_insertRowsAtIndex:0 inSection:@"a" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.row(@"HoloExampleOneCollectionViewCell");
+        make.row(HoloExampleCollectionViewCell.class);
     } autoReload:YES];
 }
 

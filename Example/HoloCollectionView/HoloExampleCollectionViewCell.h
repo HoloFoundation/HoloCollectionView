@@ -1,5 +1,5 @@
 //
-//  HoloExampleOneCollectionViewCell.h
+//  HoloExampleCollectionViewCell.h
 //  HoloCollectionView_Example
 //
 //  Created by 与佳期 on 2019/9/15.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HoloExampleOneCollectionViewCell : UICollectionViewCell
+@interface HoloExampleCollectionViewCell : UICollectionViewCell
 
 @end
 
