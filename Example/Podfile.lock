@@ -1,5 +1,5 @@
 PODS:
-  - HoloCollectionView (0.2.0)
+  - HoloCollectionView (0.3.0)
 
 DEPENDENCIES:
   - HoloCollectionView (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  HoloCollectionView: 529e72bc30f0956135de624bd5272efa7fa85958
+  HoloCollectionView: dc25aed45029759f30c7449feef2fbd4298d9817
 
 PODFILE CHECKSUM: ef61e5d475e970bf89353ca9ea8c3adb0df691e7
 
