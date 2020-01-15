@@ -75,30 +75,30 @@
     };
 }
 
-- (HoloCollectionSectionMaker *(^)(NSString *))header {
-    return ^id(id obj) {
-        self.section.header = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker *(^)(NSString *))footer {
-    return ^id(id obj) {
-        self.section.footer = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(Class))headerCls {
+- (HoloCollectionSectionMaker * (^)(Class))header {
     return ^id(Class cls) {
         self.section.header = NSStringFromClass(cls);
         return self;
     };
 }
 
-- (HoloCollectionSectionMaker * (^)(Class))footerCls {
+- (HoloCollectionSectionMaker * (^)(Class))footer {
     return ^id(Class cls) {
         self.section.footer = NSStringFromClass(cls);
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(NSString *))headerS {
+    return ^id(id obj) {
+        self.section.header = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(NSString *))footerS {
+    return ^id(id obj) {
+        self.section.footer = obj;
         return self;
     };
 }

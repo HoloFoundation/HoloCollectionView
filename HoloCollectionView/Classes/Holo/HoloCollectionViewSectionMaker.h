@@ -72,13 +72,13 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^minimumInteritemSpacing)(CGFloat minimumInteritemSpacing);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^header)(NSString *header);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^header)(Class header);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footer)(NSString *footer);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footer)(Class footer);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerCls)(Class headerCls);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerS)(NSString *headerString);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerCls)(Class footerCls);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerS)(NSString *footerString);
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerModel)(id headerModel);
 

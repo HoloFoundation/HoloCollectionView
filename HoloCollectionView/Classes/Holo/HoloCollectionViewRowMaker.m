@@ -41,16 +41,16 @@
     return self;
 }
 
-- (HoloCollectionRowMaker *(^)(NSString *))row {
-    return ^id(id obj) {
-        self.collectionRow.cell = obj;
+- (HoloCollectionRowMaker * (^)(Class))row {
+    return ^id(Class cls) {
+        self.collectionRow.cell = NSStringFromClass(cls);
         return self;
     };
 }
 
-- (HoloCollectionRowMaker * (^)(Class))rowCls {
-    return ^id(Class cls) {
-        self.collectionRow.cell = NSStringFromClass(cls);
+- (HoloCollectionRowMaker *(^)(NSString *))rowS {
+    return ^id(id obj) {
+        self.collectionRow.cell = obj;
         return self;
     };
 }
@@ -189,19 +189,19 @@
 
 @implementation HoloCollectionViewRowMaker
 
-- (HoloCollectionRowMaker *(^)(NSString *))row {
-    return ^id(id obj) {
+- (HoloCollectionRowMaker * (^)(Class))row {
+    return ^id(Class cls) {
         HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
-        rowMaker.collectionRow.cell = obj;
+        rowMaker.collectionRow.cell = NSStringFromClass(cls);
         [self.holoRows addObject:rowMaker.collectionRow];
         return rowMaker;
     };
 }
 
-- (HoloCollectionRowMaker * (^)(Class))rowCls {
-    return ^id(Class cls) {
+- (HoloCollectionRowMaker *(^)(NSString *))rowS {
+    return ^id(id obj) {
         HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
-        rowMaker.collectionRow.cell = NSStringFromClass(cls);
+        rowMaker.collectionRow.cell = obj;
         [self.holoRows addObject:rowMaker.collectionRow];
         return rowMaker;
     };
