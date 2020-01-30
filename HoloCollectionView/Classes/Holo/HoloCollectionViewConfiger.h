@@ -9,24 +9,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const kHoloCellClsMap = @"holo_cell_cls_map";
 static NSString * const kHoloSectionIndexTitles = @"holo_section_index_titles";
 static NSString * const kHoloIndexPathForIndexTitleHandler = @"holo_indexPath_for_index_title_handler";
 
 
-////////////////////////////////////////////////////////////
-@interface HoloCollectionViewCellConfiger : NSObject
-
-@property (nonatomic, copy, readonly) HoloCollectionViewCellConfiger *(^cls)(Class cls);
-
-@property (nonatomic, copy, readonly) HoloCollectionViewCellConfiger *(^clsName)(NSString *clsName);
-
-@end
-
-////////////////////////////////////////////////////////////
 @interface HoloCollectionViewConfiger : NSObject
-
-@property (nonatomic, copy, readonly) HoloCollectionViewCellConfiger *(^row)(NSString *row);
 
 @property (nonatomic, copy, readonly) HoloCollectionViewConfiger *(^sectionIndexTitles)(NSArray<NSString *> *sectionIndexTitles);
 
