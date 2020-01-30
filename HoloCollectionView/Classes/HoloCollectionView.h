@@ -12,7 +12,7 @@
 #import "UICollectionView+HoloCollectionViewProxy.h"
 #import "HoloCollectionViewProxy.h"
 #import "HoloCollectionViewProxyData.h"
-#import "HoloCollectionViewConfiger.h"
+#import "HoloCollectionViewMaker.h"
 #import "HoloCollectionViewRowMaker.h"
 #import "HoloCollectionViewSectionMaker.h"
 #import "HoloCollectionViewUpdateRowMaker.h"

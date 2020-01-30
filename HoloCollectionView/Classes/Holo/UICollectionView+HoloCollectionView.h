@@ -6,21 +6,19 @@
 //
 
 #import <UIKit/UIKit.h>
-@class HoloCollectionViewConfiger, HoloCollectionViewRowMaker, HoloCollectionViewSectionMaker, HoloCollectionViewUpdateRowMaker;
+@class HoloCollectionViewMaker, HoloCollectionViewRowMaker, HoloCollectionViewSectionMaker, HoloCollectionViewUpdateRowMaker;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UICollectionView (HoloCollectionView)
 
-#pragma mark - configer
+#pragma mark - make CollectionView
 /**
  *  Creates a HoloCollectionViewConfiger in the callee for current UICollectionView.
- *  Configure pairs of map (class name match cell name) for all cells.
- *  If the class name doesn't exist, creat a class with the cell name.
  *
- *  @param block Scope within which you can configure the cell name and class name's map which you wish to apply to current UICollectionView.
+ *  @param block Scope within which you can configure the section index titles and section for section index title Handler which you wish to apply to current UICollectionView.
  */
-- (void)holo_configureCollectionView:(void(NS_NOESCAPE ^)(HoloCollectionViewConfiger *configer))block;
+- (void)holo_makeCollectionView:(void(NS_NOESCAPE ^)(HoloCollectionViewMaker *make))block;
 
 
 #pragma mark - section

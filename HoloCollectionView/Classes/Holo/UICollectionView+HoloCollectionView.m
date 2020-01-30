@@ -9,7 +9,7 @@
 #import <objc/runtime.h>
 #import "UICollectionView+HoloCollectionViewProxy.h"
 #import "HoloCollectionViewProxy.h"
-#import "HoloCollectionViewConfiger.h"
+#import "HoloCollectionViewMaker.h"
 #import "HoloCollectionViewSectionMaker.h"
 #import "HoloCollectionViewRowMaker.h"
 #import "HoloCollectionViewUpdateRowMaker.h"
@@ -18,13 +18,12 @@
 
 @implementation UICollectionView (HoloCollectionView)
 
-#pragma mark - configure cell class map
-- (void)holo_configureCollectionView:(void(NS_NOESCAPE ^)(HoloCollectionViewConfiger *configer))block  {
-    HoloCollectionViewConfiger *configer = [HoloCollectionViewConfiger new];
-    if (block) block(configer);
+#pragma mark - make CollectionView
+- (void)holo_makeCollectionView:(void (NS_NOESCAPE ^)(HoloCollectionViewMaker *))block {
+    HoloCollectionViewMaker *maker = [HoloCollectionViewMaker new];
+    if (block) block(maker);
     
-    // check cellClsMap
-    NSDictionary *dict = [configer install];
+    NSDictionary *dict = [maker install];
     self.holo_proxy.holo_proxyData.holo_sectionIndexTitles = dict[kHoloSectionIndexTitles];
     self.holo_proxy.holo_proxyData.holo_indexPathForIndexTitleHandler = dict[kHoloIndexPathForIndexTitleHandler];
 }
