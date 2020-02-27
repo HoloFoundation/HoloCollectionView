@@ -68,7 +68,7 @@
 - (NSArray<NSIndexPath *> *)holo_removeRows:(NSArray<NSString *> *)tags {
     NSMutableArray *array = [NSMutableArray new];
     for (HoloCollectionSection *section in self.holo_sections) {
-        NSMutableArray<HoloCollectionRow *> *rows = [NSMutableArray arrayWithArray:section.rows];
+        NSMutableArray<HoloCollectionRow *> *rows = [NSMutableArray new];
         for (HoloCollectionRow *row in section.rows) {
             if (row.tag && [tags containsObject:row.tag]) {
                 NSInteger sectionIndex = [self.holo_sections indexOfObject:section];
