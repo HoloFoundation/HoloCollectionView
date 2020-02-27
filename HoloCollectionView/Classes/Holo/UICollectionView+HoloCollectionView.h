@@ -119,21 +119,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)holo_removeAllSectionsautoReload:(BOOL)autoReload;
 
 /**
- *  Remove a section according to the tag.
+ *  Remove the sections according to the tags.
  *
- *  @param tag The tag of section which you wish to remove.
+ *  @param tags The tags of sections which you wish to remove.
  */
-- (void)holo_removeSection:(NSString *)tag;
+- (void)holo_removeSections:(NSArray<NSString *> *)tags;
 
 /**
- *  Remove a section according to the tag.
+ *  Remove the sections according to the tags.
  *
  *  Refresh current UICollectionView automatically.
  *
- *  @param tag The tag of section which you wish to remove.
+ *  @param tags The tags of sections which you wish to remove.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_removeSection:(NSString *)tag autoReload:(BOOL)autoReload;
+- (void)holo_removeSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload;
 
 
 #pragma mark - row
@@ -287,21 +287,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)holo_removeAllRowsInSection:(NSString *)tag autoReload:(BOOL)autoReload;
 
 /**
- *  Remove a rows according to the tag in all sections.
+ *  Remove the rows according to the tags in all sections.
  *
- *  @param tag The tag of row which you wish to remove.
+ *  @param tags The tags of rows which you wish to remove.
  */
-- (void)holo_removeRow:(NSString *)tag;
+- (void)holo_removeRows:(NSArray<NSString *> *)tags;
 
 /**
- *  Remove a rows according to the tag in all sections.
+ *  Remove the rows according to the tags in all sections.
  *
  *  Refresh current UICollectionView automatically.
  *
- *  @param tag The tag of row which you wish to remove.
+ *  @param tags The tags of rows which you wish to remove.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_removeRow:(NSString *)tag autoReload:(BOOL)autoReload;
+- (void)holo_removeRows:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload;
 
 @end
 

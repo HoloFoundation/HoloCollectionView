@@ -187,19 +187,19 @@
     }
 }
 
-// holo_removeSection
-- (void)holo_removeSection:(NSString *)tag {
-    [self _holo_removeSection:tag autoReload:NO];
+// holo_removeSections
+- (void)holo_removeSections:(NSArray<NSString *> *)tags {
+    [self _holo_removeSections:tags autoReload:NO];
 }
 
-- (void)holo_removeSection:(NSString *)tag autoReload:(BOOL)autoReload {
-    [self _holo_removeSection:tag autoReload:autoReload];
+- (void)holo_removeSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
+    [self _holo_removeSections:tags autoReload:autoReload];
 }
 
-- (void)_holo_removeSection:(NSString *)tag autoReload:(BOOL)autoReload {
-    NSIndexSet *indexSet = [self.holo_proxy.holo_proxyData holo_removeSection:tag];
+- (void)_holo_removeSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
+    NSIndexSet *indexSet = [self.holo_proxy.holo_proxyData holo_removeSections:tags];
     if (indexSet.count <= 0) {
-        HoloLog(@"⚠️[HoloCollectionView] No found a section with the tag: %@.", tag);
+        HoloLog(@"⚠️[HoloCollectionView] No found any section with these tags: %@.", tags);
         return;
     }
     if (autoReload) [self deleteSections:indexSet];
@@ -382,18 +382,18 @@
 }
 
 // holo_removeRow
-- (void)holo_removeRow:(NSString *)tag {
-    [self _holo_removeRow:tag autoReload:NO];
+- (void)holo_removeRows:(NSArray<NSString *> *)tags {
+    [self _holo_removeRow:tags autoReload:NO];
 }
 
-- (void)holo_removeRow:(NSString *)tag autoReload:(BOOL)autoReload {
-    [self _holo_removeRow:tag autoReload:autoReload];
+- (void)holo_removeRows:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
+    [self _holo_removeRow:tags autoReload:autoReload];
 }
 
-- (void)_holo_removeRow:(NSString *)tag autoReload:(BOOL)autoReload {
-    NSArray *indexPaths = [self.holo_proxy.holo_proxyData holo_removeRow:tag];
+- (void)_holo_removeRow:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
+    NSArray *indexPaths = [self.holo_proxy.holo_proxyData holo_removeRows:tags];
     if (indexPaths.count <= 0) {
-        HoloLog(@"⚠️[HoloCollectionView] No found a row with the tag: %@.", tag);
+        HoloLog(@"⚠️[HoloCollectionView] No found any row with these tags: %@.", tags);
         return;
     }
     if (autoReload) [self deleteItemsAtIndexPaths:indexPaths];
