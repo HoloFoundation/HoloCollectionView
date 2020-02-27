@@ -365,17 +365,17 @@
     }
 }
 
-// holo_removeAllRowsInSection
-- (void)holo_removeAllRowsInSection:(NSString *)tag {
-    [self _holo_removeAllRowsInSection:tag autoReload:NO];
+// holo_removeAllRowsInSections
+- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags {
+    [self _holo_removeAllRowsInSections:tags autoReload:NO];
 }
 
-- (void)holo_removeAllRowsInSection:(NSString *)tag autoReload:(BOOL)autoReload {
-    [self _holo_removeAllRowsInSection:tag autoReload:autoReload];
+- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
+    [self _holo_removeAllRowsInSections:tags autoReload:autoReload];
 }
 
-- (void)_holo_removeAllRowsInSection:(NSString *)tag autoReload:(BOOL)autoReload {
-    NSArray *indexPaths = [self.holo_proxy.holo_proxyData holo_removeAllRowsInSection:tag];
+- (void)_holo_removeAllRowsInSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
+    NSArray *indexPaths = [self.holo_proxy.holo_proxyData holo_removeAllRowsInSections:tags];
     if (autoReload && indexPaths.count > 0) {
         [self deleteItemsAtIndexPaths:indexPaths];
     }

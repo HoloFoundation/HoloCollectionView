@@ -272,19 +272,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block autoReload:(BOOL)autoReload;
 
 /**
- *  Remove all rows in a section according to the tag.
+ *  Remove all rows in the sections according to the tags.
  *
- *  @param tag The tag of section which you wish to remove all rows.
+ *  @param tags The tags of sections which you wish to remove all rows.
  */
-- (void)holo_removeAllRowsInSection:(NSString *)tag;
+- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags;
 
 /**
- *  Remove all rows in a section according to the tag.
+ *  Remove all rows in the sections according to the tags.
  *
- *  @param tag The tag of section which you wish to remove all rows.
+ *  @param tags The tags of sections which you wish to remove all rows.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_removeAllRowsInSection:(NSString *)tag autoReload:(BOOL)autoReload;
+- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload;
 
 /**
  *  Remove the rows according to the tags in all sections.
