@@ -24,8 +24,8 @@
     if (block) block(maker);
     
     NSDictionary *dict = [maker install];
-    self.holo_proxy.proxyData.holo_sectionIndexTitles = dict[kHoloSectionIndexTitles];
-    self.holo_proxy.proxyData.holo_indexPathForIndexTitleHandler = dict[kHoloIndexPathForIndexTitleHandler];
+    self.holo_proxy.proxyData.sectionIndexTitles = dict[kHoloSectionIndexTitles];
+    self.holo_proxy.proxyData.indexPathForIndexTitleHandler = dict[kHoloIndexPathForIndexTitleHandler];
 }
 
 #pragma mark - section
@@ -51,7 +51,7 @@
     if (block) block(maker);
     
     // update headerFooterMap
-    NSMutableDictionary *headerFooterMap = self.holo_proxy.proxyData.holo_headerFooterMap.mutableCopy;
+    NSMutableDictionary *headerFooterMap = self.holo_proxy.proxyData.headerFooterMap.mutableCopy;
     NSMutableArray *array = [NSMutableArray new];
     for (NSDictionary *dict in [maker install]) {
         HoloCollectionSection *updateSection = dict[kHoloUpdateSection];
@@ -61,7 +61,7 @@
         if (updateSection.footer) [self _registerHeaderFooter:updateSection.footer forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withHeaderFooterMap:headerFooterMap];
         
         // update cell-cls map and register class
-        NSMutableDictionary *cellClsMap = self.holo_proxy.proxyData.holo_cellClsMap.mutableCopy;
+        NSMutableDictionary *cellClsMap = self.holo_proxy.proxyData.cellClsMap.mutableCopy;
         for (HoloCollectionRow *row in updateSection.rows) {
             Class class = NSClassFromString(row.cell);
             if (!class) {
@@ -71,12 +71,12 @@
                 cellClsMap[row.cell] = class;
             }
         }
-        self.holo_proxy.proxyData.holo_cellClsMap = cellClsMap;
+        self.holo_proxy.proxyData.cellClsMap = cellClsMap;
     }
-    self.holo_proxy.proxyData.holo_headerFooterMap = headerFooterMap;
+    self.holo_proxy.proxyData.headerFooterMap = headerFooterMap;
     
     // append sections
-    NSIndexSet *indexSet = [self.holo_proxy.proxyData holo_insertSections:array anIndex:index];
+    NSIndexSet *indexSet = [self.holo_proxy.proxyData insertSections:array anIndex:index];
     if (autoReload && indexSet.count > 0) {
         [self insertSections:indexSet];
     }
@@ -101,11 +101,11 @@
 }
 
 - (void)_holo_updateSections:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block isRemark:(BOOL)isRemark autoReload:(BOOL)autoReload {
-    HoloCollectionViewSectionMaker *maker = [[HoloCollectionViewSectionMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.holo_sections isRemark:isRemark];
+    HoloCollectionViewSectionMaker *maker = [[HoloCollectionViewSectionMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections isRemark:isRemark];
     if (block) block(maker);
     
     // update targetSection and headerFooterMap
-    NSMutableDictionary *headerFooterMap = self.holo_proxy.proxyData.holo_headerFooterMap.mutableCopy;
+    NSMutableDictionary *headerFooterMap = self.holo_proxy.proxyData.headerFooterMap.mutableCopy;
     NSMutableIndexSet *indexSet = [NSMutableIndexSet new];
     for (NSDictionary *dict in [maker install]) {
         HoloCollectionSection *targetSection = dict[kHoloTargetSection];
@@ -148,7 +148,7 @@
         targetSection.headerFooterConfigSEL = updateSection.headerFooterConfigSEL;
         targetSection.headerFooterSizeSEL = updateSection.headerFooterSizeSEL;
     }
-    self.holo_proxy.proxyData.holo_headerFooterMap = headerFooterMap;
+    self.holo_proxy.proxyData.headerFooterMap = headerFooterMap;
     
     // refresh view
     if (autoReload && indexSet.count > 0) {
@@ -181,7 +181,7 @@
 }
 
 - (void)_holo_removeAllSectionsautoReload:(BOOL)autoReload {
-    NSIndexSet *indexSet = [self.holo_proxy.proxyData holo_removeAllSection];
+    NSIndexSet *indexSet = [self.holo_proxy.proxyData removeAllSection];
     if (autoReload && indexSet.count > 0) {
         [self deleteSections:indexSet];
     }
@@ -197,7 +197,7 @@
 }
 
 - (void)_holo_removeSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
-    NSIndexSet *indexSet = [self.holo_proxy.proxyData holo_removeSections:tags];
+    NSIndexSet *indexSet = [self.holo_proxy.proxyData removeSections:tags];
     if (indexSet.count <= 0) {
         HoloLog(@"⚠️[HoloCollectionView] No found any section with these tags: %@.", tags);
         return;
@@ -245,7 +245,7 @@
     if (block) block(maker);
     
     // update cell-cls map and register class
-    NSMutableDictionary *cellClsMap = self.holo_proxy.proxyData.holo_cellClsMap.mutableCopy;
+    NSMutableDictionary *cellClsMap = self.holo_proxy.proxyData.cellClsMap.mutableCopy;
     NSMutableArray *rows = [NSMutableArray new];
     for (HoloCollectionRow *row in [maker install]) {
         Class class = NSClassFromString(row.cell);
@@ -259,19 +259,19 @@
             HoloLog(@"⚠️[HoloCollectionView] No found a cell class with the name: %@.", row.cell);
         }
     }
-    self.holo_proxy.proxyData.holo_cellClsMap = cellClsMap;
+    self.holo_proxy.proxyData.cellClsMap = cellClsMap;
     
     // append rows and refresh view
     BOOL isNewOne = NO;
-    HoloCollectionSection *targetSection = [self.holo_proxy.proxyData holo_sectionWithTag:tag];
+    HoloCollectionSection *targetSection = [self.holo_proxy.proxyData sectionWithTag:tag];
     if (!targetSection) {
         targetSection = [HoloCollectionSection new];
         targetSection.tag = tag;
-        [self.holo_proxy.proxyData holo_insertSections:@[targetSection] anIndex:NSIntegerMax];
+        [self.holo_proxy.proxyData insertSections:@[targetSection] anIndex:NSIntegerMax];
         isNewOne = YES;
     }
     NSIndexSet *indexSet = [targetSection holo_insertRows:rows atIndex:index];
-    NSInteger sectionIndex = [self.holo_proxy.proxyData.holo_sections indexOfObject:targetSection];
+    NSInteger sectionIndex = [self.holo_proxy.proxyData.sections indexOfObject:targetSection];
     if (autoReload && isNewOne) {
         [self insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
     } else if (autoReload) {
@@ -302,11 +302,11 @@
 }
 
 - (void)_holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block isRemark:(BOOL)isRemark autoReload:(BOOL)autoReload {
-    HoloCollectionViewUpdateRowMaker *maker = [[HoloCollectionViewUpdateRowMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.holo_sections isRemark:isRemark];
+    HoloCollectionViewUpdateRowMaker *maker = [[HoloCollectionViewUpdateRowMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections isRemark:isRemark];
     if (block) block(maker);
     
     // update cell-cls map and register class
-    NSMutableDictionary *cellClsMap = self.holo_proxy.proxyData.holo_cellClsMap.mutableCopy;
+    NSMutableDictionary *cellClsMap = self.holo_proxy.proxyData.cellClsMap.mutableCopy;
     NSMutableArray *indexPaths = [NSMutableArray new];
     for (NSDictionary *dict in [maker install]) {
         HoloCollectionRow *targetRow = dict[kHoloTargetRow];
@@ -357,7 +357,7 @@
         targetRow.configSEL = updateRow.configSEL;
         targetRow.sizeSEL = updateRow.sizeSEL;
     }
-    self.holo_proxy.proxyData.holo_cellClsMap = cellClsMap;
+    self.holo_proxy.proxyData.cellClsMap = cellClsMap;
     
     // refresh view
     if (autoReload && indexPaths.count > 0) {
@@ -375,7 +375,7 @@
 }
 
 - (void)_holo_removeAllRowsInSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
-    NSArray *indexPaths = [self.holo_proxy.proxyData holo_removeAllRowsInSections:tags];
+    NSArray *indexPaths = [self.holo_proxy.proxyData removeAllRowsInSections:tags];
     if (autoReload && indexPaths.count > 0) {
         [self deleteItemsAtIndexPaths:indexPaths];
     }
@@ -391,7 +391,7 @@
 }
 
 - (void)_holo_removeRow:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
-    NSArray *indexPaths = [self.holo_proxy.proxyData holo_removeRows:tags];
+    NSArray *indexPaths = [self.holo_proxy.proxyData removeRows:tags];
     if (indexPaths.count <= 0) {
         HoloLog(@"⚠️[HoloCollectionView] No found any row with these tags: %@.", tags);
         return;

@@ -12,27 +12,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HoloCollectionViewProxyData : NSObject
 
-@property (nonatomic, copy) NSArray<HoloCollectionSection *> *holo_sections;
+@property (nonatomic, copy) NSArray<HoloCollectionSection *> *sections;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *holo_cellClsMap;
+@property (nonatomic, copy) NSDictionary<NSString *, Class> *cellClsMap;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *holo_headerFooterMap;
+@property (nonatomic, copy) NSDictionary<NSString *, Class> *headerFooterMap;
 
-@property (nonatomic, copy) NSArray<NSString *> *holo_sectionIndexTitles;
+@property (nonatomic, copy) NSArray<NSString *> *sectionIndexTitles;
 
-@property (nonatomic, copy) NSIndexPath *(^holo_indexPathForIndexTitleHandler)(NSString *title, NSInteger index);
+@property (nonatomic, copy) NSIndexPath *(^indexPathForIndexTitleHandler)(NSString *title, NSInteger index);
 
-- (NSIndexSet *)holo_insertSections:(NSArray<HoloCollectionSection *> *)sections anIndex:(NSInteger)index;
+- (NSIndexSet *)insertSections:(NSArray<HoloCollectionSection *> *)sections anIndex:(NSInteger)index;
 
-- (NSIndexSet *)holo_removeAllSection;
+- (NSIndexSet *)removeAllSection;
 
-- (NSIndexSet *)holo_removeSections:(NSArray<NSString *> *)tags;
+- (NSIndexSet *)removeSections:(NSArray<NSString *> *)tags;
 
-- (HoloCollectionSection *)holo_sectionWithTag:(NSString * _Nullable)tag;
+- (HoloCollectionSection *)sectionWithTag:(NSString * _Nullable)tag;
 
-- (NSArray<NSIndexPath *> *)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags;
+- (NSArray<NSIndexPath *> *)removeAllRowsInSections:(NSArray<NSString *> *)tags;
 
-- (NSArray<NSIndexPath *> *)holo_removeRows:(NSArray<NSString *> *)tags;
+- (NSArray<NSIndexPath *> *)removeRows:(NSArray<NSString *> *)tags;
 
 @end
 

@@ -128,7 +128,7 @@
         return [self.dataSource indexTitlesForCollectionView:collectionView];
     }
     
-    return self.proxyData.holo_sectionIndexTitles;
+    return self.proxyData.sectionIndexTitles;
 }
 
 - (NSIndexPath *)collectionView:(UICollectionView *)collectionView indexPathForIndexTitle:(NSString *)title atIndex:(NSInteger)index API_AVAILABLE(tvos(10.2)) {
@@ -136,8 +136,8 @@
         return [self.dataSource collectionView:collectionView indexPathForIndexTitle:title atIndex:index];
     }
     
-    if (self.proxyData.holo_indexPathForIndexTitleHandler) {
-        return self.proxyData.holo_indexPathForIndexTitleHandler(title, index);
+    if (self.proxyData.indexPathForIndexTitleHandler) {
+        return self.proxyData.indexPathForIndexTitleHandler(title, index);
     }
     return [NSIndexPath indexPathWithIndex:index];
 }
@@ -402,11 +402,11 @@
 }
 
 - (NSArray<HoloCollectionSection *> *)holoSections {
-    return self.proxyData.holo_sections;
+    return self.proxyData.sections;
 }
 
 - (NSDictionary<NSString *, Class> *)holoCellClsMap {
-    return self.proxyData.holo_cellClsMap;
+    return self.proxyData.cellClsMap;
 }
 
 @end
