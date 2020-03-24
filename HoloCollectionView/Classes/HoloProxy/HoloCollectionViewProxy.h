@@ -15,13 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
 
-@property (nonatomic, strong) HoloCollectionViewProxyData *holo_proxyData;
+@property (nonatomic, strong) HoloCollectionViewProxyData *proxyData;
 
-@property (nonatomic, weak) id<UIScrollViewDelegate> holo_scrollDelegate;
+@property (nonatomic, weak) id<UIScrollViewDelegate> scrollDelegate;
 
-@property (nonatomic, weak) id<HoloCollectionViewDataSource> holo_dataSource;
+@property (nonatomic, weak) id<HoloCollectionViewDataSource> dataSource;
 
-@property (nonatomic, weak) id<HoloCollectionViewDelegateFlowLayout> holo_delegate;
+@property (nonatomic, weak) id<HoloCollectionViewDelegateFlowLayout> delegate;
 
 @end
 

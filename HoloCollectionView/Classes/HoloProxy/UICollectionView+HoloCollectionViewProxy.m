@@ -30,9 +30,9 @@ static char kHoloCollectionViewProxyKey;
             [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerFooter];
             [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:headerFooter];
             
-            NSMutableDictionary *headerFooterMap = collectionViewProxy.holo_proxyData.holo_headerFooterMap.mutableCopy;
+            NSMutableDictionary *headerFooterMap = collectionViewProxy.proxyData.holo_headerFooterMap.mutableCopy;
             headerFooterMap[headerFooter] = headerFooterCls;
-            collectionViewProxy.holo_proxyData.holo_headerFooterMap = headerFooterMap;
+            collectionViewProxy.proxyData.holo_headerFooterMap = headerFooterMap;
         }
     }
     return collectionViewProxy;

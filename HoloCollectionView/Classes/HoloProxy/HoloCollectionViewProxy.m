@@ -32,16 +32,16 @@
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    if ([self.holo_dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)]) {
-        return [self.holo_dataSource numberOfSectionsInCollectionView:collectionView];
+    if ([self.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)]) {
+        return [self.dataSource numberOfSectionsInCollectionView:collectionView];
     }
     
     return self.holoSections.count;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if ([self.holo_dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)]) {
-        return [self.holo_dataSource collectionView:collectionView numberOfItemsInSection:section];
+    if ([self.dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)]) {
+        return [self.dataSource collectionView:collectionView numberOfItemsInSection:section];
     }
     if (section >= self.holoSections.count) return 0;
     
@@ -50,8 +50,8 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)]) {
-        return [self.holo_dataSource collectionView:collectionView cellForItemAtIndexPath:indexPath];
+    if ([self.dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)]) {
+        return [self.dataSource collectionView:collectionView cellForItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -70,8 +70,8 @@
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)]) {
-        return [self.holo_dataSource collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
+    if ([self.dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)]) {
+        return [self.dataSource collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -96,8 +96,8 @@
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath NS_AVAILABLE_IOS(9_0) {
-    if ([self.holo_dataSource respondsToSelector:@selector(collectionView:canMoveItemAtIndexPath:)]) {
-        return [self.holo_dataSource collectionView:collectionView canMoveItemAtIndexPath:indexPath];
+    if ([self.dataSource respondsToSelector:@selector(collectionView:canMoveItemAtIndexPath:)]) {
+        return [self.dataSource collectionView:collectionView canMoveItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -106,8 +106,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath*)destinationIndexPath NS_AVAILABLE_IOS(9_0) {
-    if ([self.holo_dataSource respondsToSelector:@selector(collectionView:moveItemAtIndexPath:toIndexPath:)]) {
-        [self.holo_dataSource collectionView:collectionView moveItemAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+    if ([self.dataSource respondsToSelector:@selector(collectionView:moveItemAtIndexPath:toIndexPath:)]) {
+        [self.dataSource collectionView:collectionView moveItemAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
     }
     
     HoloCollectionSection *sourceSection = self.holoSections[sourceIndexPath.section];
@@ -124,20 +124,20 @@
 }
 
 - (NSArray<NSString *> *)indexTitlesForCollectionView:(UICollectionView *)collectionView {
-    if ([self.holo_dataSource respondsToSelector:@selector(indexTitlesForCollectionView:)]) {
-        return [self.holo_dataSource indexTitlesForCollectionView:collectionView];
+    if ([self.dataSource respondsToSelector:@selector(indexTitlesForCollectionView:)]) {
+        return [self.dataSource indexTitlesForCollectionView:collectionView];
     }
     
-    return self.holo_proxyData.holo_sectionIndexTitles;
+    return self.proxyData.holo_sectionIndexTitles;
 }
 
 - (NSIndexPath *)collectionView:(UICollectionView *)collectionView indexPathForIndexTitle:(NSString *)title atIndex:(NSInteger)index API_AVAILABLE(tvos(10.2)) {
-    if ([self.holo_dataSource respondsToSelector:@selector(collectionView:indexPathForIndexTitle:atIndex:)]) {
-        return [self.holo_dataSource collectionView:collectionView indexPathForIndexTitle:title atIndex:index];
+    if ([self.dataSource respondsToSelector:@selector(collectionView:indexPathForIndexTitle:atIndex:)]) {
+        return [self.dataSource collectionView:collectionView indexPathForIndexTitle:title atIndex:index];
     }
     
-    if (self.holo_proxyData.holo_indexPathForIndexTitleHandler) {
-        return self.holo_proxyData.holo_indexPathForIndexTitleHandler(title, index);
+    if (self.proxyData.holo_indexPathForIndexTitleHandler) {
+        return self.proxyData.holo_indexPathForIndexTitleHandler(title, index);
     }
     return [NSIndexPath indexPathWithIndex:index];
 }
@@ -145,8 +145,8 @@
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)]) {
-        return [self.holo_delegate collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)]) {
+        return [self.delegate collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -164,8 +164,8 @@
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
-        return [self.holo_delegate collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
+        return [self.delegate collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[section];
@@ -181,8 +181,8 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:layout:minimumLineSpacingForSectionAtIndex:)]) {
-        return [self.holo_delegate collectionView:collectionView layout:collectionViewLayout minimumLineSpacingForSectionAtIndex:section];
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:minimumLineSpacingForSectionAtIndex:)]) {
+        return [self.delegate collectionView:collectionView layout:collectionViewLayout minimumLineSpacingForSectionAtIndex:section];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[section];
@@ -195,8 +195,8 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:)]) {
-        return [self.holo_delegate collectionView:collectionView layout:collectionViewLayout minimumInteritemSpacingForSectionAtIndex:section];
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:)]) {
+        return [self.delegate collectionView:collectionView layout:collectionViewLayout minimumInteritemSpacingForSectionAtIndex:section];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[section];
@@ -209,8 +209,8 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]) {
-        return [self.holo_delegate collectionView:collectionView layout:collectionViewLayout referenceSizeForHeaderInSection:section];
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]) {
+        return [self.delegate collectionView:collectionView layout:collectionViewLayout referenceSizeForHeaderInSection:section];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[section];
@@ -228,8 +228,8 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]) {
-        return [self.holo_delegate collectionView:collectionView layout:collectionViewLayout referenceSizeForFooterInSection:section];
+    if ([self.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]) {
+        return [self.delegate collectionView:collectionView layout:collectionViewLayout referenceSizeForFooterInSection:section];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[section];
@@ -262,8 +262,8 @@
 
 #pragma mark - UICollectionViewDelegate
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:shouldHighlightItemAtIndexPath:)]) {
-        return [self.holo_delegate collectionView:collectionView shouldHighlightItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:shouldHighlightItemAtIndexPath:)]) {
+        return [self.delegate collectionView:collectionView shouldHighlightItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -272,8 +272,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:didHighlightItemAtIndexPath:)]) {
-        [self.holo_delegate collectionView:collectionView didHighlightItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:didHighlightItemAtIndexPath:)]) {
+        [self.delegate collectionView:collectionView didHighlightItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -282,8 +282,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:didUnhighlightItemAtIndexPath:)]) {
-        [self.holo_delegate collectionView:collectionView didUnhighlightItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:didUnhighlightItemAtIndexPath:)]) {
+        [self.delegate collectionView:collectionView didUnhighlightItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -292,8 +292,8 @@
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)]) {
-        return [self.holo_delegate collectionView:collectionView shouldSelectItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)]) {
+        return [self.delegate collectionView:collectionView shouldSelectItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -302,8 +302,8 @@
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)]) {
-        return [self.holo_delegate collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)]) {
+        return [self.delegate collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -312,8 +312,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)]) {
-        [self.holo_delegate collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)]) {
+        [self.delegate collectionView:collectionView didSelectItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -322,8 +322,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)]) {
-        [self.holo_delegate collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)]) {
+        [self.delegate collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -332,8 +332,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:willDisplayCell:forItemAtIndexPath:)]) {
-        [self.holo_delegate collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:willDisplayCell:forItemAtIndexPath:)]) {
+        [self.delegate collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -342,8 +342,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)]) {
-        [self.holo_delegate collectionView:collectionView didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)]) {
+        [self.delegate collectionView:collectionView didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
     }
     
     if (indexPath.section >= self.holoSections.count) return;
@@ -354,8 +354,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:)]) {
-        [self.holo_delegate collectionView:collectionView willDisplaySupplementaryView:view forElementKind:elementKind atIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:)]) {
+        [self.delegate collectionView:collectionView willDisplaySupplementaryView:view forElementKind:elementKind atIndexPath:indexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -367,8 +367,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:)]) {
-        [self.holo_delegate collectionView:collectionView didEndDisplayingSupplementaryView:view forElementOfKind:elementKind atIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:)]) {
+        [self.delegate collectionView:collectionView didEndDisplayingSupplementaryView:view forElementOfKind:elementKind atIndexPath:indexPath];
     }
     
     if (indexPath.section >= self.holoSections.count) return;
@@ -381,8 +381,8 @@
 }
 
 - (NSIndexPath *)collectionView:(UICollectionView *)collectionView targetIndexPathForMoveFromItemAtIndexPath:(NSIndexPath *)originalIndexPath toProposedIndexPath:(NSIndexPath *)proposedIndexPath NS_AVAILABLE_IOS(9_0) {
-    if ([self.holo_delegate respondsToSelector:@selector(collectionView:targetIndexPathForMoveFromItemAtIndexPath:toProposedIndexPath:)]) {
-        return [self.holo_delegate collectionView:collectionView targetIndexPathForMoveFromItemAtIndexPath:originalIndexPath toProposedIndexPath:proposedIndexPath];
+    if ([self.delegate respondsToSelector:@selector(collectionView:targetIndexPathForMoveFromItemAtIndexPath:toProposedIndexPath:)]) {
+        return [self.delegate collectionView:collectionView targetIndexPathForMoveFromItemAtIndexPath:originalIndexPath toProposedIndexPath:proposedIndexPath];
     }
     
     HoloCollectionSection *holoSection = self.holoSections[originalIndexPath.section];
@@ -394,19 +394,19 @@
 }
 
 #pragma mark - getter
-- (HoloCollectionViewProxyData *)holo_proxyData {
-    if (!_holo_proxyData) {
-        _holo_proxyData = [HoloCollectionViewProxyData new];
+- (HoloCollectionViewProxyData *)proxyData {
+    if (!_proxyData) {
+        _proxyData = [HoloCollectionViewProxyData new];
     }
-    return _holo_proxyData;
+    return _proxyData;
 }
 
 - (NSArray<HoloCollectionSection *> *)holoSections {
-    return self.holo_proxyData.holo_sections;
+    return self.proxyData.holo_sections;
 }
 
 - (NSDictionary<NSString *, Class> *)holoCellClsMap {
-    return self.holo_proxyData.holo_cellClsMap;
+    return self.proxyData.holo_cellClsMap;
 }
 
 @end
