@@ -116,8 +116,8 @@
         sourceRow.moveHandler(sourceIndexPath, destinationIndexPath, ^(BOOL actionPerformed) {
             if (actionPerformed) {
                 HoloCollectionSection *destinationSection = self.holoSections[destinationIndexPath.section];
-                [sourceSection holo_removeRow:sourceRow];
-                [destinationSection holo_insertRows:@[sourceRow] atIndex:destinationIndexPath.row];
+                [sourceSection removeRow:sourceRow];
+                [destinationSection insertRows:@[sourceRow] atIndex:destinationIndexPath.row];
             }
         });
     }

@@ -53,11 +53,11 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @property (nonatomic, copy) void (^didEndDisplayingFooterHandler)(UIView *footer, id model);
 
-- (NSIndexSet *)holo_insertRows:(NSArray<HoloCollectionRow *> *)rows atIndex:(NSInteger)index;
+- (NSIndexSet *)insertRows:(NSArray<HoloCollectionRow *> *)rows atIndex:(NSInteger)index;
 
-- (void)holo_removeRow:(HoloCollectionRow *)row;
+- (void)removeRow:(HoloCollectionRow *)row;
 
-- (void)holo_removeAllRows;
+- (void)removeAllRows;
 
 @end
 
