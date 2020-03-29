@@ -29,13 +29,12 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 [self.view addSubview:collectionView];
 
 [collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    // one cell
-    make.row(OneCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
+    // make a cell
+    make.row(ExampleCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
     
-    // two cell
+    // make a list
     for (NSObject *obj in NSArray.new) {
-        make.row(TwoCollectionViewCell.class).model(obj)
-        .didSelectHandler(^(id  _Nullable model) {
+        make.row(ExampleCollectionViewCell.class).model(obj).didSelectHandler(^(id  _Nullable model) {
             NSLog(@"did select row : %@", model);
         });
     }
