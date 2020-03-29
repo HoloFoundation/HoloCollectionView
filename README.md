@@ -30,16 +30,15 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 
 [collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
     // one cell
-    make.row(OneCollectionViewCell.class).model(@{@"key":@"value1"});
-    make.row(OneCollectionViewCell.class).model(@{@"key":@"value1"});
-
+    make.row(OneCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
+    
     // two cell
-    make.row(TwoCollectionViewCell.class).size(CGSizeMake(100, 200));
-
-    // three cell
-    make.row(ThreeCollectionViewCell.class).didSelectHandler(^(id  _Nonnull model) {
-        NSLog(@"did select row, model: %@", model);
-    });
+    for (NSObject *obj in NSArray.new) {
+        make.row(TwoCollectionViewCell.class).model(obj)
+        .didSelectHandler(^(id  _Nullable model) {
+            NSLog(@"did select row : %@", model);
+        });
+    }
 }];
 
 [self.collectionView reloadData];
