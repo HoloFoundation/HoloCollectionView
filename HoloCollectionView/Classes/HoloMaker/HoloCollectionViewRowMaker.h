@@ -32,17 +32,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL canMove;
 
-@property (nonatomic, copy) void (^didSelectHandler)(id model);
+@property (nonatomic, copy) void (^didSelectHandler)(id _Nullable model);
 
-@property (nonatomic, copy) void (^didDeselectHandler)(id model);
+@property (nonatomic, copy) void (^didDeselectHandler)(id _Nullable model);
 
-@property (nonatomic, copy) void (^willDisplayHandler)(UICollectionViewCell *cell, id model);
+@property (nonatomic, copy) void (^willDisplayHandler)(UICollectionViewCell *cell, id _Nullable model);
 
-@property (nonatomic, copy) void (^didEndDisplayingHandler)(UICollectionViewCell *cell, id model);
+@property (nonatomic, copy) void (^didEndDisplayingHandler)(UICollectionViewCell *cell, id _Nullable model);
 
-@property (nonatomic, copy) void (^didHighlightHandler)(id model);
+@property (nonatomic, copy) void (^didHighlightHandler)(id _Nullable model);
 
-@property (nonatomic, copy) void (^didUnHighlightHandler)(id model);
+@property (nonatomic, copy) void (^didUnHighlightHandler)(id _Nullable model);
 
 @property (nonatomic, copy) NSIndexPath *(^targetMoveHandler)(NSIndexPath *atIndexPath, NSIndexPath *toIndexPath);
 
@@ -77,17 +77,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^canMove)(BOOL canMove);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didSelectHandler)(void(^)(id model));
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didSelectHandler)(void(^)(id _Nullable model));
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didDeselectHandler)(void(^)(id model));
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didDeselectHandler)(void(^)(id _Nullable model));
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^willDisplayHandler)(void(^)(UICollectionViewCell *cell, id model));
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^willDisplayHandler)(void(^)(UICollectionViewCell *cell, id _Nullable model));
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didEndDisplayingHandler)(void(^)(UICollectionViewCell *cell, id model));
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didEndDisplayingHandler)(void(^)(UICollectionViewCell *cell, id _Nullable model));
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didHighlightHandler)(void(^)(id model));
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didHighlightHandler)(void(^)(id _Nullable model));
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didUnHighlightHandler)(void(^)(id model));
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didUnHighlightHandler)(void(^)(id _Nullable model));
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^targetMoveHandler)(NSIndexPath *(^targetIndexPath)(NSIndexPath *atIndexPath, NSIndexPath *toIndexPath));
 
