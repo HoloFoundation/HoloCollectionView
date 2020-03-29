@@ -64,8 +64,6 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionSectionMaker : NSObject
 
-@property (nonatomic, strong, readonly) HoloCollectionSection *section;
-
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^inset)(UIEdgeInsets inset);
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^minimumLineSpacing)(CGFloat minimumLineSpacing);

@@ -58,6 +58,12 @@
 @end
 
 ////////////////////////////////////////////////////////////
+@interface HoloCollectionSectionMaker ()
+
+@property (nonatomic, strong) HoloCollectionSection *section;
+
+@end
+
 @implementation HoloCollectionSectionMaker
 
 - (instancetype)init {

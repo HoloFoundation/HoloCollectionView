@@ -31,6 +31,12 @@
 @end
 
 ////////////////////////////////////////////////////////////
+@interface HoloCollectionRowMaker ()
+
+@property (nonatomic, strong) HoloCollectionRow *collectionRow;
+
+@end
+
 @implementation HoloCollectionRowMaker
 
 - (instancetype)init {
@@ -176,6 +182,11 @@
         self.collectionRow.moveHandler = obj;
         return self;
     };
+}
+
+
+- (HoloCollectionRow *)fetchCollectionRow {
+    return self.collectionRow;
 }
 
 @end
