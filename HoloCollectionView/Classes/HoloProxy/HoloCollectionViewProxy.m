@@ -108,6 +108,7 @@
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath*)destinationIndexPath NS_AVAILABLE_IOS(9_0) {
     if ([self.dataSource respondsToSelector:@selector(collectionView:moveItemAtIndexPath:toIndexPath:)]) {
         [self.dataSource collectionView:collectionView moveItemAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+        return;
     }
     
     HoloCollectionSection *sourceSection = self.holoSections[sourceIndexPath.section];
@@ -274,6 +275,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(collectionView:didHighlightItemAtIndexPath:)]) {
         [self.delegate collectionView:collectionView didHighlightItemAtIndexPath:indexPath];
+        return;
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -284,6 +286,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(collectionView:didUnhighlightItemAtIndexPath:)]) {
         [self.delegate collectionView:collectionView didUnhighlightItemAtIndexPath:indexPath];
+        return;
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -314,6 +317,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)]) {
         [self.delegate collectionView:collectionView didSelectItemAtIndexPath:indexPath];
+        return;
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -324,6 +328,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)]) {
         [self.delegate collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
+        return;
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -334,6 +339,7 @@
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(collectionView:willDisplayCell:forItemAtIndexPath:)]) {
         [self.delegate collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+        return;
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -344,6 +350,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)]) {
         [self.delegate collectionView:collectionView didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
+        return;
     }
     
     if (indexPath.section >= self.holoSections.count) return;
@@ -356,6 +363,7 @@
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:)]) {
         [self.delegate collectionView:collectionView willDisplaySupplementaryView:view forElementKind:elementKind atIndexPath:indexPath];
+        return;
     }
     
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
@@ -369,6 +377,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:)]) {
         [self.delegate collectionView:collectionView didEndDisplayingSupplementaryView:view forElementOfKind:elementKind atIndexPath:indexPath];
+        return;
     }
     
     if (indexPath.section >= self.holoSections.count) return;
