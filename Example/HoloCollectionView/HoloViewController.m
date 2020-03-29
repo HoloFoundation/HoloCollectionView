@@ -48,8 +48,8 @@
         for (NSDictionary *dict in [self _modelsFromOtherWay]) {
             make.row(HoloExampleCollectionViewCell.class)
             .model(dict)
-            .didSelectHandler(^(id  _Nonnull model) {
-                NSLog(@"did select model : %@", model);
+            .didSelectHandler(^(id  _Nullable model) {
+                NSLog(@"did select row : %@", model);
             });
         }
     }];
