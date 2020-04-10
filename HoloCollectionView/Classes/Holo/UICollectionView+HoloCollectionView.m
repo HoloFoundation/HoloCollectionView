@@ -173,14 +173,19 @@
 
 // holo_removeAllSections
 - (void)holo_removeAllSections {
-    [self _holo_removeAllSectionsautoReload:NO];
+    [self _holo_removeAllSectionsAutoReload:NO];
 }
 
+- (void)holo_removeAllSectionsAutoReload:(BOOL)autoReload {
+    [self _holo_removeAllSectionsAutoReload:autoReload];
+}
+
+/* Deprecated Method, will be deleted soon. */
 - (void)holo_removeAllSectionsautoReload:(BOOL)autoReload {
-    [self _holo_removeAllSectionsautoReload:autoReload];
+    [self _holo_removeAllSectionsAutoReload:autoReload];
 }
 
-- (void)_holo_removeAllSectionsautoReload:(BOOL)autoReload {
+- (void)_holo_removeAllSectionsAutoReload:(BOOL)autoReload {
     NSIndexSet *indexSet = [self.holo_proxy.proxyData removeAllSection];
     if (autoReload && indexSet.count > 0) {
         [self deleteSections:indexSet];

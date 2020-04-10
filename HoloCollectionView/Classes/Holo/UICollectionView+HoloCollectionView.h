@@ -116,7 +116,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_removeAllSectionsautoReload:(BOOL)autoReload;
+- (void)holo_removeAllSectionsAutoReload:(BOOL)autoReload;
+- (void)holo_removeAllSectionsautoReload:(BOOL)autoReload DEPRECATED_MSG_ATTRIBUTE("Please use `holo_removeAllSectionsAutoReload:` api instead. This method will be deleted soon.");
 
 /**
  *  Remove the sections according to the tags.
