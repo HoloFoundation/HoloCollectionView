@@ -402,6 +402,106 @@
     return proposedIndexPath;
 }
 
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewDidScroll:)]) {
+        [self.scrollDelegate scrollViewDidScroll:scrollView];
+        return;
+    }
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewDidZoom:)]) {
+        [self.scrollDelegate scrollViewDidZoom:scrollView];
+        return;
+    }
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewWillBeginDragging:)]) {
+        [self.scrollDelegate scrollViewWillBeginDragging:scrollView];
+        return;
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)]) {
+        [self.scrollDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+        return;
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)]) {
+        [self.scrollDelegate scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+        return;
+    }
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewWillBeginDecelerating:)]) {
+        [self.scrollDelegate scrollViewWillBeginDecelerating:scrollView];
+        return;
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) {
+        [self.scrollDelegate scrollViewDidEndDecelerating:scrollView];
+        return;
+    }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewDidEndScrollingAnimation:)]) {
+        [self.scrollDelegate scrollViewDidEndScrollingAnimation:scrollView];
+        return;
+    }
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    if ([self.scrollDelegate respondsToSelector:@selector(viewForZoomingInScrollView:)]) {
+        return [self.scrollDelegate viewForZoomingInScrollView:scrollView];
+    }
+    return nil;
+}
+
+- (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewWillBeginZooming:withView:)]) {
+        [self.scrollDelegate scrollViewWillBeginZooming:scrollView withView:view];
+        return;
+    }
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewDidEndZooming:withView:atScale:)]) {
+        [self.scrollDelegate scrollViewDidEndZooming:scrollView withView:view atScale:scale];
+        return;
+    }
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewShouldScrollToTop:)]) {
+        return [self.scrollDelegate scrollViewShouldScrollToTop:scrollView];
+    }
+    return YES;
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewDidScrollToTop:)]) {
+        [self.scrollDelegate scrollViewDidScrollToTop:scrollView];
+        return;
+    }
+}
+
+- (void)scrollViewDidChangeAdjustedContentInset:(UIScrollView *)scrollView API_AVAILABLE(ios(11.0), tvos(11.0)) {
+    if ([self.scrollDelegate respondsToSelector:@selector(scrollViewDidChangeAdjustedContentInset:)]) {
+        [self.scrollDelegate scrollViewDidChangeAdjustedContentInset:scrollView];
+        return;
+    }
+}
+
+
 #pragma mark - getter
 - (HoloCollectionViewProxyData *)proxyData {
     if (!_proxyData) {
