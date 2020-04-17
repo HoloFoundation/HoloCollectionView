@@ -6,27 +6,17 @@
 //
 
 #import <UIKit/UIKit.h>
-@class HoloCollectionViewProxyMaker, HoloCollectionViewMaker, HoloCollectionViewRowMaker, HoloCollectionViewSectionMaker, HoloCollectionViewUpdateRowMaker;
+@class HoloCollectionViewMaker, HoloCollectionViewRowMaker, HoloCollectionViewSectionMaker, HoloCollectionViewUpdateRowMaker;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UICollectionView (HoloCollectionView)
 
-#pragma mark - make TableViewProxy
+#pragma mark - collectionView
 /**
- *  Creates a HoloCollectionViewProxyMaker in the callee for current UICollectionView.
- *  If you set your own delegate, dataSource or scrollDelegate, these methods will replace holo proxy's methods.
+ *  Creates a HoloCollectionViewMaker in the callee for current UICollectionView.
  *
- *  @param block Scope within which you can set your own delegate, dataSource or scrollDelegate which you wish to apply to current UICollectionView.
- */
-- (void)holo_makeCollectionViewProxy:(void(NS_NOESCAPE ^)(HoloCollectionViewProxyMaker *make))block;
-
-
-#pragma mark - make CollectionView
-/**
- *  Creates a HoloCollectionViewConfiger in the callee for current UICollectionView.
- *
- *  @param block Scope within which you can configure the section index titles and section for section index title Handler which you wish to apply to current UICollectionView.
+ *  @param block Scope within which you can configure the current UICollectionView.
  */
 - (void)holo_makeCollectionView:(void(NS_NOESCAPE ^)(HoloCollectionViewMaker *make))block;
 

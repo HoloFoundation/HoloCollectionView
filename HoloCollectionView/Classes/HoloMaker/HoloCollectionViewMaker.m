@@ -7,36 +7,65 @@
 
 #import "HoloCollectionViewMaker.h"
 
+////////////////////////////////////////////////////////////
+@implementation HoloCollectionViewModel
+
+@end
+
+////////////////////////////////////////////////////////////
 @interface HoloCollectionViewMaker ()
 
-@property (nonatomic, copy) NSArray *sectionIndexTitlesArray;
-
-@property (nonatomic, copy) NSIndexPath *(^indexPathForIndexTitleBlock)(NSString *title, NSInteger index);
+@property (nonatomic, strong) HoloCollectionViewModel *collectionViewModel;
 
 @end
 
 @implementation HoloCollectionViewMaker
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _collectionViewModel = [HoloCollectionViewModel new];
+    }
+    return self;
+}
+
 - (HoloCollectionViewMaker * (^)(NSArray<NSString *> *))sectionIndexTitles {
     return ^id(id obj) {
-        self.sectionIndexTitlesArray = obj;
+        self.collectionViewModel.indexTitles = obj;
         return self;
     };
 }
 
 - (HoloCollectionViewMaker *(^)(NSIndexPath *(^)(NSString *, NSInteger)))indexPathForIndexTitleHandler {
     return ^id(id obj) {
-        self.indexPathForIndexTitleBlock = obj;
+        self.collectionViewModel.indexTitlesHandler = obj;
         return self;
     };
 }
 
-- (NSDictionary *)install {
-    NSMutableDictionary *dict = [NSMutableDictionary new];
-    
-    dict[kHoloSectionIndexTitles] = self.sectionIndexTitlesArray;
-    dict[kHoloIndexPathForIndexTitleHandler] = self.indexPathForIndexTitleBlock;
-    return [dict copy];
+- (HoloCollectionViewMaker * (^)(id<HoloCollectionViewDelegateFlowLayout>))delegate {
+    return ^id(id obj) {
+        self.collectionViewModel.delegate = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionViewMaker * (^)(id<HoloCollectionViewDataSource>))dataSource {
+    return ^id(id obj) {
+        self.collectionViewModel.dataSource = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionViewMaker * (^)(id<UIScrollViewDelegate>))scrollDelegate {
+    return ^id(id obj) {
+        self.collectionViewModel.scrollDelegate = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionViewModel *)install {
+    return self.collectionViewModel;
 }
 
 @end

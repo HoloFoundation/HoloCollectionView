@@ -8,7 +8,6 @@
 #import "UICollectionView+HoloCollectionView.h"
 #import <objc/runtime.h>
 #import "UICollectionView+HoloCollectionViewProxy.h"
-#import "HoloCollectionViewProxyMaker.h"
 #import "HoloCollectionViewProxy.h"
 #import "HoloCollectionViewMaker.h"
 #import "HoloCollectionViewSectionMaker.h"
@@ -19,26 +18,18 @@
 
 @implementation UICollectionView (HoloCollectionView)
 
-#pragma mark - make CollectionViewProxy
-- (void)holo_makeCollectionViewProxy:(void (^ NS_NOESCAPE)(HoloCollectionViewProxyMaker *))block {
-    HoloCollectionViewProxyMaker *maker = [HoloCollectionViewProxyMaker new];
-    if (block) block(maker);
-    
-    HoloCollectionViewProxyModel *proxyModel = [maker install];
-    if (proxyModel.delegate) self.holo_proxy.delegate = proxyModel.delegate;
-    if (proxyModel.dataSource) self.holo_proxy.dataSource = proxyModel.dataSource;
-    if (proxyModel.scrollDelegate) self.holo_proxy.scrollDelegate = proxyModel.scrollDelegate;
-}
-
-
-#pragma mark - make CollectionView
+#pragma mark - collectionView
 - (void)holo_makeCollectionView:(void (NS_NOESCAPE ^)(HoloCollectionViewMaker *))block {
     HoloCollectionViewMaker *maker = [HoloCollectionViewMaker new];
     if (block) block(maker);
     
-    NSDictionary *dict = [maker install];
-    self.holo_proxy.proxyData.sectionIndexTitles = dict[kHoloSectionIndexTitles];
-    self.holo_proxy.proxyData.indexPathForIndexTitleHandler = dict[kHoloIndexPathForIndexTitleHandler];
+    HoloCollectionViewModel *collectionViewModel = [maker install];
+    if (collectionViewModel.indexTitles) self.holo_proxy.proxyData.sectionIndexTitles = collectionViewModel.indexTitles;
+    if (collectionViewModel.indexTitlesHandler) self.holo_proxy.proxyData.indexPathForIndexTitleHandler = collectionViewModel.indexTitlesHandler;
+    
+    if (collectionViewModel.delegate) self.holo_proxy.delegate = collectionViewModel.delegate;
+    if (collectionViewModel.dataSource) self.holo_proxy.dataSource = collectionViewModel.dataSource;
+    if (collectionViewModel.scrollDelegate) self.holo_proxy.scrollDelegate = collectionViewModel.scrollDelegate;
 }
 
 #pragma mark - section

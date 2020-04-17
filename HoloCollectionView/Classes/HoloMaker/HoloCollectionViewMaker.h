@@ -6,20 +6,41 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HoloCollectionViewProxy.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const kHoloSectionIndexTitles = @"holo_section_index_titles";
-static NSString * const kHoloIndexPathForIndexTitleHandler = @"holo_indexPath_for_index_title_handler";
+typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleHandler)(NSString *title, NSInteger index);
 
+////////////////////////////////////////////////////////////
+@interface HoloCollectionViewModel : NSObject
 
+@property (nonatomic, copy) NSArray *indexTitles;
+
+@property (nonatomic, copy) HoloCollectionViewSectionForSectionIndexTitleHandler indexTitlesHandler;
+
+@property (nonatomic, strong) id<HoloCollectionViewDelegateFlowLayout> delegate;
+
+@property (nonatomic, strong) id<HoloCollectionViewDataSource> dataSource;
+
+@property (nonatomic, strong) id<UIScrollViewDelegate> scrollDelegate;
+
+@end
+
+////////////////////////////////////////////////////////////
 @interface HoloCollectionViewMaker : NSObject
 
 @property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^sectionIndexTitles)(NSArray<NSString *> *sectionIndexTitles);
 
 @property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^indexPathForIndexTitleHandler)(NSIndexPath *(^handler)(NSString *title, NSInteger index));
 
-- (NSDictionary *)install;
+@property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^delegate)(id<HoloCollectionViewDelegateFlowLayout> delegate);
+
+@property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^dataSource)(id<HoloCollectionViewDataSource> dataSource);
+
+@property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^scrollDelegate)(id<UIScrollViewDelegate> scrollDelegate);
+
+- (HoloCollectionViewModel *)install;
 
 @end
 NS_ASSUME_NONNULL_END
