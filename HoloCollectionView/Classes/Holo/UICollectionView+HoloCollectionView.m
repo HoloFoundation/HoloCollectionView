@@ -67,13 +67,19 @@
         // update cell-cls map and register class
         NSMutableDictionary *cellClsMap = self.holo_proxy.proxyData.cellClsMap.mutableCopy;
         for (HoloCollectionRow *row in updateSection.rows) {
-            Class class = NSClassFromString(row.cell);
-            if (!class) {
-                HoloLog(@"⚠️[HoloTableView] No found a cell class with the name: %@.", row.cell);
-            } else if (!cellClsMap[row.cell]) {
-                [self registerClass:class forCellWithReuseIdentifier:row.cell];
-                cellClsMap[row.cell] = class;
+            if (cellClsMap[row.cell]) continue;
+            
+            Class cls = NSClassFromString(row.cell);
+            if (!cls) {
+                NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a cell class with the name: %@.", row.cell];
+                NSAssert(NO, error);
             }
+            if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
+                NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", row.cell];
+                NSAssert(NO, error);
+            }
+            cellClsMap[row.cell] = cls;
+            [self registerClass:cls forCellWithReuseIdentifier:row.cell];
         }
         self.holo_proxy.proxyData.cellClsMap = cellClsMap;
     }
@@ -115,7 +121,7 @@
         HoloCollectionSection *targetSection = dict[kHoloTargetSection];
         HoloCollectionSection *updateSection = dict[kHoloUpdateSection];
         if (!targetSection) {
-            HoloLog(@"⚠️[HoloCollectionView] No found a section with the tag: %@.", updateSection.tag);
+            HoloLog(@"[HoloCollectionView] No found a section with the tag: %@.", updateSection.tag);
             continue;
         }
         [indexSet addIndex:[dict[kHoloTargetIndex] integerValue]];
@@ -161,18 +167,21 @@
 }
 
 // _registerHeaderFooter
-- (void)_registerHeaderFooter:(NSString *)cls forSupplementaryViewOfKind:(NSString *)elementKind withHeaderFooterMap:(NSMutableDictionary *)headerFooterMap {
-    if (!headerFooterMap[cls]) {
-        Class class = NSClassFromString(cls);
-        if (!class) {
-            HoloLog(@"⚠️[HoloCollectionView] No found a headerFooter class with the name: %@.", cls);
-        } else if (![[class new] isKindOfClass:[UICollectionReusableView class]]) {
-            HoloLog(@"⚠️[HoloCollectionView] The class: %@, neither UICollectionReusableView nor its subclasses.", cls);
-        } else {
-            [self registerClass:class forSupplementaryViewOfKind:elementKind withReuseIdentifier:cls];
-            headerFooterMap[cls] = class;
-        }
+- (void)_registerHeaderFooter:(NSString *)headerFooter forSupplementaryViewOfKind:(NSString *)elementKind withHeaderFooterMap:(NSMutableDictionary *)headerFooterMap {
+    
+    if (headerFooterMap[headerFooter]) return;
+    
+    Class cls = NSClassFromString(headerFooter);
+    if (!cls) {
+        NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a headerFooter class with the name: %@.", headerFooter];
+        NSAssert(NO, error);
     }
+    if (![cls.new isKindOfClass:UITableViewHeaderFooterView.class]) {
+        NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", headerFooter];
+        NSAssert(NO, error);
+    }
+    headerFooterMap[headerFooter] = cls;
+    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:headerFooter];
 }
 
 // holo_removeAllSections
@@ -208,7 +217,7 @@
 - (void)_holo_removeSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
     NSIndexSet *indexSet = [self.holo_proxy.proxyData removeSections:tags];
     if (indexSet.count <= 0) {
-        HoloLog(@"⚠️[HoloCollectionView] No found any section with these tags: %@.", tags);
+        HoloLog(@"[HoloCollectionView] No found any section with these tags: %@.", tags);
         return;
     }
     if (autoReload) [self deleteSections:indexSet];
@@ -257,16 +266,23 @@
     NSMutableDictionary *cellClsMap = self.holo_proxy.proxyData.cellClsMap.mutableCopy;
     NSMutableArray *rows = [NSMutableArray new];
     for (HoloCollectionRow *row in [maker install]) {
-        Class class = NSClassFromString(row.cell);
-        if (!cellClsMap[row.cell] && class) {
-            [self registerClass:class forCellWithReuseIdentifier:row.cell];
-            cellClsMap[row.cell] = class;
-        }
         if (cellClsMap[row.cell]) {
             [rows addObject:row];
-        } else {
-            HoloLog(@"⚠️[HoloCollectionView] No found a cell class with the name: %@.", row.cell);
+            continue;
         }
+        
+        Class cls = NSClassFromString(row.cell);
+        if (!cls) {
+            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a cell class with the name: %@.", row.cell];
+            NSAssert(NO, error);
+        }
+        if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
+            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", row.cell];
+            NSAssert(NO, error);
+        }
+        cellClsMap[row.cell] = cls;
+        [self registerClass:cls forCellWithReuseIdentifier:row.cell];
+        [rows addObject:row];
     }
     self.holo_proxy.proxyData.cellClsMap = cellClsMap;
     
@@ -321,7 +337,7 @@
         HoloCollectionRow *targetRow = dict[kHoloTargetRow];
         HoloCollectionRow *updateRow = dict[kHoloUpdateRow];
         if (!targetRow) {
-            HoloLog(@"⚠️[HoloCollectionView] No found a row with the tag: %@.", updateRow.tag);
+            HoloLog(@"[HoloCollectionView] No found a row with the tag: %@.", updateRow.tag);
             continue;
         }
         [indexPaths addObject:dict[kHoloTargetIndexPath]];
@@ -339,22 +355,29 @@
                 id value = [updateRow valueForKey:propertyNameStr];
                 if (value) {
                     if ([propertyNameStr isEqualToString:@"cell"]) {
-                        Class class = NSClassFromString(updateRow.cell);
-                        if (!cellClsMap[updateRow.cell] && class) {
-                            [self registerClass:class forCellWithReuseIdentifier:updateRow.cell];
-                            cellClsMap[updateRow.cell] = class;
-                        }
                         if (cellClsMap[updateRow.cell]) {
                             targetRow.cell = updateRow.cell;
-                        } else {
-                            HoloLog(@"⚠️[HoloCollectionView] No found a class with the name: %@.", updateRow.cell);
+                            continue;
                         }
+                        
+                        Class cls = NSClassFromString(updateRow.cell);
+                        if (!cls) {
+                            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a cell class with the name: %@.", updateRow.cell];
+                            NSAssert(NO, error);
+                        }
+                        if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
+                            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", updateRow.cell];
+                            NSAssert(NO, error);
+                        }
+                        cellClsMap[updateRow.cell] = cls;
+                        [self registerClass:cls forCellWithReuseIdentifier:updateRow.cell];
+                        targetRow.cell = updateRow.cell;
                     } else {
                         [targetRow setValue:value forKey:propertyNameStr];
                     }
                 } else if (isRemark) {
                     if ([propertyNameStr isEqualToString:@"cell"]) {
-                        HoloLog(@"⚠️[HoloCollectionView] No update the cell of the row which you wish to ramark with the tag: %@.", updateRow.tag);
+                        HoloLog(@"[HoloCollectionView] No update the cell of the row which you wish to ramark with the tag: %@.", updateRow.tag);
                     } else {
                         [targetRow setValue:NULL forKey:propertyNameStr];
                     }
@@ -402,7 +425,7 @@
 - (void)_holo_removeRow:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
     NSArray *indexPaths = [self.holo_proxy.proxyData removeRows:tags];
     if (indexPaths.count <= 0) {
-        HoloLog(@"⚠️[HoloCollectionView] No found any row with these tags: %@.", tags);
+        HoloLog(@"[HoloCollectionView] No found any row with these tags: %@.", tags);
         return;
     }
     if (autoReload) [self deleteItemsAtIndexPaths:indexPaths];
