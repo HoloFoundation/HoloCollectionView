@@ -16,7 +16,7 @@
 
 @property (nonatomic, copy, readonly) NSArray<HoloCollectionSection *> *holoSections;
 
-@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoCellClsMap;
+@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoRowsMap;
 
 @end
 
@@ -57,7 +57,7 @@
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
     HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
     
-    NSString *clsName = NSStringFromClass(self.holoCellClsMap[holoRow.cell]);
+    NSString *clsName = NSStringFromClass(self.holoRowsMap[holoRow.cell]);
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:clsName forIndexPath:indexPath];
     
     if (holoRow.configSEL && [cell respondsToSelector:holoRow.configSEL]) {
@@ -153,7 +153,7 @@
     HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
     HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
     
-    Class cls = self.holoCellClsMap[holoRow.cell];
+    Class cls = self.holoRowsMap[holoRow.cell];
     if (holoRow.sizeSEL && [cls respondsToSelector:holoRow.sizeSEL]) {
         return [self _sizeWithMethodSignatureCls:cls selector:holoRow.sizeSEL model:holoRow.model];
     }
@@ -514,8 +514,8 @@
     return self.proxyData.sections;
 }
 
-- (NSDictionary<NSString *, Class> *)holoCellClsMap {
-    return self.proxyData.cellClsMap;
+- (NSDictionary<NSString *, Class> *)holoRowsMap {
+    return self.proxyData.rowsMap;
 }
 
 @end
