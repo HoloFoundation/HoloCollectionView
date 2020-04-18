@@ -19,7 +19,7 @@ static NSString * const kHoloRowTagNil = @"holo_row_tag_nil";
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionViewUpdateRowMaker : NSObject
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^tag)(NSString * _Nullable tag);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^tag)(NSString *tag);
 
 - (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections isRemark:(BOOL)isRemark;
 

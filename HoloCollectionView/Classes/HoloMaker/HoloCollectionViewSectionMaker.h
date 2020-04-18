@@ -105,7 +105,7 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionViewSectionMaker : NSObject
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^section)(NSString * _Nullable tag);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^section)(NSString *tag);
 
 - (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections isRemark:(BOOL)isRemark;
 
