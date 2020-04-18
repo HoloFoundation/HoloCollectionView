@@ -66,14 +66,6 @@
 
 @implementation HoloCollectionSectionMaker
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _section = [HoloCollectionSection new];
-    }
-    return self;
-}
-
 - (HoloCollectionSectionMaker * (^)(UIEdgeInsets))inset {
     return ^id(UIEdgeInsets i) {
         self.section.inset = i;
@@ -187,6 +179,14 @@
         [self.section insertRows:[maker install] atIndex:NSIntegerMax];
         return self;
     };
+}
+
+#pragma mark - getter
+- (HoloCollectionSection *)section {
+    if (!_section) {
+        _section = [HoloCollectionSection new];
+    }
+    return _section;
 }
 
 @end

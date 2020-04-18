@@ -21,14 +21,6 @@
 
 @implementation HoloCollectionViewMaker
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _collectionViewModel = [HoloCollectionViewModel new];
-    }
-    return self;
-}
-
 - (HoloCollectionViewMaker * (^)(NSArray<NSString *> *))sectionIndexTitles {
     return ^id(id obj) {
         self.collectionViewModel.indexTitles = obj;
@@ -66,6 +58,14 @@
 
 - (HoloCollectionViewModel *)install {
     return self.collectionViewModel;
+}
+
+#pragma mark - getter
+- (HoloCollectionViewModel *)collectionViewModel {
+    if (!_collectionViewModel) {
+        _collectionViewModel = [HoloCollectionViewModel new];
+    }
+    return _collectionViewModel;
 }
 
 @end

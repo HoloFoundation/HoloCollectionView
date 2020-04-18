@@ -39,14 +39,6 @@
 
 @implementation HoloCollectionRowMaker
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _collectionRow = [HoloCollectionRow new];
-    }
-    return self;
-}
-
 - (HoloCollectionRowMaker * (^)(Class))row {
     return ^id(Class cls) {
         self.collectionRow.cell = NSStringFromClass(cls);
@@ -187,6 +179,14 @@
 
 - (HoloCollectionRow *)fetchCollectionRow {
     return self.collectionRow;
+}
+
+#pragma mark - getter
+- (HoloCollectionRow *)collectionRow {
+    if (!_collectionRow) {
+        _collectionRow = [HoloCollectionRow new];
+    }
+    return _collectionRow;
 }
 
 @end
