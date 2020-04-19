@@ -8,6 +8,21 @@
 #import "HoloCollectionViewMaker.h"
 
 ////////////////////////////////////////////////////////////
+@implementation HoloCollectionViewRowMapMaker
+
+@end
+
+////////////////////////////////////////////////////////////
+@implementation HoloCollectionViewHeaderMapMaker
+
+@end
+
+////////////////////////////////////////////////////////////
+@implementation HoloCollectionViewFooterMapMaker
+
+@end
+
+////////////////////////////////////////////////////////////
 @implementation HoloCollectionViewModel
 
 @end
@@ -52,6 +67,36 @@
 - (HoloCollectionViewMaker * (^)(id<UIScrollViewDelegate>))scrollDelegate {
     return ^id(id obj) {
         self.collectionViewModel.scrollDelegate = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionViewMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewRowMapMaker *)))makeRowsMap {
+    return ^id(void(^block)(HoloCollectionViewRowMapMaker *make)) {
+        HoloCollectionViewRowMapMaker *maker = [HoloCollectionViewRowMapMaker new];
+        if (block) block(maker);
+        
+//        [self.section insertRows:[maker install] atIndex:NSIntegerMax];
+        return self;
+    };
+}
+
+- (HoloCollectionViewMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewHeaderMapMaker *)))makeHeadersMap {
+    return ^id(void(^block)(HoloCollectionViewHeaderMapMaker *make)) {
+        HoloCollectionViewHeaderMapMaker *maker = [HoloCollectionViewHeaderMapMaker new];
+        if (block) block(maker);
+        
+//        [self.section insertRows:[maker install] atIndex:NSIntegerMax];
+        return self;
+    };
+}
+
+- (HoloCollectionViewMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewFooterMapMaker *)))makeFootersMap {
+    return ^id(void(^block)(HoloCollectionViewFooterMapMaker *make)) {
+        HoloCollectionViewFooterMapMaker *maker = [HoloCollectionViewFooterMapMaker new];
+        if (block) block(maker);
+        
+//        [self.section insertRows:[maker install] atIndex:NSIntegerMax];
         return self;
     };
 }
