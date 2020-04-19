@@ -29,10 +29,14 @@ static char kHoloCollectionViewProxyKey;
             NSString *headerFooter = NSStringFromClass(headerFooterCls);
             [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerFooter];
             [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:headerFooter];
-            
-            NSMutableDictionary *headerFootersMap = collectionViewProxy.proxyData.headerFootersMap.mutableCopy;
-            headerFootersMap[headerFooter] = headerFooterCls;
-            collectionViewProxy.proxyData.headerFootersMap = headerFootersMap;
+            // headersMap
+            NSMutableDictionary *headersMap = collectionViewProxy.proxyData.headersMap.mutableCopy;
+            headersMap[headerFooter] = headerFooterCls;
+            collectionViewProxy.proxyData.headersMap = headersMap;
+            // footersMap
+            NSMutableDictionary *footersMap = collectionViewProxy.proxyData.footersMap.mutableCopy;
+            footersMap[headerFooter] = headerFooterCls;
+            collectionViewProxy.proxyData.footersMap = footersMap;
         }
     }
     return collectionViewProxy;
