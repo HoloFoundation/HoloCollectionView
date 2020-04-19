@@ -14,9 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSArray<HoloCollectionSection *> *sections;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *cellClsMap;
+@property (nonatomic, copy) NSDictionary<NSString *, Class> *rowsMap;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *headerFooterMap;
+@property (nonatomic, copy) NSDictionary<NSString *, Class> *headersMap;
+
+@property (nonatomic, copy) NSDictionary<NSString *, Class> *footersMap;
 
 @property (nonatomic, copy) NSArray<NSString *> *sectionIndexTitles;
 

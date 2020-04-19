@@ -92,18 +92,25 @@
     return _sections;
 }
 
-- (NSDictionary<NSString *, Class> *)cellClsMap {
-    if (!_cellClsMap) {
-        _cellClsMap = [NSDictionary new];
+- (NSDictionary<NSString *, Class> *)rowsMap {
+    if (!_rowsMap) {
+        _rowsMap = [NSDictionary new];
     }
-    return _cellClsMap;
+    return _rowsMap;
 }
 
-- (NSDictionary<NSString *,Class> *)headerFooterMap {
-    if (!_headerFooterMap) {
-        _headerFooterMap = [NSDictionary new];
+- (NSDictionary<NSString *,Class> *)headersMap {
+    if (!_headersMap) {
+        _headersMap = [NSDictionary new];
     }
-    return _headerFooterMap;
+    return _headersMap;
+}
+
+- (NSDictionary<NSString *,Class> *)footersMap {
+    if (!_footersMap) {
+        _footersMap = [NSDictionary new];
+    }
+    return _footersMap;
 }
 
 @end
