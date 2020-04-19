@@ -29,9 +29,9 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @property (nonatomic, assign) CGFloat minimumInteritemSpacing;
 
-@property (nonatomic, strong) NSString *header;
+@property (nonatomic, copy) NSString *header;
 
-@property (nonatomic, strong) NSString *footer;
+@property (nonatomic, copy) NSString *footer;
 
 @property (nonatomic, strong) id headerModel;
 
