@@ -25,14 +25,14 @@ static char kHoloCollectionViewProxyKey;
             self.delegate = collectionViewProxy;
             
             // register UICollectionReusableView
-            NSString *headerFooter = @"UICollectionReusableView";
-            Class headerFooterCls = NSClassFromString(headerFooter);
+            Class headerFooterCls = UICollectionReusableView.class;
+            NSString *headerFooter = NSStringFromClass(headerFooterCls);
             [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerFooter];
             [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:headerFooter];
             
-            NSMutableDictionary *headerFooterMap = collectionViewProxy.proxyData.headerFooterMap.mutableCopy;
-            headerFooterMap[headerFooter] = headerFooterCls;
-            collectionViewProxy.proxyData.headerFooterMap = headerFooterMap;
+            NSMutableDictionary *headerFootersMap = collectionViewProxy.proxyData.headerFootersMap.mutableCopy;
+            headerFootersMap[headerFooter] = headerFooterCls;
+            collectionViewProxy.proxyData.headerFootersMap = headerFootersMap;
         }
     }
     return collectionViewProxy;

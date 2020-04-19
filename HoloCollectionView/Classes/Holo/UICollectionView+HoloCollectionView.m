@@ -54,15 +54,15 @@
     HoloCollectionViewSectionMaker *maker = [HoloCollectionViewSectionMaker new];
     if (block) block(maker);
     
-    // update headerFooterMap
-    NSMutableDictionary *headerFooterMap = self.holo_proxy.proxyData.headerFooterMap.mutableCopy;
+    // update headerFootersMap
+    NSMutableDictionary *headerFootersMap = self.holo_proxy.proxyData.headerFootersMap.mutableCopy;
     NSMutableArray *array = [NSMutableArray new];
     for (NSDictionary *dict in [maker install]) {
         HoloCollectionSection *updateSection = dict[kHoloUpdateSection];
         [array addObject:updateSection];
         
-        if (updateSection.header) [self _registerHeaderFooter:updateSection.header forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withHeaderFooterMap:headerFooterMap];
-        if (updateSection.footer) [self _registerHeaderFooter:updateSection.footer forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withHeaderFooterMap:headerFooterMap];
+        if (updateSection.header) [self _registerHeaderFooter:updateSection.header forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withHeaderFootersMap:headerFootersMap];
+        if (updateSection.footer) [self _registerHeaderFooter:updateSection.footer forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withHeaderFootersMap:headerFootersMap];
         
         // update cell-cls map and register class
         NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
@@ -83,7 +83,7 @@
         }
         self.holo_proxy.proxyData.rowsMap = rowsMap;
     }
-    self.holo_proxy.proxyData.headerFooterMap = headerFooterMap;
+    self.holo_proxy.proxyData.headerFootersMap = headerFootersMap;
     
     // append sections
     NSIndexSet *indexSet = [self.holo_proxy.proxyData insertSections:array anIndex:index];
@@ -114,8 +114,8 @@
     HoloCollectionViewSectionMaker *maker = [[HoloCollectionViewSectionMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections isRemark:isRemark];
     if (block) block(maker);
     
-    // update targetSection and headerFooterMap
-    NSMutableDictionary *headerFooterMap = self.holo_proxy.proxyData.headerFooterMap.mutableCopy;
+    // update targetSection and headerFootersMap
+    NSMutableDictionary *headerFootersMap = self.holo_proxy.proxyData.headerFootersMap.mutableCopy;
     NSMutableIndexSet *indexSet = [NSMutableIndexSet new];
     for (NSDictionary *dict in [maker install]) {
         HoloCollectionSection *targetSection = dict[kHoloTargetSection];
@@ -141,10 +141,10 @@
                 if (value) {
                     if ([propertyNameStr isEqualToString:@"header"]) {
                         targetSection.header = updateSection.header;
-                        [self _registerHeaderFooter:targetSection.header forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withHeaderFooterMap:headerFooterMap];
+                        [self _registerHeaderFooter:targetSection.header forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withHeaderFootersMap:headerFootersMap];
                     } else if ([propertyNameStr isEqualToString:@"footer"]) {
                         targetSection.footer = updateSection.footer;
-                        [self _registerHeaderFooter:targetSection.footer forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withHeaderFooterMap:headerFooterMap];
+                        [self _registerHeaderFooter:targetSection.footer forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withHeaderFootersMap:headerFootersMap];
                     } else {
                         [targetSection setValue:value forKey:propertyNameStr];
                     }
@@ -158,7 +158,7 @@
         targetSection.headerFooterConfigSEL = updateSection.headerFooterConfigSEL;
         targetSection.headerFooterSizeSEL = updateSection.headerFooterSizeSEL;
     }
-    self.holo_proxy.proxyData.headerFooterMap = headerFooterMap;
+    self.holo_proxy.proxyData.headerFootersMap = headerFootersMap;
     
     // refresh view
     if (autoReload && indexSet.count > 0) {
@@ -167,9 +167,9 @@
 }
 
 // _registerHeaderFooter
-- (void)_registerHeaderFooter:(NSString *)headerFooter forSupplementaryViewOfKind:(NSString *)elementKind withHeaderFooterMap:(NSMutableDictionary *)headerFooterMap {
+- (void)_registerHeaderFooter:(NSString *)headerFooter forSupplementaryViewOfKind:(NSString *)elementKind withHeaderFootersMap:(NSMutableDictionary *)headerFootersMap {
     
-    if (headerFooterMap[headerFooter]) return;
+    if (headerFootersMap[headerFooter]) return;
     
     Class cls = NSClassFromString(headerFooter);
     if (!cls) {
@@ -180,7 +180,7 @@
         NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", headerFooter];
         NSAssert(NO, error);
     }
-    headerFooterMap[headerFooter] = cls;
+    headerFootersMap[headerFooter] = cls;
     [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:headerFooter];
 }
 
