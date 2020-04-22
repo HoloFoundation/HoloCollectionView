@@ -36,7 +36,7 @@
     [self.view addSubview:self.collectionView];
     
     [self.collectionView holo_makeSections:^(HoloCollectionViewSectionMaker * _Nonnull make) {
-        make.section(@"a")
+        make.section(TAG)
         .header(HoloExampleHeaderView.class).headerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
         .footer(HoloExampleFooterView.class).footerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
         .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
@@ -59,7 +59,7 @@
 
 #pragma mark - buttonAction
 - (void)buttonAction:(UIButton *)sender {
-    [self.collectionView holo_insertRowsAtIndex:0 inSection:@"a" block:^(HoloCollectionViewRowMaker * _Nonnull make) {
+    [self.collectionView holo_insertRowsAtIndex:0 inSection:TAG block:^(HoloCollectionViewRowMaker * _Nonnull make) {
         make.row(HoloExampleCollectionViewCell.class);
     } autoReload:YES];
 }

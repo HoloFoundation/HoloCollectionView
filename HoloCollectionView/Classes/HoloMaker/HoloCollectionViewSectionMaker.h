@@ -10,11 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const kHoloTargetSection = @"holo_target_section";
-static NSString * const kHoloTargetIndex = @"holo_target_index";
-static NSString * const kHoloUpdateSection = @"holo_update_section";
-static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
-
+typedef NS_ENUM(NSInteger, HoloCollectionViewSectionMakerType) {
+    HoloCollectionViewSectionMakerTypeMake,
+    HoloCollectionViewSectionMakerTypeInsert,
+    HoloCollectionViewSectionMakerTypeUpdate,
+    HoloCollectionViewSectionMakerTypeRemake
+};
 
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionSection : NSObject
@@ -41,8 +42,15 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @property (nonatomic, assign) CGSize footerSize;
 
-@property (nonatomic, assign) SEL headerFooterConfigSEL;
+@property (nonatomic, assign) SEL headerConfigSEL;
 
+@property (nonatomic, assign) SEL footerConfigSEL;
+
+@property (nonatomic, assign) SEL headerSizeSEL;
+
+@property (nonatomic, assign) SEL footerSizeSEL;
+
+@property (nonatomic, assign) SEL headerFooterConfigSEL;
 @property (nonatomic, assign) SEL headerFooterSizeSEL;
 
 @property (nonatomic, copy) void (^willDisplayHeaderHandler)(UIView *header, id _Nullable model);
@@ -86,9 +94,16 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerSize)(CGSize footerSize);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterConfigSEL)(SEL headerConfigSEL);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerConfigSEL)(SEL headerConfigSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterSizeSEL)(SEL headerSizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerConfigSEL)(SEL footerConfigSEL);
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerHeightSEL)(SEL headerSizeSEL);
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerHeightSEL)(SEL footerSizeSEL);
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterConfigSEL)(SEL headerFooterConfigSEL) DEPRECATED_MSG_ATTRIBUTE("Please use `headerConfigSEL` or `footerConfigSEL` api instead.");
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterSizeSEL)(SEL headerFooterSizeSEL) DEPRECATED_MSG_ATTRIBUTE("Please use `headerSizeSEL` or `footerSizeSEL` api instead.");
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^willDisplayHeaderHandler)(void(^)(UIView *header, id _Nullable model));
 
@@ -102,14 +117,25 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @end
 
+
+////////////////////////////////////////////////////////////
+@interface HoloCollectionViewSectionMakerModel : NSObject
+
+@property (nonatomic, strong) HoloCollectionSection *operateSection;
+
+@property (nonatomic, strong) NSNumber *operateIndex;
+
+@end
+
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionViewSectionMaker : NSObject
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^section)(NSString *tag);
 
-- (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections isRemark:(BOOL)isRemark;
+- (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections
+                                makerType:(HoloCollectionViewSectionMakerType)makerType;
 
-- (NSArray<NSDictionary *> *)install;
+- (NSArray<HoloCollectionViewSectionMakerModel *> *)install;
 
 @end
 

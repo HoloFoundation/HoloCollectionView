@@ -86,7 +86,23 @@
         model = holoSection.footerModel;
     }
     UICollectionReusableView *holoHeaderView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    if (holoSection.headerFooterConfigSEL && [holoHeaderView respondsToSelector:holoSection.headerFooterConfigSEL]) {
+    
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader] &&
+        holoSection.headerConfigSEL &&
+        [holoHeaderView respondsToSelector:holoSection.headerConfigSEL]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [holoHeaderView performSelector:holoSection.headerConfigSEL withObject:model];
+#pragma clang diagnostic pop
+    } else if ([kind isEqualToString:UICollectionElementKindSectionFooter] &&
+               holoSection.footerConfigSEL &&
+               [holoHeaderView respondsToSelector:holoSection.footerConfigSEL]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [holoHeaderView performSelector:holoSection.footerConfigSEL withObject:model];
+#pragma clang diagnostic pop
+    } else if (holoSection.headerFooterConfigSEL &&
+               [holoHeaderView respondsToSelector:holoSection.headerFooterConfigSEL]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [holoHeaderView performSelector:holoSection.headerFooterConfigSEL withObject:model];
@@ -216,7 +232,9 @@
     
     HoloCollectionSection *holoSection = self.holoSections[section];
     Class header = NSClassFromString(holoSection.header);
-    if (holoSection.headerFooterSizeSEL && [header respondsToSelector:holoSection.headerFooterSizeSEL]) {
+    if (holoSection.headerSizeSEL && [header respondsToSelector:holoSection.headerSizeSEL]) {
+        return [self _sizeWithMethodSignatureCls:header selector:holoSection.headerSizeSEL model:holoSection.headerModel];
+    } else if (holoSection.headerFooterSizeSEL && [header respondsToSelector:holoSection.headerFooterSizeSEL]) {
         return [self _sizeWithMethodSignatureCls:header selector:holoSection.headerFooterSizeSEL model:holoSection.headerModel];
     }
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
@@ -235,7 +253,9 @@
     
     HoloCollectionSection *holoSection = self.holoSections[section];
     Class footer = NSClassFromString(holoSection.footer);
-    if (holoSection.headerFooterSizeSEL && [footer respondsToSelector:holoSection.headerFooterSizeSEL]) {
+    if (holoSection.footerSizeSEL && [footer respondsToSelector:holoSection.footerSizeSEL]) {
+        return [self _sizeWithMethodSignatureCls:footer selector:holoSection.footerSizeSEL model:holoSection.footerModel];
+    } else if (holoSection.headerFooterSizeSEL && [footer respondsToSelector:holoSection.headerFooterSizeSEL]) {
         return [self _sizeWithMethodSignatureCls:footer selector:holoSection.headerFooterSizeSEL model:holoSection.footerModel];
     }
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;

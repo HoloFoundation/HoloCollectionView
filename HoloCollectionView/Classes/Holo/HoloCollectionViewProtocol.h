@@ -21,16 +21,33 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-
 ////////////////////////////////////////////////////////////
-@protocol HoloCollectionViewHeaderFooterProtocol <NSObject>
+@protocol HoloCollectionViewHeaderProtocol <NSObject>
 
 @optional
 
-- (void)holo_configureHeaderFooterWithModel:(id)model;
+- (void)holo_configureHeaderWithModel:(id)model;
 
-+ (CGSize)holo_sizeForHeaderFooterWithModel:(id)model;
++ (CGSize)holo_sizeForHeaderWithModel:(id)model;
 
+@end
+
+////////////////////////////////////////////////////////////
+@protocol HoloCollectionViewFooterProtocol <NSObject>
+
+@optional
+
+- (void)holo_configureFooterWithModel:(id)model;
+
++ (CGSize)holo_sizeForFooterWithModel:(id)model;
+
+@end
+
+////////////////////////////////////////////////////////////
+@protocol HoloCollectionViewHeaderFooterProtocol <NSObject>
+@optional
+- (void)holo_configureHeaderFooterWithModel:(id)model DEPRECATED_MSG_ATTRIBUTE("Please use `headerConfigSEL` or `footerConfigSEL` api instead.");
++ (CGSize)holo_sizeForHeaderFooterWithModel:(id)model DEPRECATED_MSG_ATTRIBUTE("Please use `headerSizeSEL` or `footerSizeSEL` api instead.");
 @end
 
 ////////////////////////////////////////////////////////////

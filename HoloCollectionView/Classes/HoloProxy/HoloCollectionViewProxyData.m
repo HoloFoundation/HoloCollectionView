@@ -46,7 +46,7 @@
 
 - (HoloCollectionSection *)sectionWithTag:(NSString *)tag {
     for (HoloCollectionSection *section in self.sections) {
-        if ([section.tag isEqualToString:tag]) return section;
+        if ([section.tag isEqualToString:tag] || (!section.tag && !tag)) return section;
     }
     return nil;
 }

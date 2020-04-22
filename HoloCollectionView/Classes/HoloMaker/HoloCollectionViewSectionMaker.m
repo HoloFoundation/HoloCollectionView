@@ -6,7 +6,6 @@
 //
 
 #import "HoloCollectionViewSectionMaker.h"
-#import <objc/runtime.h>
 #import "HoloCollectionViewRowMaker.h"
 
 ////////////////////////////////////////////////////////////
@@ -23,6 +22,11 @@
         _minimumInteritemSpacing = CGFLOAT_MIN;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
+        _headerConfigSEL = @selector(holo_configureHeaderWithModel:);
+        _footerConfigSEL = @selector(holo_configureFooterWithModel:);
+        _headerSizeSEL = @selector(holo_sizeForHeaderWithModel:);
+        _footerSizeSEL = @selector(holo_sizeForFooterWithModel:);
+        
         _headerFooterConfigSEL = @selector(holo_configureHeaderFooterWithModel:);
         _headerFooterSizeSEL = @selector(holo_sizeForHeaderFooterWithModel:);
 #pragma clang diagnostic pop
@@ -129,13 +133,40 @@
     };
 }
 
+- (HoloCollectionSectionMaker *(^)(SEL))headerConfigSEL {
+    return ^id(SEL s) {
+        self.section.headerConfigSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(SEL))footerConfigSEL {
+    return ^id(SEL s) {
+        self.section.footerConfigSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(SEL))headerSizeSEL {
+    return ^id(SEL s) {
+        self.section.headerSizeSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(SEL))footerSizeSEL {
+    return ^id(SEL s) {
+        self.section.footerSizeSEL = s;
+        return self;
+    };
+}
+
 - (HoloCollectionSectionMaker *(^)(SEL))headerFooterConfigSEL {
     return ^id(SEL s) {
         self.section.headerFooterConfigSEL = s;
         return self;
     };
 }
-
 - (HoloCollectionSectionMaker *(^)(SEL))headerFooterSizeSEL {
     return ^id(SEL s) {
         self.section.headerFooterSizeSEL = s;
@@ -191,35 +222,31 @@
 
 @end
 
+
+////////////////////////////////////////////////////////////
+@implementation HoloCollectionViewSectionMakerModel
+
+@end
+
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionViewSectionMaker ()
 
-@property (nonatomic, copy) NSArray<HoloCollectionSection *> *targetSections;
+@property (nonatomic, copy) NSArray<HoloCollectionSection *> *dataSections;
 
-@property (nonatomic, assign) BOOL isRemark;
+@property (nonatomic, assign) HoloCollectionViewSectionMakerType makerType;
 
-@property (nonatomic, strong) NSMutableArray<NSDictionary *> *holoUpdateSections;
-
-@property (nonatomic, strong) NSMutableDictionary *sectionIndexsDict;
+@property (nonatomic, strong) NSMutableArray<HoloCollectionViewSectionMakerModel *> *makerModels;
 
 @end
 
 @implementation HoloCollectionViewSectionMaker
 
-- (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections isRemark:(BOOL)isRemark {
+- (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections
+                                makerType:(HoloCollectionViewSectionMakerType)makerType {
     self = [super init];
     if (self) {
-        _targetSections = sections;
-        _isRemark = isRemark;
-        
-        for (HoloCollectionSection *section in self.targetSections) {
-            NSString *dictKey = section.tag ?: kHoloSectionTagNil;
-            if (self.sectionIndexsDict[dictKey]) continue;
-            
-            NSMutableDictionary *dict = @{kHoloTargetSection : section}.mutableCopy;
-            dict[kHoloTargetIndex] = @([self.targetSections indexOfObject:section]);
-            self.sectionIndexsDict[dictKey] = [dict copy];
-        }
+        _dataSections = sections;
+        _makerType = makerType;
     }
     return self;
 }
@@ -227,67 +254,43 @@
 - (HoloCollectionSectionMaker *(^)(NSString *))section {
     return ^id(NSString *tag) {
         HoloCollectionSectionMaker *sectionMaker = [HoloCollectionSectionMaker new];
-        HoloCollectionSection *updateSection = sectionMaker.section;
-        updateSection.tag = tag;
+        sectionMaker.section.tag = tag;
         
-        NSString *dictKey = tag ?: kHoloSectionTagNil;
-        NSDictionary *sectionIndexDict = self.sectionIndexsDict[dictKey];
-        
-        HoloCollectionSection *targetSection = sectionIndexDict[kHoloTargetSection];
-        NSNumber *targetIndex = sectionIndexDict[kHoloTargetIndex];
-        
-        if (!self.isRemark && targetSection) {
-            // set value of CGFloat and BOOL
-            unsigned int outCount;
-            objc_property_t * properties = class_copyPropertyList([targetSection class], &outCount);
-            for (int i = 0; i < outCount; i++) {
-                objc_property_t property = properties[i];
-                const char * propertyAttr = property_getAttributes(property);
-                char t = propertyAttr[1];
-                const char *propertyName = property_getName(property);
-                NSString *propertyNameStr = [NSString stringWithCString:propertyName encoding:NSUTF8StringEncoding];
-                // CGFloat or BOOL or CGSize or rows
-                if (t == 'd' || t == 'B' || t == '{' || [propertyNameStr isEqualToString:@"rows"]) {
-                    id value = [targetSection valueForKey:propertyNameStr];
-                    if (value) [updateSection setValue:value forKey:propertyNameStr];
+        __block HoloCollectionSection *targetSection;
+        __block NSNumber *operateIndex;
+        if (self.makerType == HoloCollectionViewSectionMakerTypeUpdate || self.makerType == HoloCollectionViewSectionMakerTypeRemake) {
+            [self.dataSections enumerateObjectsUsingBlock:^(HoloCollectionSection * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([obj.tag isEqualToString:tag] || (!obj.tag && !tag)) {
+                    targetSection = obj;
+                    operateIndex = @(idx);
+                    *stop = YES;
                 }
-            }
-            
-            // set value of SEL
-            updateSection.headerFooterConfigSEL = targetSection.headerFooterConfigSEL;
-            updateSection.headerFooterSizeSEL = targetSection.headerFooterSizeSEL;
+            }];
         }
         
-        NSMutableDictionary *dict = [NSMutableDictionary new];
-        if (targetSection) {
-            dict[kHoloTargetSection] = targetSection;
-            dict[kHoloTargetIndex] = targetIndex;
+        if (targetSection && self.makerType == HoloCollectionViewSectionMakerTypeUpdate) {
+            sectionMaker.section = targetSection;
         }
-        dict[kHoloUpdateSection] = updateSection;
-        [self.holoUpdateSections addObject:dict];
+        
+        HoloCollectionViewSectionMakerModel *makerModel = [HoloCollectionViewSectionMakerModel new];
+        makerModel.operateSection = sectionMaker.section;
+        makerModel.operateIndex = operateIndex;
+        [self.makerModels addObject:makerModel];
         
         return sectionMaker;
     };
 }
 
-- (NSArray<NSDictionary *> *)install {
-    return [self.holoUpdateSections copy];
+- (NSArray<HoloCollectionViewSectionMakerModel *> *)install {
+    return self.makerModels.copy;
 }
 
 #pragma mark - getter
-- (NSMutableArray<NSDictionary *> *)holoUpdateSections {
-    if (!_holoUpdateSections) {
-        _holoUpdateSections = [NSMutableArray new];
+- (NSMutableArray<HoloCollectionViewSectionMakerModel *> *)makerModels {
+    if (!_makerModels) {
+        _makerModels = [NSMutableArray new];
     }
-    return _holoUpdateSections;
+    return _makerModels;
 }
-
-- (NSMutableDictionary *)sectionIndexsDict {
-    if (!_sectionIndexsDict) {
-        _sectionIndexsDict = [NSMutableDictionary new];
-    }
-    return _sectionIndexsDict;
-}
-
 
 @end
