@@ -94,6 +94,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HoloCollectionRow *)fetchCollectionRow;
 
+- (void)giveCollectionRow:(HoloCollectionRow *)collectionRow;
+
 @end
 
 ////////////////////////////////////////////////////////////

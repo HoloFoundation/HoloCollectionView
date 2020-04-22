@@ -6,24 +6,34 @@
 //
 
 #import <Foundation/Foundation.h>
-@class HoloCollectionSection, HoloCollectionRowMaker;
+#import "HoloCollectionViewRowMaker.h"
+@class HoloCollectionSection;
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const kHoloTargetRow = @"holo_target_row";
-static NSString * const kHoloTargetIndexPath = @"holo_target_indexPath";
-static NSString * const kHoloUpdateRow = @"holo_update_row";
-static NSString * const kHoloRowTagNil = @"holo_row_tag_nil";
+typedef NS_ENUM(NSInteger, HoloCollectionViewUpdateRowMakerType) {
+    HoloCollectionViewUpdateRowMakerTypeUpdate,
+    HoloCollectionViewUpdateRowMakerTypeRemake
+};
 
+////////////////////////////////////////////////////////////
+@interface HoloCollectionViewUpdateRowMakerModel : NSObject
+
+@property (nonatomic, strong) HoloCollectionRow *operateRow;
+
+@property (nonatomic, strong) NSIndexPath *operateIndexPath;
+
+@end
 
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionViewUpdateRowMaker : NSObject
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^tag)(NSString *tag);
 
-- (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections isRemark:(BOOL)isRemark;
+- (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections
+                                makerType:(HoloCollectionViewUpdateRowMakerType)makerType;
 
-- (NSArray<NSDictionary *> *)install;
+- (NSArray<HoloCollectionViewUpdateRowMakerModel *> *)install;
 
 @end
 

@@ -10,11 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const kHoloTargetSection = @"holo_target_section";
-static NSString * const kHoloTargetIndex = @"holo_target_index";
-static NSString * const kHoloUpdateSection = @"holo_update_section";
-static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
-
 typedef NS_ENUM(NSInteger, HoloCollectionViewSectionMakerType) {
     HoloCollectionViewSectionMakerTypeMake,
     HoloCollectionViewSectionMakerTypeInsert,

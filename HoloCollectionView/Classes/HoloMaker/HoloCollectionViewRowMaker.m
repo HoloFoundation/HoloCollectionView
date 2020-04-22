@@ -181,6 +181,10 @@
     return self.collectionRow;
 }
 
+- (void)giveCollectionRow:(HoloCollectionRow *)collectionRow {
+    self.collectionRow = collectionRow;
+}
+
 #pragma mark - getter
 - (HoloCollectionRow *)collectionRow {
     if (!_collectionRow) {

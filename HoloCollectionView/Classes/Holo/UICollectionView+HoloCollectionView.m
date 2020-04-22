@@ -357,102 +357,81 @@
 
 // holo_updateRows
 - (void)holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block {
-    [self _holo_updateRows:block
-                  isRemark:NO
-                autoReload:NO];
+    [self _holo_updateRowsWithMakerType:HoloCollectionViewUpdateRowMakerTypeUpdate
+                                  block:block
+                                 reload:NO];
 }
 
 - (void)holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block
              autoReload:(BOOL)autoReload {
-    [self _holo_updateRows:block
-                  isRemark:NO
-                autoReload:autoReload];
+    [self _holo_updateRowsWithMakerType:HoloCollectionViewUpdateRowMakerTypeUpdate
+                                  block:block
+                                 reload:autoReload];
 }
 
 // holo_remakeRows
 - (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block {
-    [self _holo_updateRows:block
-                  isRemark:YES
-                autoReload:NO];
+    [self _holo_updateRowsWithMakerType:HoloCollectionViewUpdateRowMakerTypeRemake
+                                  block:block
+                                 reload:NO];
 }
 
 - (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block
              autoReload:(BOOL)autoReload {
-    [self _holo_updateRows:block
-                  isRemark:YES
-                autoReload:autoReload];
+    [self _holo_updateRowsWithMakerType:HoloCollectionViewUpdateRowMakerTypeRemake
+                                  block:block
+                                 reload:autoReload];
 }
 
-- (void)_holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block
-                isRemark:(BOOL)isRemark
-              autoReload:(BOOL)autoReload {
-    HoloCollectionViewUpdateRowMaker *maker = [[HoloCollectionViewUpdateRowMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections isRemark:isRemark];
+
+- (void)_holo_updateRowsWithMakerType:(HoloCollectionViewUpdateRowMakerType)makerType
+                                block:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block
+                               reload:(BOOL)reload {
+    HoloCollectionViewUpdateRowMaker *maker = [[HoloCollectionViewUpdateRowMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections makerType:makerType];
     if (block) block(maker);
     
-    // update cell-cls map and register class
+    // update data and map
     NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
-    NSMutableArray *indexPaths = [NSMutableArray new];
-    for (NSDictionary *dict in [maker install]) {
-        HoloCollectionRow *targetRow = dict[kHoloTargetRow];
-        HoloCollectionRow *updateRow = dict[kHoloUpdateRow];
-        if (!targetRow) {
-            HoloLog(@"[HoloCollectionView] No found a row with the tag: %@.", updateRow.tag);
+    NSMutableArray *updateIndexPaths = [NSMutableArray new];
+    NSMutableArray *updateArray = [NSMutableArray arrayWithArray:self.holo_proxy.proxyData.sections];
+    for (HoloCollectionViewUpdateRowMakerModel *makerModel in [maker install]) {
+        HoloCollectionRow *operateRow = makerModel.operateRow;
+        // HoloCollectionViewUpdateRowMakerTypeUpdate || HoloCollectionViewUpdateRowMakerTypeRemake
+        if (!makerModel.operateIndexPath) {
+            HoloLog(@"[HoloCollectionView] No found a row with the tag: %@.", operateRow.tag);
             continue;
         }
-        [indexPaths addObject:dict[kHoloTargetIndexPath]];
         
-        // set value to property which it's not kind of SEL
-        unsigned int outCount;
-        objc_property_t * properties = class_copyPropertyList([updateRow class], &outCount);
-        for (int i = 0; i < outCount; i++) {
-            objc_property_t property = properties[i];
-            const char * propertyAttr = property_getAttributes(property);
-            char t = propertyAttr[1];
-            if (t != ':') { // not SEL
-                const char *propertyName = property_getName(property);
-                NSString *propertyNameStr = [NSString stringWithCString:propertyName encoding:NSUTF8StringEncoding];
-                id value = [updateRow valueForKey:propertyNameStr];
-                if (value) {
-                    if ([propertyNameStr isEqualToString:@"cell"]) {
-                        if (rowsMap[updateRow.cell]) {
-                            targetRow.cell = updateRow.cell;
-                            continue;
-                        }
-                        
-                        Class cls = NSClassFromString(updateRow.cell);
-                        if (!cls) {
-                            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a cell class with the name: %@.", updateRow.cell];
-                            NSAssert(NO, error);
-                        }
-                        if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-                            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", updateRow.cell];
-                            NSAssert(NO, error);
-                        }
-                        rowsMap[updateRow.cell] = cls;
-                        [self registerClass:cls forCellWithReuseIdentifier:updateRow.cell];
-                        targetRow.cell = updateRow.cell;
-                    } else {
-                        [targetRow setValue:value forKey:propertyNameStr];
-                    }
-                } else if (isRemark) {
-                    if ([propertyNameStr isEqualToString:@"cell"]) {
-                        HoloLog(@"[HoloCollectionView] No update the cell of the row which you wish to ramark with the tag: %@.", updateRow.tag);
-                    } else {
-                        [targetRow setValue:NULL forKey:propertyNameStr];
-                    }
-                }
-            }
+        // update || remake
+        [updateIndexPaths addObject:makerModel.operateIndexPath];
+        
+        if (makerType == HoloCollectionViewUpdateRowMakerTypeRemake) {
+            HoloCollectionSection *section = updateArray[makerModel.operateIndexPath.section];
+            NSMutableArray *rows = [NSMutableArray arrayWithArray:section.rows];
+            [rows replaceObjectAtIndex:makerModel.operateIndexPath.row withObject:operateRow];
+            section.rows = rows;
         }
         
-        // set value of SEL
-        targetRow.configSEL = updateRow.configSEL;
-        targetRow.sizeSEL = updateRow.sizeSEL;
+        if (rowsMap[operateRow.cell]) continue;
+        
+        Class cls = NSClassFromString(operateRow.cell);
+        if (!cls) {
+            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a cell class with the name: %@.", operateRow.cell];
+            NSAssert(NO, error);
+        }
+        if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
+            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", operateRow.cell];
+            NSAssert(NO, error);
+        }
+        rowsMap[operateRow.cell] = cls;
+        [self registerClass:cls forCellWithReuseIdentifier:operateRow.cell];
     }
     self.holo_proxy.proxyData.rowsMap = rowsMap;
+    self.holo_proxy.proxyData.sections = updateArray.copy;
     
-    // refresh view
-    if (autoReload && indexPaths.count > 0) {
-        [self reloadItemsAtIndexPaths:indexPaths];
+    // refresh rows
+    if (reload && updateIndexPaths.count > 0) {
+        [self reloadItemsAtIndexPaths:updateIndexPaths];
     }
 }
 
