@@ -9,16 +9,6 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Requirements
-
-If you want to set the model to your UICollectionViewCell or change it's height according to the model, the UICollectionViewCell could conform to protocol: `HoloCollectionViewCellProtocol` and implement their selectors: 
-
-```objective-c
-- (void)holo_configureCellWithModel:(id)model;
-
-+ (CGSize)holo_sizeForCellWithModel:(id)model;
-```
-
 ## Usage
 
 ```objective-c
@@ -44,6 +34,16 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 
 // etc...
 ```
+
+If you want to set the model to your UICollectionViewCell or change it's height according to the model, the UICollectionViewCell could conform to protocol: `HoloCollectionViewCellProtocol` and implement their selectors: 
+
+```objective-c
+- (void)holo_configureCellWithModel:(id)model;
+
++ (CGSize)holo_sizeForCellWithModel:(id)model;
+```
+
+Also, you can make `configSEL` or `sizeSEL` to set yourself selector for cell.
 
 ## Installation
 
