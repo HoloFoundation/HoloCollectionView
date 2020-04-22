@@ -35,39 +35,112 @@
 #pragma mark - section
 // holo_makeSections
 - (void)holo_makeSections:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block {
-    [self _holo_insertSectionsAtIndex:NSIntegerMax block:block autoReload:NO];
+    [self _holo_operateSectionsWithMakerType:HoloCollectionViewSectionMakerTypeMake
+                                     atIndex:NSIntegerMax
+                                       block:block
+                                      reload:NO];
 }
 
-- (void)holo_makeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload {
-    [self _holo_insertSectionsAtIndex:NSIntegerMax block:block autoReload:autoReload];
+- (void)holo_makeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block
+               autoReload:(BOOL)autoReload {
+    [self _holo_operateSectionsWithMakerType:HoloCollectionViewSectionMakerTypeMake
+                                     atIndex:NSIntegerMax
+                                       block:block
+                                      reload:autoReload];
 }
 
-- (void)holo_insertSectionsAtIndex:(NSInteger)index block:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block {
-    [self _holo_insertSectionsAtIndex:index block:block autoReload:NO];
+- (void)holo_insertSectionsAtIndex:(NSInteger)index
+                             block:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block {
+    [self _holo_operateSectionsWithMakerType:HoloCollectionViewSectionMakerTypeInsert
+                                     atIndex:index
+                                       block:block
+                                      reload:NO];
 }
 
-- (void)holo_insertSectionsAtIndex:(NSInteger)index block:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block autoReload:(BOOL)autoReload {
-    [self _holo_insertSectionsAtIndex:index block:block autoReload:autoReload];
+- (void)holo_insertSectionsAtIndex:(NSInteger)index
+                             block:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block
+                        autoReload:(BOOL)autoReload {
+    [self _holo_operateSectionsWithMakerType:HoloCollectionViewSectionMakerTypeInsert
+                                     atIndex:index
+                                       block:block
+                                      reload:autoReload];
 }
 
-- (void)_holo_insertSectionsAtIndex:(NSInteger)index block:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block autoReload:(BOOL)autoReload {
-    HoloCollectionViewSectionMaker *maker = [HoloCollectionViewSectionMaker new];
+// holo_updateSections
+- (void)holo_updateSections:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block {
+    [self _holo_operateSectionsWithMakerType:HoloCollectionViewSectionMakerTypeUpdate
+                                     atIndex:NSIntegerMax
+                                       block:block
+                                      reload:NO];
+}
+
+- (void)holo_updateSections:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block
+                 autoReload:(BOOL)autoReload {
+    [self _holo_operateSectionsWithMakerType:HoloCollectionViewSectionMakerTypeUpdate
+                                     atIndex:NSIntegerMax
+                                       block:block
+                                      reload:autoReload];
+}
+
+// holo_remakeSections
+- (void)holo_remakeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block {
+    [self _holo_operateSectionsWithMakerType:HoloCollectionViewSectionMakerTypeRemake
+                                     atIndex:NSIntegerMax
+                                       block:block
+                                      reload:NO];
+}
+
+- (void)holo_remakeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block
+                 autoReload:(BOOL)autoReload {
+    [self _holo_operateSectionsWithMakerType:HoloCollectionViewSectionMakerTypeRemake
+                                     atIndex:NSIntegerMax
+                                       block:block
+                                      reload:autoReload];
+}
+
+- (void)_holo_operateSectionsWithMakerType:(HoloCollectionViewSectionMakerType)makerType
+                                   atIndex:(NSInteger)atIndex
+                                     block:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block
+                                    reload:(BOOL)reload {
+    HoloCollectionViewSectionMaker *maker = [[HoloCollectionViewSectionMaker alloc]
+                                             initWithProxyDataSections:self.holo_proxy.proxyData.sections
+                                             makerType:makerType];
     if (block) block(maker);
     
-    // update headersMap and footersMap
+    // update data and map
     NSMutableDictionary *headersMap = self.holo_proxy.proxyData.headersMap.mutableCopy;
     NSMutableDictionary *footersMap = self.holo_proxy.proxyData.footersMap.mutableCopy;
-    NSMutableArray *array = [NSMutableArray new];
-    for (NSDictionary *dict in [maker install]) {
-        HoloCollectionSection *updateSection = dict[kHoloUpdateSection];
-        [array addObject:updateSection];
+    NSMutableArray *updateArray = [NSMutableArray arrayWithArray:self.holo_proxy.proxyData.sections];
+    NSMutableArray *addArray = [NSMutableArray new];
+    NSMutableIndexSet *updateIndexSet = [NSMutableIndexSet new];
+    for (HoloCollectionViewSectionMakerModel *makerModel in [maker install]) {
+        HoloCollectionSection *operateSection = makerModel.operateSection;
+        if (!makerModel.operateIndex && (makerType == HoloCollectionViewSectionMakerTypeUpdate || makerType == HoloCollectionViewSectionMakerTypeRemake)) {
+            HoloLog(@"[HoloCollectionView] No found a section with the tag: %@.", operateSection.tag);
+            continue;
+        }
         
-        if (updateSection.header) [self _registerHeaderFooter:updateSection.header forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withHeaderFootersMap:headersMap];
-        if (updateSection.footer) [self _registerHeaderFooter:updateSection.footer forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withHeaderFootersMap:footersMap];
+        if (makerModel.operateIndex) {
+            // update || remake
+            [updateIndexSet addIndex:makerModel.operateIndex.integerValue];
+            if (makerType == HoloCollectionViewSectionMakerTypeRemake) {
+                [updateArray replaceObjectAtIndex:makerModel.operateIndex.integerValue withObject:operateSection];
+            }
+        } else {
+            // make || insert
+            [addArray addObject:operateSection];
+        }
         
-        // update cell-cls map and register class
+        if (operateSection.header) [self _registerHeaderFooter:operateSection.header
+                                    forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                          withHeaderFootersMap:headersMap];
+        if (operateSection.footer) [self _registerHeaderFooter:operateSection.footer
+                                    forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                          withHeaderFootersMap:footersMap];
+        
+        // update map
         NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
-        for (HoloCollectionRow *row in updateSection.rows) {
+        for (HoloCollectionRow *row in operateSection.rows) {
             if (rowsMap[row.cell]) continue;
             
             Class cls = NSClassFromString(row.cell);
@@ -86,92 +159,23 @@
     }
     self.holo_proxy.proxyData.headersMap = headersMap;
     self.holo_proxy.proxyData.footersMap = footersMap;
-
-    // append sections
-    NSIndexSet *indexSet = [self.holo_proxy.proxyData insertSections:array anIndex:index];
-    if (autoReload && indexSet.count > 0) {
-        [self insertSections:indexSet];
-    }
-}
-
-// holo_updateSections
-- (void)holo_updateSections:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block {
-    [self _holo_updateSections:block isRemark:NO autoReload:NO];
-}
-
-- (void)holo_updateSections:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block autoReload:(BOOL)autoReload {
-    [self _holo_updateSections:block isRemark:NO autoReload:autoReload];
-}
-
-// holo_remakeSections
-- (void)holo_remakeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block {
-    [self _holo_updateSections:block isRemark:YES autoReload:NO];
-}
-
-- (void)holo_remakeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload {
-    [self _holo_updateSections:block isRemark:YES autoReload:autoReload];
-}
-
-- (void)_holo_updateSections:(void (NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *))block isRemark:(BOOL)isRemark autoReload:(BOOL)autoReload {
-    HoloCollectionViewSectionMaker *maker = [[HoloCollectionViewSectionMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections isRemark:isRemark];
-    if (block) block(maker);
+    self.holo_proxy.proxyData.sections = updateArray.copy;
     
-    // update targetSection and headersMap/footersMap
-    NSMutableDictionary *headersMap = self.holo_proxy.proxyData.headersMap.mutableCopy;
-    NSMutableDictionary *footersMap = self.holo_proxy.proxyData.footersMap.mutableCopy;
-    NSMutableIndexSet *indexSet = [NSMutableIndexSet new];
-    for (NSDictionary *dict in [maker install]) {
-        HoloCollectionSection *targetSection = dict[kHoloTargetSection];
-        HoloCollectionSection *updateSection = dict[kHoloUpdateSection];
-        if (!targetSection) {
-            HoloLog(@"[HoloCollectionView] No found a section with the tag: %@.", updateSection.tag);
-            continue;
-        }
-        [indexSet addIndex:[dict[kHoloTargetIndex] integerValue]];
-        
-        // set value to property which it's not kind of SEL
-        unsigned int outCount;
-        objc_property_t * properties = class_copyPropertyList([updateSection class], &outCount);
-        for (int i = 0; i < outCount; i++) {
-            objc_property_t property = properties[i];
-            const char * propertyAttr = property_getAttributes(property);
-            char t = propertyAttr[1];
-            if (t != ':') { // not SEL
-                const char *propertyName = property_getName(property);
-                NSString *propertyNameStr = [NSString stringWithCString:propertyName encoding:NSUTF8StringEncoding];
-                
-                id value = [updateSection valueForKey:propertyNameStr];
-                if (value) {
-                    if ([propertyNameStr isEqualToString:@"header"]) {
-                        targetSection.header = updateSection.header;
-                        [self _registerHeaderFooter:targetSection.header forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withHeaderFootersMap:headersMap];
-                    } else if ([propertyNameStr isEqualToString:@"footer"]) {
-                        targetSection.footer = updateSection.footer;
-                        [self _registerHeaderFooter:targetSection.footer forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withHeaderFootersMap:footersMap];
-                    } else {
-                        [targetSection setValue:value forKey:propertyNameStr];
-                    }
-                } else if (isRemark) {
-                    [targetSection setValue:NULL forKey:propertyNameStr];
-                }
-            }
-        }
-        
-        // set value of SEL
-        targetSection.headerFooterConfigSEL = updateSection.headerFooterConfigSEL;
-        targetSection.headerFooterSizeSEL = updateSection.headerFooterSizeSEL;
+    // update sections
+    if (reload && updateIndexSet.count > 0) {
+        [self reloadSections:updateIndexSet];
     }
-    self.holo_proxy.proxyData.headersMap = headersMap;
-    self.holo_proxy.proxyData.footersMap = footersMap;
-
-    // refresh view
-    if (autoReload && indexSet.count > 0) {
-        [self reloadSections:indexSet];
+    // append sections
+    NSIndexSet *addIndexSet = [self.holo_proxy.proxyData insertSections:addArray anIndex:atIndex];
+    if (reload && addIndexSet.count > 0) {
+        [self insertSections:addIndexSet];
     }
 }
 
 // _registerHeaderFooter
-- (void)_registerHeaderFooter:(NSString *)headerFooter forSupplementaryViewOfKind:(NSString *)elementKind withHeaderFootersMap:(NSMutableDictionary *)headerFootersMap {
+- (void)_registerHeaderFooter:(NSString *)headerFooter
+   forSupplementaryViewOfKind:(NSString *)elementKind
+         withHeaderFootersMap:(NSMutableDictionary *)headerFootersMap {
     
     if (headerFootersMap[headerFooter]) return;
     
@@ -230,39 +234,78 @@
 #pragma mark - row
 // holo_makeRows
 - (void)holo_makeRows:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block {
-    [self _holo_insertRowsAtIndex:NSIntegerMax inSection:nil block:block autoReload:NO];
+    [self _holo_insertRowsAtIndex:NSIntegerMax
+                        inSection:nil
+                            block:block
+                       autoReload:NO];
 }
 
-- (void)holo_makeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload {
-    [self _holo_insertRowsAtIndex:NSIntegerMax inSection:nil block:block autoReload:autoReload];
+- (void)holo_makeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
+           autoReload:(BOOL)autoReload {
+    [self _holo_insertRowsAtIndex:NSIntegerMax
+                        inSection:nil
+                            block:block
+                       autoReload:autoReload];
 }
 
 // holo_makeRowsInSection
-- (void)holo_makeRowsInSection:(NSString *)tag block:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block {
-    [self _holo_insertRowsAtIndex:NSIntegerMax inSection:tag block:block autoReload:NO];
+- (void)holo_makeRowsInSection:(NSString *)tag
+                         block:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block {
+    [self _holo_insertRowsAtIndex:NSIntegerMax
+                        inSection:tag
+                            block:block
+                       autoReload:NO];
 }
 
-- (void)holo_makeRowsInSection:(NSString *)tag block:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block autoReload:(BOOL)autoReload {
-    [self _holo_insertRowsAtIndex:NSIntegerMax inSection:tag block:block autoReload:autoReload];
+- (void)holo_makeRowsInSection:(NSString *)tag
+                         block:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block
+                    autoReload:(BOOL)autoReload {
+    [self _holo_insertRowsAtIndex:NSIntegerMax
+                        inSection:tag
+                            block:block
+                       autoReload:autoReload];
 }
 
-- (void)holo_insertRowsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block {
-    [self _holo_insertRowsAtIndex:index inSection:nil block:block autoReload:NO];
+- (void)holo_insertRowsAtIndex:(NSInteger)index
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block {
+    [self _holo_insertRowsAtIndex:index
+                        inSection:nil
+                            block:block
+                       autoReload:NO];
 }
 
-- (void)holo_insertRowsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload {
-    [self _holo_insertRowsAtIndex:index inSection:nil block:block autoReload:autoReload];
+- (void)holo_insertRowsAtIndex:(NSInteger)index
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
+                    autoReload:(BOOL)autoReload {
+    [self _holo_insertRowsAtIndex:index
+                        inSection:nil
+                            block:block
+                       autoReload:autoReload];
 }
 
-- (void)holo_insertRowsAtIndex:(NSInteger)index inSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block {
-    [self _holo_insertRowsAtIndex:index inSection:tag block:block autoReload:NO];
+- (void)holo_insertRowsAtIndex:(NSInteger)index
+                     inSection:(NSString *)tag
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block {
+    [self _holo_insertRowsAtIndex:index
+                        inSection:tag
+                            block:block
+                       autoReload:NO];
 }
 
-- (void)holo_insertRowsAtIndex:(NSInteger)index inSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload {
-    [self _holo_insertRowsAtIndex:index inSection:tag block:block autoReload:autoReload];
+- (void)holo_insertRowsAtIndex:(NSInteger)index
+                     inSection:(NSString *)tag
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
+                    autoReload:(BOOL)autoReload {
+    [self _holo_insertRowsAtIndex:index
+                        inSection:tag
+                            block:block
+                       autoReload:autoReload];
 }
 
-- (void)_holo_insertRowsAtIndex:(NSInteger)index inSection:(NSString *)tag block:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block autoReload:(BOOL)autoReload {
+- (void)_holo_insertRowsAtIndex:(NSInteger)index
+                      inSection:(NSString *)tag
+                          block:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block
+                     autoReload:(BOOL)autoReload {
     HoloCollectionViewRowMaker *maker = [HoloCollectionViewRowMaker new];
     if (block) block(maker);
     
@@ -314,23 +357,35 @@
 
 // holo_updateRows
 - (void)holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block {
-    [self _holo_updateRows:block isRemark:NO autoReload:NO];
+    [self _holo_updateRows:block
+                  isRemark:NO
+                autoReload:NO];
 }
 
-- (void)holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block autoReload:(BOOL)autoReload {
-    [self _holo_updateRows:block isRemark:NO autoReload:autoReload];
+- (void)holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block
+             autoReload:(BOOL)autoReload {
+    [self _holo_updateRows:block
+                  isRemark:NO
+                autoReload:autoReload];
 }
 
 // holo_remakeRows
 - (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block {
-    [self _holo_updateRows:block isRemark:YES autoReload:NO];
+    [self _holo_updateRows:block
+                  isRemark:YES
+                autoReload:NO];
 }
 
-- (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block autoReload:(BOOL)autoReload {
-    [self _holo_updateRows:block isRemark:YES autoReload:autoReload];
+- (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block
+             autoReload:(BOOL)autoReload {
+    [self _holo_updateRows:block
+                  isRemark:YES
+                autoReload:autoReload];
 }
 
-- (void)_holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block isRemark:(BOOL)isRemark autoReload:(BOOL)autoReload {
+- (void)_holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block
+                isRemark:(BOOL)isRemark
+              autoReload:(BOOL)autoReload {
     HoloCollectionViewUpdateRowMaker *maker = [[HoloCollectionViewUpdateRowMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections isRemark:isRemark];
     if (block) block(maker);
     
@@ -403,14 +458,18 @@
 
 // holo_removeAllRowsInSections
 - (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags {
-    [self _holo_removeAllRowsInSections:tags autoReload:NO];
+    [self _holo_removeAllRowsInSections:tags
+                             autoReload:NO];
 }
 
-- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
-    [self _holo_removeAllRowsInSections:tags autoReload:autoReload];
+- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags
+                          autoReload:(BOOL)autoReload {
+    [self _holo_removeAllRowsInSections:tags
+                             autoReload:autoReload];
 }
 
-- (void)_holo_removeAllRowsInSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
+- (void)_holo_removeAllRowsInSections:(NSArray<NSString *> *)tags
+                           autoReload:(BOOL)autoReload {
     NSArray *indexPaths = [self.holo_proxy.proxyData removeAllRowsInSections:tags];
     if (autoReload && indexPaths.count > 0) {
         [self deleteItemsAtIndexPaths:indexPaths];
@@ -419,14 +478,18 @@
 
 // holo_removeRow
 - (void)holo_removeRows:(NSArray<NSString *> *)tags {
-    [self _holo_removeRow:tags autoReload:NO];
+    [self _holo_removeRow:tags
+               autoReload:NO];
 }
 
-- (void)holo_removeRows:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
-    [self _holo_removeRow:tags autoReload:autoReload];
+- (void)holo_removeRows:(NSArray<NSString *> *)tags
+             autoReload:(BOOL)autoReload {
+    [self _holo_removeRow:tags
+               autoReload:autoReload];
 }
 
-- (void)_holo_removeRow:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
+- (void)_holo_removeRow:(NSArray<NSString *> *)tags
+             autoReload:(BOOL)autoReload {
     NSArray *indexPaths = [self.holo_proxy.proxyData removeRows:tags];
     if (indexPaths.count <= 0) {
         HoloLog(@"[HoloCollectionView] No found any row with these tags: %@.", tags);

@@ -39,7 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some sections which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_makeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_makeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block
+               autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewSectionMaker in the callee for current UICollectionView.
@@ -48,7 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param index The index in the array at which to insert sections. If this value is less than 0, insert an first index; if this value is greater than the count of elements in the array, insert an last index.
  *  @param block Scope within which you can create some sections which you wish to apply to current UICollectionView.
  */
-- (void)holo_insertSectionsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block;
+- (void)holo_insertSectionsAtIndex:(NSInteger)index
+                             block:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block;
 
 /**
  *  Creates a HoloCollectionViewSectionMaker in the callee for current UICollectionView.
@@ -60,7 +62,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some sections which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_insertSectionsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_insertSectionsAtIndex:(NSInteger)index
+                             block:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block
+                        autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewSectionMaker in the callee for current UICollectionView.
@@ -81,7 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some sections which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_updateSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_updateSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block
+                 autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewSectionMaker in the callee for current UICollectionView.
@@ -102,7 +107,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some sections which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_remakeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_remakeSections:(void(NS_NOESCAPE ^)(HoloCollectionViewSectionMaker *make))block
+                 autoReload:(BOOL)autoReload;
 
 /**
  *  Remove all sections.
@@ -134,7 +140,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param tags The tags of sections which you wish to remove.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_removeSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload;
+- (void)holo_removeSections:(NSArray<NSString *> *)tags
+                 autoReload:(BOOL)autoReload;
 
 
 #pragma mark - row
@@ -157,7 +164,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_makeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_makeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
+           autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewRowMaker in the callee for current UICollectionView.
@@ -167,7 +175,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param tag The tag of section which you wish to append rows.
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
  */
-- (void)holo_makeRowsInSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block;
+- (void)holo_makeRowsInSection:(NSString *)tag
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block;
 
 /**
  *  Creates a HoloCollectionViewRowMaker in the callee for current UICollectionView.
@@ -180,7 +189,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_makeRowsInSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_makeRowsInSection:(NSString *)tag
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
+                    autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewRowMaker in the callee for current UICollectionView.
@@ -190,7 +201,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param index The index in the array at which to insert rows. If this value is less than 0, insert an first index; if this value is greater than the count of elements in the array, insert an last index.
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
  */
-- (void)holo_insertRowsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block;
+- (void)holo_insertRowsAtIndex:(NSInteger)index
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block;
 
 /**
  *  Creates a HoloCollectionViewRowMaker in the callee for current UICollectionView.
@@ -203,7 +215,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_insertRowsAtIndex:(NSInteger)index block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_insertRowsAtIndex:(NSInteger)index
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
+                    autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewRowMaker in the callee for current UICollectionView.
@@ -214,7 +228,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param tag The tag of section which you wish to append rows.
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
  */
-- (void)holo_insertRowsAtIndex:(NSInteger)index inSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block;
+- (void)holo_insertRowsAtIndex:(NSInteger)index
+                     inSection:(NSString *)tag
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block;
 
 /**
  *  Creates a HoloCollectionViewRowMaker in the callee for current UICollectionView.
@@ -228,7 +244,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_insertRowsAtIndex:(NSInteger)index inSection:(NSString *)tag block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_insertRowsAtIndex:(NSInteger)index
+                     inSection:(NSString *)tag
+                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
+                    autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewUpdateRowMaker in the callee for current UICollectionView.
@@ -249,7 +268,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_updateRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_updateRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block
+             autoReload:(BOOL)autoReload;
 
 /**
  *  Creates a HoloCollectionViewUpdateRowMaker in the callee for current UICollectionView.
@@ -270,7 +290,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param block Scope within which you can create some rows which you wish to apply to current UICollectionView.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block autoReload:(BOOL)autoReload;
+- (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block
+             autoReload:(BOOL)autoReload;
 
 /**
  *  Remove all rows in the sections according to the tags.
@@ -285,7 +306,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param tags The tags of sections which you wish to remove all rows.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload;
+- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags
+                          autoReload:(BOOL)autoReload;
 
 /**
  *  Remove the rows according to the tags in all sections.
@@ -302,7 +324,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param tags The tags of rows which you wish to remove.
  *  @param autoReload Auto reload view if YES.
  */
-- (void)holo_removeRows:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload;
+- (void)holo_removeRows:(NSArray<NSString *> *)tags
+             autoReload:(BOOL)autoReload;
 
 @end
 

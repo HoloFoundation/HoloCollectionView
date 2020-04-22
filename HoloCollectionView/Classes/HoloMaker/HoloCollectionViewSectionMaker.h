@@ -15,6 +15,12 @@ static NSString * const kHoloTargetIndex = @"holo_target_index";
 static NSString * const kHoloUpdateSection = @"holo_update_section";
 static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
+typedef NS_ENUM(NSInteger, HoloCollectionViewSectionMakerType) {
+    HoloCollectionViewSectionMakerTypeMake,
+    HoloCollectionViewSectionMakerTypeInsert,
+    HoloCollectionViewSectionMakerTypeUpdate,
+    HoloCollectionViewSectionMakerTypeRemake
+};
 
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionSection : NSObject
@@ -102,14 +108,25 @@ static NSString * const kHoloSectionTagNil = @"holo_section_tag_nil";
 
 @end
 
+
+////////////////////////////////////////////////////////////
+@interface HoloCollectionViewSectionMakerModel : NSObject
+
+@property (nonatomic, strong) HoloCollectionSection *operateSection;
+
+@property (nonatomic, strong) NSNumber *operateIndex;
+
+@end
+
 ////////////////////////////////////////////////////////////
 @interface HoloCollectionViewSectionMaker : NSObject
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^section)(NSString *tag);
 
-- (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections isRemark:(BOOL)isRemark;
+- (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections
+                                makerType:(HoloCollectionViewSectionMakerType)makerType;
 
-- (NSArray<NSDictionary *> *)install;
+- (NSArray<HoloCollectionViewSectionMakerModel *> *)install;
 
 @end
 
