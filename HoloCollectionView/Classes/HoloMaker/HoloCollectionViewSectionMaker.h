@@ -42,8 +42,15 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewSectionMakerType) {
 
 @property (nonatomic, assign) CGSize footerSize;
 
-@property (nonatomic, assign) SEL headerFooterConfigSEL;
+@property (nonatomic, assign) SEL headerConfigSEL;
 
+@property (nonatomic, assign) SEL footerConfigSEL;
+
+@property (nonatomic, assign) SEL headerSizeSEL;
+
+@property (nonatomic, assign) SEL footerSizeSEL;
+
+@property (nonatomic, assign) SEL headerFooterConfigSEL;
 @property (nonatomic, assign) SEL headerFooterSizeSEL;
 
 @property (nonatomic, copy) void (^willDisplayHeaderHandler)(UIView *header, id _Nullable model);
@@ -87,9 +94,16 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewSectionMakerType) {
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerSize)(CGSize footerSize);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterConfigSEL)(SEL headerConfigSEL);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerConfigSEL)(SEL headerConfigSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterSizeSEL)(SEL headerSizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerConfigSEL)(SEL footerConfigSEL);
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerHeightSEL)(SEL headerSizeSEL);
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerHeightSEL)(SEL footerSizeSEL);
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterConfigSEL)(SEL headerFooterConfigSEL) DEPRECATED_MSG_ATTRIBUTE("Please use `headerConfigSEL` or `footerConfigSEL` api instead.");
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterSizeSEL)(SEL headerFooterSizeSEL) DEPRECATED_MSG_ATTRIBUTE("Please use `headerSizeSEL` or `footerSizeSEL` api instead.");
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^willDisplayHeaderHandler)(void(^)(UIView *header, id _Nullable model));
 

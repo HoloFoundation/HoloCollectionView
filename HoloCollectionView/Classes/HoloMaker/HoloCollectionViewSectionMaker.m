@@ -22,6 +22,11 @@
         _minimumInteritemSpacing = CGFLOAT_MIN;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
+        _headerConfigSEL = @selector(holo_configureHeaderWithModel:);
+        _footerConfigSEL = @selector(holo_configureFooterWithModel:);
+        _headerSizeSEL = @selector(holo_sizeForHeaderWithModel:);
+        _footerSizeSEL = @selector(holo_sizeForFooterWithModel:);
+        
         _headerFooterConfigSEL = @selector(holo_configureHeaderFooterWithModel:);
         _headerFooterSizeSEL = @selector(holo_sizeForHeaderFooterWithModel:);
 #pragma clang diagnostic pop
@@ -128,13 +133,40 @@
     };
 }
 
+- (HoloCollectionSectionMaker *(^)(SEL))headerConfigSEL {
+    return ^id(SEL s) {
+        self.section.headerConfigSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(SEL))footerConfigSEL {
+    return ^id(SEL s) {
+        self.section.footerConfigSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(SEL))headerSizeSEL {
+    return ^id(SEL s) {
+        self.section.headerSizeSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(SEL))footerSizeSEL {
+    return ^id(SEL s) {
+        self.section.footerSizeSEL = s;
+        return self;
+    };
+}
+
 - (HoloCollectionSectionMaker *(^)(SEL))headerFooterConfigSEL {
     return ^id(SEL s) {
         self.section.headerFooterConfigSEL = s;
         return self;
     };
 }
-
 - (HoloCollectionSectionMaker *(^)(SEL))headerFooterSizeSEL {
     return ^id(SEL s) {
         self.section.headerFooterSizeSEL = s;
