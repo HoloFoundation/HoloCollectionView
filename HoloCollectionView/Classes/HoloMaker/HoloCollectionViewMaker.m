@@ -8,17 +8,90 @@
 #import "HoloCollectionViewMaker.h"
 
 ////////////////////////////////////////////////////////////
+@interface HoloCollectionViewRHFMap ()
+
+@property (nonatomic, copy) NSString *key;
+
+@property (nonatomic, strong) Class cls;
+
+@end
+
+@implementation HoloCollectionViewRHFMap
+
+- (void (^)(Class))map {
+    return ^(Class cls) {
+        self.cls = cls;
+    };
+}
+
+@end
+
+////////////////////////////////////////////////////////////
+@interface HoloCollectionViewRHFMapMaker ()
+
+@property (nonatomic, strong) NSMutableArray<HoloCollectionViewRHFMap *> *mapArray;
+
+@end
+
+@implementation HoloCollectionViewRHFMapMaker
+
+- (NSDictionary<NSString *, Class> *)install {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    [self.mapArray enumerateObjectsUsingBlock:^(HoloCollectionViewRHFMap * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        dict[obj.key] = obj.cls;
+    }];
+    return dict.copy;
+}
+
+#pragma mark - getter
+- (NSMutableArray<HoloCollectionViewRHFMap *> *)mapArray {
+    if (!_mapArray) {
+        _mapArray = [NSMutableArray new];
+    }
+    return _mapArray;
+}
+
+@end
+
+////////////////////////////////////////////////////////////
 @implementation HoloCollectionViewRowMapMaker
+
+- (HoloCollectionViewRHFMap * (^)(NSString *))row {
+    return ^id(id obj) {
+        HoloCollectionViewRHFMap *map = [HoloCollectionViewRHFMap new];
+        map.key = obj;
+        [self.mapArray addObject:map];
+        return map;
+    };
+}
 
 @end
 
 ////////////////////////////////////////////////////////////
 @implementation HoloCollectionViewHeaderMapMaker
 
+- (HoloCollectionViewRHFMap * (^)(NSString *))header {
+    return ^id(id obj) {
+        HoloCollectionViewRHFMap *map = [HoloCollectionViewRHFMap new];
+        map.key = obj;
+        [self.mapArray addObject:map];
+        return map;
+    };
+}
+
 @end
 
 ////////////////////////////////////////////////////////////
 @implementation HoloCollectionViewFooterMapMaker
+
+- (HoloCollectionViewRHFMap * (^)(NSString *))footer {
+    return ^id(id obj) {
+        HoloCollectionViewRHFMap *map = [HoloCollectionViewRHFMap new];
+        map.key = obj;
+        [self.mapArray addObject:map];
+        return map;
+    };
+}
 
 @end
 
@@ -76,7 +149,7 @@
         HoloCollectionViewRowMapMaker *maker = [HoloCollectionViewRowMapMaker new];
         if (block) block(maker);
         
-//        [self.section insertRows:[maker install] atIndex:NSIntegerMax];
+        self.collectionViewModel.rowsMap = [maker install];
         return self;
     };
 }
@@ -86,7 +159,7 @@
         HoloCollectionViewHeaderMapMaker *maker = [HoloCollectionViewHeaderMapMaker new];
         if (block) block(maker);
         
-//        [self.section insertRows:[maker install] atIndex:NSIntegerMax];
+        self.collectionViewModel.headersMap = [maker install];
         return self;
     };
 }
@@ -96,7 +169,7 @@
         HoloCollectionViewFooterMapMaker *maker = [HoloCollectionViewFooterMapMaker new];
         if (block) block(maker);
         
-//        [self.section insertRows:[maker install] atIndex:NSIntegerMax];
+        self.collectionViewModel.footersMap = [maker install];
         return self;
     };
 }

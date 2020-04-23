@@ -18,6 +18,10 @@
 
 @property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoRowsMap;
 
+@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoHeadersMap;
+
+@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoFootersMap;
+
 @end
 
 @implementation HoloCollectionViewProxy
@@ -231,7 +235,7 @@
     }
     
     HoloCollectionSection *holoSection = self.holoSections[section];
-    Class header = NSClassFromString(holoSection.header);
+    Class header = self.holoHeadersMap[holoSection.header];
     if (holoSection.headerSizeSEL && [header respondsToSelector:holoSection.headerSizeSEL]) {
         return [self _sizeWithMethodSignatureCls:header selector:holoSection.headerSizeSEL model:holoSection.headerModel];
     } else if (holoSection.headerFooterSizeSEL && [header respondsToSelector:holoSection.headerFooterSizeSEL]) {
@@ -252,7 +256,7 @@
     }
     
     HoloCollectionSection *holoSection = self.holoSections[section];
-    Class footer = NSClassFromString(holoSection.footer);
+    Class footer = self.holoFootersMap[holoSection.footer];
     if (holoSection.footerSizeSEL && [footer respondsToSelector:holoSection.footerSizeSEL]) {
         return [self _sizeWithMethodSignatureCls:footer selector:holoSection.footerSizeSEL model:holoSection.footerModel];
     } else if (holoSection.headerFooterSizeSEL && [footer respondsToSelector:holoSection.headerFooterSizeSEL]) {
@@ -536,6 +540,14 @@
 
 - (NSDictionary<NSString *, Class> *)holoRowsMap {
     return self.proxyData.rowsMap;
+}
+
+- (NSDictionary<NSString *,Class> *)holoHeadersMap {
+    return self.proxyData.headersMap;
+}
+
+- (NSDictionary<NSString *,Class> *)holoFootersMap {
+    return self.proxyData.footersMap;
 }
 
 @end

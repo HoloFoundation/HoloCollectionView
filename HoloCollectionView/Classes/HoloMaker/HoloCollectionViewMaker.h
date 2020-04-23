@@ -13,29 +13,35 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleHandler)(NSString *title, NSInteger index);
 
 ////////////////////////////////////////////////////////////
-@interface HoloCollectionViewRowMapMaker : NSObject
+@interface HoloCollectionViewRHFMap : NSObject // RHFMap: RowHeaderFooterMap
 
-@property (nonatomic, copy, readonly) HoloCollectionViewRowMapMaker *(^row)(NSString *row);
-
-@property (nonatomic, copy, readonly) HoloCollectionViewRowMapMaker *(^map)(Class cls);
+@property (nonatomic, copy, readonly) void (^map)(Class cls);
 
 @end
 
 ////////////////////////////////////////////////////////////
-@interface HoloCollectionViewHeaderMapMaker : NSObject
-
-@property (nonatomic, copy, readonly) HoloCollectionViewHeaderMapMaker *(^header)(NSString *header);
-
-@property (nonatomic, copy, readonly) HoloCollectionViewHeaderMapMaker *(^map)(Class cls);
+@interface HoloCollectionViewRHFMapMaker : NSObject // RHFMapMaker: RowHeaderFooterMaker
 
 @end
 
 ////////////////////////////////////////////////////////////
-@interface HoloCollectionViewFooterMapMaker : NSObject
+@interface HoloCollectionViewRowMapMaker : HoloCollectionViewRHFMapMaker
 
-@property (nonatomic, copy, readonly) HoloCollectionViewFooterMapMaker *(^footer)(NSString *footer);
+@property (nonatomic, copy, readonly) HoloCollectionViewRHFMap *(^row)(NSString *row);
 
-@property (nonatomic, copy, readonly) HoloCollectionViewFooterMapMaker *(^map)(Class cls);
+@end
+
+////////////////////////////////////////////////////////////
+@interface HoloCollectionViewHeaderMapMaker : HoloCollectionViewRHFMapMaker
+
+@property (nonatomic, copy, readonly) HoloCollectionViewRHFMap *(^header)(NSString *header);
+
+@end
+
+////////////////////////////////////////////////////////////
+@interface HoloCollectionViewFooterMapMaker : HoloCollectionViewRHFMapMaker
+
+@property (nonatomic, copy, readonly) HoloCollectionViewRHFMap *(^footer)(NSString *footer);
 
 @end
 
@@ -51,6 +57,12 @@ typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleH
 @property (nonatomic, strong) id<HoloCollectionViewDataSource> dataSource;
 
 @property (nonatomic, strong) id<UIScrollViewDelegate> scrollDelegate;
+
+@property (nonatomic, copy) NSDictionary<NSString *, Class> *rowsMap;
+
+@property (nonatomic, copy) NSDictionary<NSString *, Class> *headersMap;
+
+@property (nonatomic, copy) NSDictionary<NSString *, Class> *footersMap;
 
 @end
 

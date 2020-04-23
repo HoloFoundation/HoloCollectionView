@@ -30,6 +30,43 @@
     if (collectionViewModel.delegate) self.holo_proxy.delegate = collectionViewModel.delegate;
     if (collectionViewModel.dataSource) self.holo_proxy.dataSource = collectionViewModel.dataSource;
     if (collectionViewModel.scrollDelegate) self.holo_proxy.scrollDelegate = collectionViewModel.scrollDelegate;
+    
+    // rowsMap
+    NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
+    [collectionViewModel.rowsMap enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, Class  _Nonnull obj, BOOL * _Nonnull stop) {
+        rowsMap[key] = obj;
+        [self registerClass:obj forCellWithReuseIdentifier:key];
+        
+        if (![obj.new isKindOfClass:UICollectionViewCell.class]) {
+            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", NSStringFromClass(obj)];
+            NSAssert(NO, error);
+        }
+    }];
+    self.holo_proxy.proxyData.rowsMap = rowsMap;
+    // headersMap
+    NSMutableDictionary *headersMap = self.holo_proxy.proxyData.headersMap.mutableCopy;
+    [collectionViewModel.headersMap enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, Class  _Nonnull obj, BOOL * _Nonnull stop) {
+        headersMap[key] = obj;
+        [self registerClass:obj forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:key];
+
+        if (![obj.new isKindOfClass:UICollectionReusableView.class]) {
+            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", NSStringFromClass(obj)];
+            NSAssert(NO, error);
+        }
+    }];
+    self.holo_proxy.proxyData.headersMap = headersMap;
+    // footersMap
+    NSMutableDictionary *footersMap = self.holo_proxy.proxyData.footersMap.mutableCopy;
+    [collectionViewModel.footersMap enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, Class  _Nonnull obj, BOOL * _Nonnull stop) {
+        footersMap[key] = obj;
+        [self registerClass:obj forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:key];
+
+        if (![obj.new isKindOfClass:UICollectionReusableView.class]) {
+            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", NSStringFromClass(obj)];
+            NSAssert(NO, error);
+        }
+    }];
+    self.holo_proxy.proxyData.footersMap = footersMap;
 }
 
 #pragma mark - section
