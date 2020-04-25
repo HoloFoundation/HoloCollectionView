@@ -6,8 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HoloCollectionViewRowMaker.h"
-@class HoloCollectionSection;
+@class HoloCollectionSection, HoloCollectionRowMaker, HoloCollectionRow;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -7,6 +7,7 @@
 
 #import "HoloCollectionViewUpdateRowMaker.h"
 #import "HoloCollectionViewSectionMaker.h"
+#import "HoloCollectionViewRowMaker.h"
 
 ////////////////////////////////////////////////////////////
 @implementation HoloCollectionViewUpdateRowMakerModel
