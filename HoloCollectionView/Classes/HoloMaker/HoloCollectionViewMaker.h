@@ -52,11 +52,11 @@ typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleH
 
 @property (nonatomic, copy) HoloCollectionViewSectionForSectionIndexTitleHandler indexTitlesHandler;
 
-@property (nonatomic, strong) id<HoloCollectionViewDelegateFlowLayout> delegate;
+@property (nonatomic, weak) id<HoloCollectionViewDelegateFlowLayout> delegate;
 
-@property (nonatomic, strong) id<HoloCollectionViewDataSource> dataSource;
+@property (nonatomic, weak) id<HoloCollectionViewDataSource> dataSource;
 
-@property (nonatomic, strong) id<UIScrollViewDelegate> scrollDelegate;
+@property (nonatomic, weak) id<UIScrollViewDelegate> scrollDelegate;
 
 @property (nonatomic, copy) NSDictionary<NSString *, Class> *rowsMap;
 
