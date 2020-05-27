@@ -70,13 +70,6 @@
 
 @implementation HoloCollectionSectionMaker
 
-- (HoloCollectionSectionMaker * (^)(UIEdgeInsets))inset {
-    return ^id(UIEdgeInsets i) {
-        self.section.inset = i;
-        return self;
-    };
-}
-
 - (HoloCollectionSectionMaker * (^)(Class))header {
     return ^id(Class cls) {
         self.section.header = NSStringFromClass(cls);
@@ -101,6 +94,28 @@
 - (HoloCollectionSectionMaker *(^)(NSString *))footerS {
     return ^id(id obj) {
         self.section.footer = obj;
+        return self;
+    };
+}
+
+#pragma mark - priority low
+- (HoloCollectionSectionMaker * (^)(UIEdgeInsets))inset {
+    return ^id(UIEdgeInsets i) {
+        self.section.inset = i;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(CGFloat))minimumLineSpacing {
+    return ^id(CGFloat f) {
+        self.section.minimumLineSpacing = f;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(CGFloat))minimumInteritemSpacing {
+    return ^id(CGFloat f) {
+        self.section.minimumInteritemSpacing = f;
         return self;
     };
 }
@@ -133,6 +148,85 @@
     };
 }
 
+#pragma mark - priority middle
+- (HoloCollectionSectionMaker * (^)(UIEdgeInsets (^)(void)))insetHandler {
+    return ^id(id obj) {
+        self.section.insetHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(CGFloat (^)(void)))minimumLineSpacingHandler {
+    return ^id(id obj) {
+        self.section.minimumLineSpacingHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(CGFloat (^)(void)))minimumInteritemSpacingHandler {
+    return ^id(id obj) {
+        self.section.minimumInteritemSpacingHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(id (^)(void)))headerModelHandler {
+    return ^id(id obj) {
+        self.section.headerModelHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(id (^)(void)))footerModelHandler {
+    return ^id(id obj) {
+        self.section.footerModelHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(CGSize (^)(id)))headerSizeHandler {
+    return ^id(id obj) {
+        self.section.headerSizeHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(CGSize (^)(id)))footerSizeHandler {
+    return ^id(id obj) {
+        self.section.footerSizeHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))willDisplayHeaderHandler {
+    return ^id(id obj) {
+        self.section.willDisplayHeaderHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))willDisplayFooterHandler {
+    return ^id(id obj) {
+        self.section.willDisplayFooterHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))didEndDisplayingHeaderHandler {
+    return ^id(id obj) {
+        self.section.didEndDisplayingHeaderHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))didEndDisplayingFooterHandler {
+    return ^id(id obj) {
+        self.section.didEndDisplayingFooterHandler = obj;
+        return self;
+    };
+}
+
+#pragma mark - priority high
 - (HoloCollectionSectionMaker *(^)(SEL))headerConfigSEL {
     return ^id(SEL s) {
         self.section.headerConfigSEL = s;
@@ -174,33 +268,34 @@
     };
 }
 
-- (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))willDisplayHeaderHandler {
-    return ^id(id obj) {
-        self.section.willDisplayHeaderHandler = obj;
+- (HoloCollectionSectionMaker * (^)(SEL))willDisplayHeaderSEL {
+    return ^id(SEL s) {
+        self.section.willDisplayHeaderSEL = s;
         return self;
     };
 }
 
-- (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))willDisplayFooterHandler {
-    return ^id(id obj) {
-        self.section.willDisplayFooterHandler = obj;
+- (HoloCollectionSectionMaker * (^)(SEL))willDisplayFooterSEL {
+    return ^id(SEL s) {
+        self.section.willDisplayFooterSEL = s;
         return self;
     };
 }
 
-- (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))didEndDisplayingHeaderHandler {
-    return ^id(id obj) {
-        self.section.didEndDisplayingHeaderHandler = obj;
+- (HoloCollectionSectionMaker * (^)(SEL))didEndDisplayingHeaderSEL {
+    return ^id(SEL s) {
+        self.section.didEndDisplayingHeaderSEL = s;
         return self;
     };
 }
 
-- (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))didEndDisplayingFooterHandler {
-    return ^id(id obj) {
-        self.section.didEndDisplayingFooterHandler = obj;
+- (HoloCollectionSectionMaker * (^)(SEL))didEndDisplayingFooterSEL {
+    return ^id(SEL s) {
+        self.section.didEndDisplayingFooterSEL = s;
         return self;
     };
 }
+
 
 - (HoloCollectionSectionMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *)))makeRows {
     return ^id(void(^block)(HoloCollectionViewRowMaker *make)) {
