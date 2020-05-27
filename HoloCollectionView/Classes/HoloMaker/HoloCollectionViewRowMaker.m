@@ -28,8 +28,8 @@
         _canMoveSEL = @selector(holo_canMoveWithModel:);
         _didSelectSEL = @selector(holo_didSelectWithModel:);
         _didDeselectSEL = @selector(holo_didDeselectWithModel:);
-        _willDisplaySEL = @selector(holo_willDisplayWithModel:);
-        _didEndDisplayingSEL = @selector(holo_didEndDisplayingWithModel:);
+        _willDisplaySEL = @selector(holo_willDisplayForCell:withModel:);
+        _didEndDisplayingSEL = @selector(holo_didEndDisplayingForCell:withModel:);
         _didHighlightSEL = @selector(holo_didHighlightWithModel:);
         _didUnHighlightSEL = @selector(holo_didUnHighlightWithModel:);
 #pragma clang diagnostic pop

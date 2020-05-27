@@ -141,25 +141,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^sizeSEL)(SEL sizeSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^shouldHighlightSEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^shouldHighlightSEL)(SEL shouldHighlightSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^shouldSelectSEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^shouldSelectSEL)(SEL shouldSelectSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^shouldDeselectSEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^shouldDeselectSEL)(SEL shouldDeselectSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^canMoveSEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^canMoveSEL)(SEL canMoveSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didSelectSEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didSelectSEL)(SEL didSelectSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didDeselectSEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didDeselectSEL)(SEL didDeselectSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^willDisplaySEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^willDisplaySEL)(SEL willDisplaySEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didEndDisplayingSEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didEndDisplayingSEL)(SEL didEndDisplayingSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didHighlightSEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didHighlightSEL)(SEL didHighlightSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didUnHighlightSEL)(SEL sizeSEL);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didUnHighlightSEL)(SEL didUnHighlightSEL);
 
 
 - (HoloCollectionRow *)fetchCollectionRow;

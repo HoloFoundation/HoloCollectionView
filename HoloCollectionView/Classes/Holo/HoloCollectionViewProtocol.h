@@ -31,9 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGSize)holo_didDeselectWithModel:(id)model;
 
-+ (CGSize)holo_willDisplayWithModel:(id)model;
++ (CGSize)holo_willDisplayForCell:(UICollectionViewCell *)cell withModel:(id)model;
 
-+ (CGSize)holo_didEndDisplayingWithModel:(id)model;
++ (CGSize)holo_didEndDisplayingForCell:(UICollectionViewCell *)cell withModel:(id)model;
 
 + (CGSize)holo_didHighlightWithModel:(id)model;
 
