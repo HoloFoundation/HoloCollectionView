@@ -50,6 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGSize)holo_sizeForHeaderWithModel:(id)model;
 
++ (void)holo_willDisplayHeaderWithModel:(id)model;
+
++ (void)holo_didEndDisplayingHeaderWithModel:(id)model;
+
 @end
 
 ////////////////////////////////////////////////////////////
@@ -60,6 +64,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)holo_configureFooterWithModel:(id)model;
 
 + (CGSize)holo_sizeForFooterWithModel:(id)model;
+
++ (void)holo_willDisplayFooterWithModel:(id)model;
+
++ (void)holo_didEndDisplayingFooterWithModel:(id)model;
 
 @end
 
