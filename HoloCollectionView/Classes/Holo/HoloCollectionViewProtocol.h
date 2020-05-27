@@ -19,6 +19,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGSize)holo_sizeForCellWithModel:(id)model;
 
++ (CGSize)holo_shouldHighlightWithModel:(id)model;
+
++ (CGSize)holo_shouldSelectWithModel:(id)model;
+
++ (CGSize)holo_shouldDeselectWithModel:(id)model;
+
++ (CGSize)holo_canMoveWithModel:(id)model;
+
++ (CGSize)holo_didSelectWithModel:(id)model;
+
++ (CGSize)holo_didDeselectWithModel:(id)model;
+
++ (CGSize)holo_willDisplayWithModel:(id)model;
+
++ (CGSize)holo_didEndDisplayingWithModel:(id)model;
+
++ (CGSize)holo_didHighlightWithModel:(id)model;
+
++ (CGSize)holo_didUnHighlightWithModel:(id)model;
+
 @end
 
 ////////////////////////////////////////////////////////////

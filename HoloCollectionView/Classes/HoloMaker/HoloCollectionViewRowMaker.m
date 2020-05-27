@@ -22,6 +22,16 @@
 #pragma clang diagnostic ignored "-Wundeclared-selector"
         _configSEL = @selector(holo_configureCellWithModel:);
         _sizeSEL = @selector(holo_sizeForCellWithModel:);
+        _shouldHighlightSEL = @selector(holo_shouldHighlightWithModel:);
+        _shouldSelectSEL = @selector(holo_shouldSelectWithModel:);
+        _shouldDeselectSEL = @selector(holo_shouldDeselectWithModel:);
+        _canMoveSEL = @selector(holo_canMoveWithModel:);
+        _didSelectSEL = @selector(holo_didSelectWithModel:);
+        _didDeselectSEL = @selector(holo_didDeselectWithModel:);
+        _willDisplaySEL = @selector(holo_willDisplayWithModel:);
+        _didEndDisplayingSEL = @selector(holo_didEndDisplayingWithModel:);
+        _didHighlightSEL = @selector(holo_didHighlightWithModel:);
+        _didUnHighlightSEL = @selector(holo_didUnHighlightWithModel:);
 #pragma clang diagnostic pop
     }
     
@@ -53,6 +63,7 @@
     };
 }
 
+#pragma mark - priority low
 - (HoloCollectionRowMaker *(^)(id))model {
     return ^id(id obj) {
         self.collectionRow.model = obj;
@@ -70,20 +81,6 @@
 - (HoloCollectionRowMaker *(^)(NSString *))tag {
     return ^id(id obj) {
         self.collectionRow.tag = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionRowMaker *(^)(SEL))configSEL {
-    return ^id(SEL s) {
-        self.collectionRow.configSEL = s;
-        return self;
-    };
-}
-
-- (HoloCollectionRowMaker *(^)(SEL))sizeSEL {
-    return ^id(SEL s) {
-        self.collectionRow.sizeSEL = s;
         return self;
     };
 }
@@ -112,6 +109,49 @@
 - (HoloCollectionRowMaker *(^)(BOOL))canMove {
     return ^id(BOOL b) {
         self.collectionRow.canMove = b;
+        return self;
+    };
+}
+
+#pragma mark - priority middle
+- (HoloCollectionRowMaker * (^)(id (^)(void)))modelHandler {
+    return ^id(id obj) {
+        self.collectionRow.modelHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker * (^)(CGSize (^)(id)))sizeHandler {
+    return ^id(id obj) {
+        self.collectionRow.sizeHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker * (^)(BOOL (^)(id)))shouldHighlightHandler {
+    return ^id(id obj) {
+        self.collectionRow.shouldHighlightHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker * (^)(BOOL (^)(id)))shouldSelectHandler {
+    return ^id(id obj) {
+        self.collectionRow.shouldSelectHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker * (^)(BOOL (^)(id)))shouldDeselectHandler {
+    return ^id(id obj) {
+        self.collectionRow.shouldDeselectHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker * (^)(BOOL (^)(id)))canMoveHandler {
+    return ^id(id obj) {
+        self.collectionRow.canMoveHandler = obj;
         return self;
     };
 }
@@ -158,7 +198,6 @@
     };
 }
 
-
 - (HoloCollectionRowMaker *(^)(NSIndexPath *(^)(NSIndexPath *, NSIndexPath *)))targetMoveHandler {
     return ^id(id obj) {
         self.collectionRow.targetMoveHandler = obj;
@@ -175,6 +214,92 @@
         return self;
     };
 }
+
+#pragma mark - priority high
+- (HoloCollectionRowMaker *(^)(SEL))configSEL {
+    return ^id(SEL s) {
+        self.collectionRow.configSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))sizeSEL {
+    return ^id(SEL s) {
+        self.collectionRow.sizeSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))shouldHighlightSEL {
+    return ^id(SEL s) {
+        self.collectionRow.shouldHighlightSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))shouldSelectSEL {
+    return ^id(SEL s) {
+        self.collectionRow.shouldSelectSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))shouldDeselectSEL {
+    return ^id(SEL s) {
+        self.collectionRow.shouldDeselectSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))canMoveSEL {
+    return ^id(SEL s) {
+        self.collectionRow.canMoveSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))didSelectSEL {
+    return ^id(SEL s) {
+        self.collectionRow.didSelectSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))didDeselectSEL {
+    return ^id(SEL s) {
+        self.collectionRow.didDeselectSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))willDisplaySEL {
+    return ^id(SEL s) {
+        self.collectionRow.willDisplaySEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))didEndDisplayingSEL {
+    return ^id(SEL s) {
+        self.collectionRow.didEndDisplayingSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))didHighlightSEL {
+    return ^id(SEL s) {
+        self.collectionRow.didHighlightSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(SEL))didUnHighlightSEL {
+    return ^id(SEL s) {
+        self.collectionRow.didUnHighlightSEL = s;
+        return self;
+    };
+}
+
 
 
 - (HoloCollectionRow *)fetchCollectionRow {
