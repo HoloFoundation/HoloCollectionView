@@ -19,25 +19,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGSize)holo_sizeForCellWithModel:(id)model;
 
-+ (CGSize)holo_shouldHighlightWithModel:(id)model;
+- (BOOL)holo_shouldHighlightForCellWithModel:(id)model;
 
-+ (CGSize)holo_shouldSelectWithModel:(id)model;
+- (BOOL)holo_shouldSelectForCellWithModel:(id)model;
 
-+ (CGSize)holo_shouldDeselectWithModel:(id)model;
+- (BOOL)holo_shouldDeselectForCellWithModel:(id)model;
 
-+ (CGSize)holo_canMoveWithModel:(id)model;
+- (BOOL)holo_canMoveForCellWithModel:(id)model;
 
-+ (CGSize)holo_didSelectWithModel:(id)model;
+- (void)holo_didSelectCellWithModel:(id)model;
 
-+ (CGSize)holo_didDeselectWithModel:(id)model;
+- (void)holo_didDeselectCellWithModel:(id)model;
 
-+ (CGSize)holo_willDisplayForCell:(UICollectionViewCell *)cell withModel:(id)model;
+- (void)holo_willDisplayCellWithModel:(id)model;
 
-+ (CGSize)holo_didEndDisplayingForCell:(UICollectionViewCell *)cell withModel:(id)model;
+- (void)holo_didEndDisplayingCellWithModel:(id)model;
 
-+ (CGSize)holo_didHighlightWithModel:(id)model;
+- (void)holo_didHighlightCellWithModel:(id)model;
 
-+ (CGSize)holo_didUnHighlightWithModel:(id)model;
+- (void)holo_didUnHighlightCellWithModel:(id)model;
 
 @end
 

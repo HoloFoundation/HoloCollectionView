@@ -22,16 +22,16 @@
 #pragma clang diagnostic ignored "-Wundeclared-selector"
         _configSEL = @selector(holo_configureCellWithModel:);
         _sizeSEL = @selector(holo_sizeForCellWithModel:);
-        _shouldHighlightSEL = @selector(holo_shouldHighlightWithModel:);
-        _shouldSelectSEL = @selector(holo_shouldSelectWithModel:);
-        _shouldDeselectSEL = @selector(holo_shouldDeselectWithModel:);
-        _canMoveSEL = @selector(holo_canMoveWithModel:);
-        _didSelectSEL = @selector(holo_didSelectWithModel:);
-        _didDeselectSEL = @selector(holo_didDeselectWithModel:);
-        _willDisplaySEL = @selector(holo_willDisplayForCell:withModel:);
-        _didEndDisplayingSEL = @selector(holo_didEndDisplayingForCell:withModel:);
-        _didHighlightSEL = @selector(holo_didHighlightWithModel:);
-        _didUnHighlightSEL = @selector(holo_didUnHighlightWithModel:);
+        _shouldHighlightSEL = @selector(holo_shouldHighlightForCellWithModel:);
+        _shouldSelectSEL = @selector(holo_shouldSelectForCellWithModel:);
+        _shouldDeselectSEL = @selector(holo_shouldDeselectForCellWithModel:);
+        _canMoveSEL = @selector(holo_canMoveForCellWithModel:);
+        _didSelectSEL = @selector(holo_didSelectCellWithModel:);
+        _didDeselectSEL = @selector(holo_didDeselectCellWithModel:);
+        _willDisplaySEL = @selector(holo_willDisplayCellWithModel:);
+        _didEndDisplayingSEL = @selector(holo_didEndDisplayingCellWithModel:);
+        _didHighlightSEL = @selector(holo_didHighlightCellWithModel:);
+        _didUnHighlightSEL = @selector(holo_didUnHighlightCellWithModel:);
 #pragma clang diagnostic pop
     }
     
