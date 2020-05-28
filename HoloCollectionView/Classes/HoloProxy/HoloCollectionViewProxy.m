@@ -177,10 +177,20 @@ static void HoloProxyAPIRowPerformWithCell(HoloCollectionRow *row, SEL sel, void
     id model = nil;
     if (kind == UICollectionElementKindSectionHeader) {
         reuseIdentifier = holoSection.header;
-        model = holoSection.headerModel;
+        
+        if (holoSection.headerModelHandler) {
+            model = holoSection.headerModelHandler();
+        } else {
+            model = holoSection.headerModel;
+        }
     } else {
         reuseIdentifier = holoSection.footer;
-        model = holoSection.footerModel;
+        
+        if (holoSection.footerModelHandler) {
+            model = holoSection.footerModelHandler();
+        } else {
+            model = holoSection.footerModel;
+        }
     }
     UICollectionReusableView *holoHeaderView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
@@ -272,13 +282,15 @@ static void HoloProxyAPIRowPerformWithCell(HoloCollectionRow *row, SEL sel, void
     }
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.inset.top != CGFLOAT_MIN ||
+    if (holoSection.insetHandler) {
+        return holoSection.insetHandler();
+    } else if (holoSection.inset.top != CGFLOAT_MIN ||
         holoSection.inset.bottom != CGFLOAT_MIN ||
         holoSection.inset.left != CGFLOAT_MIN ||
         holoSection.inset.right != CGFLOAT_MIN) {
         return holoSection.inset;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.sectionInset;
     }
 }
@@ -289,10 +301,13 @@ static void HoloProxyAPIRowPerformWithCell(HoloCollectionRow *row, SEL sel, void
     }
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.minimumLineSpacing != CGFLOAT_MIN) {
+    
+    if (holoSection.minimumLineSpacingHandler) {
+        return holoSection.minimumLineSpacingHandler();
+    } else if (holoSection.minimumLineSpacing != CGFLOAT_MIN) {
         return holoSection.minimumLineSpacing;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.minimumLineSpacing;
     }
 }
@@ -303,10 +318,13 @@ static void HoloProxyAPIRowPerformWithCell(HoloCollectionRow *row, SEL sel, void
     }
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.minimumInteritemSpacing != CGFLOAT_MIN) {
+    
+    if (holoSection.minimumInteritemSpacingHandler) {
+        return holoSection.minimumInteritemSpacingHandler();
+    } else if (holoSection.minimumInteritemSpacing != CGFLOAT_MIN) {
         return holoSection.minimumInteritemSpacing;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.minimumInteritemSpacing;
     }
 }
@@ -318,16 +336,18 @@ static void HoloProxyAPIRowPerformWithCell(HoloCollectionRow *row, SEL sel, void
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
     Class header = self.holoHeadersMap[holoSection.header];
+    
     if (holoSection.headerSizeSEL && [header respondsToSelector:holoSection.headerSizeSEL]) {
         return [self _sizeWithMethodSignatureCls:header selector:holoSection.headerSizeSEL model:holoSection.headerModel];
     } else if (holoSection.headerFooterSizeSEL && [header respondsToSelector:holoSection.headerFooterSizeSEL]) {
         return [self _sizeWithMethodSignatureCls:header selector:holoSection.headerFooterSizeSEL model:holoSection.headerModel];
-    }
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.headerSize.width != CGFLOAT_MIN ||
+    } else if (holoSection.headerSizeHandler) {
+        return holoSection.headerSizeHandler(holoSection.headerModel);
+    } else if (holoSection.headerSize.width != CGFLOAT_MIN ||
         holoSection.headerSize.height != CGFLOAT_MIN) {
         return holoSection.headerSize;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.headerReferenceSize;
     }
 }
@@ -339,16 +359,18 @@ static void HoloProxyAPIRowPerformWithCell(HoloCollectionRow *row, SEL sel, void
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
     Class footer = self.holoFootersMap[holoSection.footer];
+
     if (holoSection.footerSizeSEL && [footer respondsToSelector:holoSection.footerSizeSEL]) {
         return [self _sizeWithMethodSignatureCls:footer selector:holoSection.footerSizeSEL model:holoSection.footerModel];
     } else if (holoSection.headerFooterSizeSEL && [footer respondsToSelector:holoSection.headerFooterSizeSEL]) {
         return [self _sizeWithMethodSignatureCls:footer selector:holoSection.headerFooterSizeSEL model:holoSection.footerModel];
-    }
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.footerSize.width != CGFLOAT_MIN ||
+    } else if (holoSection.footerSizeHandler) {
+        return holoSection.footerSizeHandler(holoSection.footerModel);
+    } else if (holoSection.footerSize.width != CGFLOAT_MIN ||
         holoSection.footerSize.height != CGFLOAT_MIN) {
         return holoSection.footerSize;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.footerReferenceSize;
     }
 }
@@ -462,10 +484,25 @@ static void HoloProxyAPIRowPerformWithCell(HoloCollectionRow *row, SEL sel, void
     }
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(indexPath.section);
+    
     if (elementKind == UICollectionElementKindSectionHeader) {
-        if (holoSection.willDisplayHeaderHandler) holoSection.willDisplayHeaderHandler(view, holoSection.headerModel);
+        if (holoSection.willDisplayHeaderSEL && [view respondsToSelector:holoSection.willDisplayHeaderSEL]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [view performSelector:holoSection.willDisplayHeaderSEL withObject:holoSection.headerModel];
+#pragma clang diagnostic pop
+        } else if (holoSection.willDisplayHeaderHandler) {
+            holoSection.willDisplayHeaderHandler(view, holoSection.headerModel);
+        }
     } else {
-        if (holoSection.willDisplayFooterHandler) holoSection.willDisplayFooterHandler(view, holoSection.footerModel);
+        if (holoSection.willDisplayFooterSEL && [view respondsToSelector:holoSection.willDisplayFooterSEL]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [view performSelector:holoSection.willDisplayFooterSEL withObject:holoSection.footerModel];
+#pragma clang diagnostic pop
+        } else if (holoSection.willDisplayFooterHandler) {
+            holoSection.willDisplayFooterHandler(view, holoSection.footerModel);
+        }
     }
 }
 
@@ -477,9 +514,23 @@ static void HoloProxyAPIRowPerformWithCell(HoloCollectionRow *row, SEL sel, void
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(indexPath.section);
     if (elementKind == UICollectionElementKindSectionHeader) {
-        if (holoSection.didEndDisplayingHeaderHandler) holoSection.didEndDisplayingHeaderHandler(view, holoSection.headerModel);
+        if (holoSection.didEndDisplayingHeaderSEL && [view respondsToSelector:holoSection.didEndDisplayingHeaderSEL]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [view performSelector:holoSection.didEndDisplayingHeaderSEL withObject:holoSection.headerModel];
+#pragma clang diagnostic pop
+        } else if (holoSection.didEndDisplayingHeaderHandler) {
+            holoSection.didEndDisplayingHeaderHandler(view, holoSection.headerModel);
+        }
     } else {
-        if (holoSection.didEndDisplayingFooterHandler) holoSection.didEndDisplayingFooterHandler(view, holoSection.footerModel);
+        if (holoSection.didEndDisplayingFooterSEL && [view respondsToSelector:holoSection.didEndDisplayingFooterSEL]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [view performSelector:holoSection.didEndDisplayingFooterSEL withObject:holoSection.footerModel];
+#pragma clang diagnostic pop
+        } else if (holoSection.didEndDisplayingFooterHandler) {
+            holoSection.didEndDisplayingFooterHandler(view, holoSection.footerModel);
+        }
     }
 }
 
