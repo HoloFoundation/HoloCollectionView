@@ -111,7 +111,7 @@ static void HoloProxyCellPerform(UICollectionViewCell *cell, SEL sel, void (^han
     }
 }
 
-static void HoloProxyCellPerformWithModel(UICollectionViewCell *cell, SEL sel, void (^handler)(UICollectionViewCell *, id), id model) {
+static void HoloProxyCellPerformWithCell(UICollectionViewCell *cell, SEL sel, void (^handler)(UICollectionViewCell *, id), id model) {
     if (!cell) return;
     
     if (sel && [cell respondsToSelector:sel]) {
@@ -121,6 +121,19 @@ static void HoloProxyCellPerformWithModel(UICollectionViewCell *cell, SEL sel, v
 #pragma clang diagnostic pop
     } else if (handler) {
         handler(cell, model);
+    }
+}
+
+static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(UIView *, id), id model) {
+    if (!view) return;
+    
+    if (sel && [view respondsToSelector:sel]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [view performSelector:sel withObject:model];
+#pragma clang diagnostic pop
+    } else if (handler) {
+        handler(view, model);
     }
 }
 
@@ -456,7 +469,7 @@ static void HoloProxyCellPerformWithModel(UICollectionViewCell *cell, SEL sel, v
     }
     
     HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
-    HoloProxyCellPerformWithModel(cell, holoRow.willDisplaySEL, holoRow.willDisplayHandler, holoRow.model);
+    HoloProxyCellPerformWithCell(cell, holoRow.willDisplaySEL, holoRow.willDisplayHandler, holoRow.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -466,7 +479,7 @@ static void HoloProxyCellPerformWithModel(UICollectionViewCell *cell, SEL sel, v
     }
     
     HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
-    HoloProxyCellPerformWithModel(cell, holoRow.didEndDisplayingSEL, holoRow.didEndDisplayingHandler, holoRow.model);
+    HoloProxyCellPerformWithCell(cell, holoRow.didEndDisplayingSEL, holoRow.didEndDisplayingHandler, holoRow.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
@@ -478,23 +491,9 @@ static void HoloProxyCellPerformWithModel(UICollectionViewCell *cell, SEL sel, v
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(indexPath.section);
     
     if (elementKind == UICollectionElementKindSectionHeader) {
-        if (holoSection.willDisplayHeaderSEL && [view respondsToSelector:holoSection.willDisplayHeaderSEL]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [view performSelector:holoSection.willDisplayHeaderSEL withObject:holoSection.headerModel];
-#pragma clang diagnostic pop
-        } else if (holoSection.willDisplayHeaderHandler) {
-            holoSection.willDisplayHeaderHandler(view, holoSection.headerModel);
-        }
+        HoloProxyViewPerformWithView(view, holoSection.willDisplayHeaderSEL, holoSection.willDisplayHeaderHandler, holoSection.headerModel);
     } else {
-        if (holoSection.willDisplayFooterSEL && [view respondsToSelector:holoSection.willDisplayFooterSEL]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [view performSelector:holoSection.willDisplayFooterSEL withObject:holoSection.footerModel];
-#pragma clang diagnostic pop
-        } else if (holoSection.willDisplayFooterHandler) {
-            holoSection.willDisplayFooterHandler(view, holoSection.footerModel);
-        }
+        HoloProxyViewPerformWithView(view, holoSection.willDisplayFooterSEL, holoSection.willDisplayFooterHandler, holoSection.footerModel);
     }
 }
 
@@ -506,23 +505,9 @@ static void HoloProxyCellPerformWithModel(UICollectionViewCell *cell, SEL sel, v
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(indexPath.section);
     if (elementKind == UICollectionElementKindSectionHeader) {
-        if (holoSection.didEndDisplayingHeaderSEL && [view respondsToSelector:holoSection.didEndDisplayingHeaderSEL]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [view performSelector:holoSection.didEndDisplayingHeaderSEL withObject:holoSection.headerModel];
-#pragma clang diagnostic pop
-        } else if (holoSection.didEndDisplayingHeaderHandler) {
-            holoSection.didEndDisplayingHeaderHandler(view, holoSection.headerModel);
-        }
+        HoloProxyViewPerformWithView(view, holoSection.didEndDisplayingHeaderSEL, holoSection.didEndDisplayingHeaderHandler, holoSection.headerModel);
     } else {
-        if (holoSection.didEndDisplayingFooterSEL && [view respondsToSelector:holoSection.didEndDisplayingFooterSEL]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [view performSelector:holoSection.didEndDisplayingFooterSEL withObject:holoSection.footerModel];
-#pragma clang diagnostic pop
-        } else if (holoSection.didEndDisplayingFooterHandler) {
-            holoSection.didEndDisplayingFooterHandler(view, holoSection.footerModel);
-        }
+        HoloProxyViewPerformWithView(view, holoSection.didEndDisplayingFooterSEL, holoSection.didEndDisplayingFooterHandler, holoSection.footerModel);
     }
 }
 
