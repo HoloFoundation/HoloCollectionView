@@ -183,7 +183,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     NSString *reuseIdentifier = nil;
     id model = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        reuseIdentifier = holoSection.header;
+        reuseIdentifier = holoSection.headerReuseId;
         
         if (holoSection.headerModelHandler) {
             model = holoSection.headerModelHandler();
@@ -191,7 +191,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
             model = holoSection.headerModel;
         }
     } else {
-        reuseIdentifier = holoSection.footer;
+        reuseIdentifier = holoSection.footerReuseId;
         
         if (holoSection.footerModelHandler) {
             model = holoSection.footerModelHandler();
