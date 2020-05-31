@@ -170,10 +170,12 @@
         
         if (operateSection.header) [self _registerHeaderFooter:operateSection.header
                                     forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                          withHeaderFootersMap:headersMap];
+                                          withHeaderFootersMap:headersMap
+                                                       reuseId:operateSection.headerReuseId];
         if (operateSection.footer) [self _registerHeaderFooter:operateSection.footer
                                     forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                          withHeaderFootersMap:footersMap];
+                                          withHeaderFootersMap:footersMap
+                                                       reuseId:operateSection.footerReuseId];
         
         // update map
         NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
@@ -212,8 +214,8 @@
 // _registerHeaderFooter
 - (void)_registerHeaderFooter:(NSString *)headerFooter
    forSupplementaryViewOfKind:(NSString *)elementKind
-         withHeaderFootersMap:(NSMutableDictionary *)headerFootersMap {
-    
+         withHeaderFootersMap:(NSMutableDictionary *)headerFootersMap
+                      reuseId:(NSString *)reuseId {
     if (headerFootersMap[headerFooter]) return;
     
     Class cls = NSClassFromString(headerFooter);
@@ -226,7 +228,7 @@
         NSAssert(NO, error);
     }
     headerFootersMap[headerFooter] = cls;
-    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:headerFooter];
+    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:reuseId];
 }
 
 // holo_removeAllSections

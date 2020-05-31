@@ -28,6 +28,11 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewSectionMakerType) {
 
 @property (nonatomic, copy) NSString *footer;
 
+@property (nonatomic, copy) NSString *headerReuseId;
+
+@property (nonatomic, copy) NSString *footerReuseId;
+
+
 #pragma mark - priority low
 @property (nonatomic, assign) UIEdgeInsets inset;
 
@@ -105,6 +110,10 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewSectionMakerType) {
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerS)(NSString *headerString);
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerS)(NSString *footerString);
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerReuseId)(NSString *headerReuseId);
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerReuseId)(NSString *footerReuseId);
 
 #pragma mark - priority low
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^inset)(UIEdgeInsets inset);
