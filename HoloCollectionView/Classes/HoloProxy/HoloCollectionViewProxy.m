@@ -69,7 +69,7 @@ static CGSize HoloProxyMethodSignatureSizeResult(id target, SEL sel, id model) {
     return retLoc;
 }
 
-static CGSize HoloProxySizeResult(Class cls, SEL sel, CGSize (^handler)(id), id model, CGSize size) {
+static CGSize HoloProxyItemSizeResult(Class cls, SEL sel, CGSize (^handler)(id), id model, CGSize size) {
     if (!cls) return CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
     
     if (sel && [cls respondsToSelector:sel]) {
@@ -78,10 +78,9 @@ static CGSize HoloProxySizeResult(Class cls, SEL sel, CGSize (^handler)(id), id 
         return handler(model);
     } else if (size.width != CGFLOAT_MIN || size.height != CGFLOAT_MIN) {
         return size;
-    } else {
-        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)kProxySelf.collectionView.collectionViewLayout;
-        return flowLayout.itemSize;
     }
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)kProxySelf.collectionView.collectionViewLayout;
+    return flowLayout.itemSize;
 }
 
 static BOOL HoloProxyBOOLResult(UICollectionViewCell *cell, SEL sel, BOOL (^handler)(id), id model, BOOL can) {
@@ -284,7 +283,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     
     HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
     Class cls = self.holoRowsMap[holoRow.cell];
-    return HoloProxySizeResult(cls, holoRow.sizeSEL, holoRow.sizeHandler, holoRow.model, holoRow.size);
+    return HoloProxyItemSizeResult(cls, holoRow.sizeSEL, holoRow.sizeHandler, holoRow.model, holoRow.size);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
