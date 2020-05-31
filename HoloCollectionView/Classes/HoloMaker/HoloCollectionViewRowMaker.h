@@ -17,9 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - priority low
 @property (nonatomic, strong) id model;
 
-@property (nonatomic, assign) CGSize size;
+@property (nonatomic, copy) NSString *reuseId;
 
 @property (nonatomic, copy) NSString *tag;
+
+@property (nonatomic, assign) CGSize size;
 
 @property (nonatomic, assign) BOOL shouldHighlight;
 
@@ -95,9 +97,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - priority low
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^model)(id model);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^size)(CGSize size);
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^reuseId)(NSString *reuseId);
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^tag)(NSString *tag);
+
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^size)(CGSize size);
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^shouldHighlight)(BOOL shouldHighlight);
 

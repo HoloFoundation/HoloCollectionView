@@ -162,8 +162,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
     if (holoRow.modelHandler) holoRow.model = holoRow.modelHandler();
     
-    NSString *clsName = NSStringFromClass(self.holoRowsMap[holoRow.cell]);
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:clsName forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoRow.reuseId forIndexPath:indexPath];
     
     if (holoRow.configSEL && [cell respondsToSelector:holoRow.configSEL]) {
 #pragma clang diagnostic push

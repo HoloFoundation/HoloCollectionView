@@ -71,9 +71,9 @@
     };
 }
 
-- (HoloCollectionRowMaker *(^)(CGSize))size {
-    return ^id(CGSize s) {
-        self.collectionRow.size = s;
+- (HoloCollectionRowMaker *(^)(NSString *))reuseId {
+    return ^id(id obj) {
+        self.collectionRow.reuseId = obj;
         return self;
     };
 }
@@ -81,6 +81,13 @@
 - (HoloCollectionRowMaker *(^)(NSString *))tag {
     return ^id(id obj) {
         self.collectionRow.tag = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker *(^)(CGSize))size {
+    return ^id(CGSize s) {
+        self.collectionRow.size = s;
         return self;
     };
 }
@@ -333,6 +340,9 @@
     return ^id(Class cls) {
         HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
         rowMaker.collectionRow.cell = NSStringFromClass(cls);
+        // reuseId is equal to cell by default
+        rowMaker.collectionRow.reuseId = rowMaker.collectionRow.cell;
+        
         [self.holoRows addObject:rowMaker.collectionRow];
         return rowMaker;
     };
@@ -342,6 +352,9 @@
     return ^id(id obj) {
         HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
         rowMaker.collectionRow.cell = obj;
+        // reuseId is equal to cell by default
+        rowMaker.collectionRow.reuseId = rowMaker.collectionRow.cell;
+        
         [self.holoRows addObject:rowMaker.collectionRow];
         return rowMaker;
     };

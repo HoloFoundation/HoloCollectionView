@@ -190,7 +190,7 @@
                 NSAssert(NO, error);
             }
             rowsMap[row.cell] = cls;
-            [self registerClass:cls forCellWithReuseIdentifier:row.cell];
+            [self registerClass:cls forCellWithReuseIdentifier:row.reuseId];
         }
         self.holo_proxy.proxyData.rowsMap = rowsMap;
     }
@@ -365,7 +365,7 @@
             NSAssert(NO, error);
         }
         rowsMap[row.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:row.cell];
+        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId];
         [rows addObject:row];
     }
     self.holo_proxy.proxyData.rowsMap = rowsMap;
@@ -461,7 +461,7 @@
             NSAssert(NO, error);
         }
         rowsMap[operateRow.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:operateRow.cell];
+        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId];
     }
     self.holo_proxy.proxyData.rowsMap = rowsMap;
     self.holo_proxy.proxyData.sections = updateArray.copy;
