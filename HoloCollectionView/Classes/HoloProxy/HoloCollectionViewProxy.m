@@ -10,6 +10,8 @@
 #import "HoloCollectionViewRowMaker.h"
 #import "HoloCollectionViewSectionMaker.h"
 
+static HoloCollectionViewProxy *kProxySelf;
+
 @interface HoloCollectionViewProxy ()
 
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -30,8 +32,108 @@
     self = [super init];
     if (self) {
         _collectionView = collectionView;
+        kProxySelf = self;
     }
     return self;
+}
+
+
+static HoloCollectionSection *HoloCollectionSectionWithIndex(NSInteger section) {
+    if (section >= kProxySelf.proxyData.sections.count) return nil;
+    HoloCollectionSection *holoSection = kProxySelf.proxyData.sections[section];
+    return holoSection;
+}
+
+static HoloCollectionRow *HoloCollectionRowWithIndexPath(NSIndexPath *indexPath) {
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(indexPath.section);
+    if (indexPath.row >= holoSection.rows.count) return nil;
+    
+    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
+    return holoRow;
+}
+
+static NSInvocation *HoloProxyInvocation(id target, SEL sel, id model) {
+    NSMethodSignature *signature = [target methodSignatureForSelector:sel];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    invocation.target = target;
+    invocation.selector = sel;
+    [invocation setArgument:&model atIndex:2];
+    [invocation invoke];
+    return invocation;
+}
+
+static CGSize HoloProxyMethodSignatureSizeResult(id target, SEL sel, id model) {
+    NSInvocation *invocation = HoloProxyInvocation(target, sel, model);
+    CGSize retLoc;
+    [invocation getReturnValue:&retLoc];
+    return retLoc;
+}
+
+static CGSize HoloProxyItemSizeResult(Class cls, SEL sel, CGSize (^handler)(id), id model, CGSize size) {
+    if (!cls) return CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
+    
+    if (sel && [cls respondsToSelector:sel]) {
+        return HoloProxyMethodSignatureSizeResult(cls, sel, model);
+    } else if (handler) {
+        return handler(model);
+    } else if (size.width != CGFLOAT_MIN || size.height != CGFLOAT_MIN) {
+        return size;
+    }
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)kProxySelf.collectionView.collectionViewLayout;
+    return flowLayout.itemSize;
+}
+
+static BOOL HoloProxyBOOLResult(UICollectionViewCell *cell, SEL sel, BOOL (^handler)(id), id model, BOOL can) {
+    if (!cell) return NO;
+    
+    if (sel && [cell respondsToSelector:sel]) {
+        NSInvocation *invocation = HoloProxyInvocation(cell, sel, model);
+        BOOL retLoc;
+        [invocation getReturnValue:&retLoc];
+        return retLoc;
+    } else if (handler) {
+        return handler(model);
+    }
+    return can;
+}
+
+static void HoloProxyCellPerform(UICollectionViewCell *cell, SEL sel, void (^handler)(id), id model) {
+    if (!cell) return;
+    
+    if (sel && [cell respondsToSelector:sel]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [cell performSelector:sel withObject:model];
+#pragma clang diagnostic pop
+    } else if (handler) {
+        handler(model);
+    }
+}
+
+static void HoloProxyCellPerformWithCell(UICollectionViewCell *cell, SEL sel, void (^handler)(UICollectionViewCell *, id), id model) {
+    if (!cell) return;
+    
+    if (sel && [cell respondsToSelector:sel]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [cell performSelector:sel withObject:model];
+#pragma clang diagnostic pop
+    } else if (handler) {
+        handler(cell, model);
+    }
+}
+
+static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(UIView *, id), id model) {
+    if (!view) return;
+    
+    if (sel && [view respondsToSelector:sel]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [view performSelector:sel withObject:model];
+#pragma clang diagnostic pop
+    } else if (handler) {
+        handler(view, model);
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -47,9 +149,8 @@
     if ([self.dataSource respondsToSelector:@selector(collectionView:numberOfItemsInSection:)]) {
         return [self.dataSource collectionView:collectionView numberOfItemsInSection:section];
     }
-    if (section >= self.holoSections.count) return 0;
     
-    HoloCollectionSection *holoSection = self.holoSections[section];
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
     return holoSection.rows.count;
 }
 
@@ -58,11 +159,10 @@
         return [self.dataSource collectionView:collectionView cellForItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    if (holoRow.modelHandler) holoRow.model = holoRow.modelHandler();
     
-    NSString *clsName = NSStringFromClass(self.holoRowsMap[holoRow.cell]);
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:clsName forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoRow.reuseId forIndexPath:indexPath];
     
     if (holoRow.configSEL && [cell respondsToSelector:holoRow.configSEL]) {
 #pragma clang diagnostic push
@@ -78,16 +178,26 @@
         return [self.dataSource collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(indexPath.section);
     
     NSString *reuseIdentifier = nil;
     id model = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        reuseIdentifier = holoSection.header;
-        model = holoSection.headerModel;
+        reuseIdentifier = holoSection.headerReuseId;
+        
+        if (holoSection.headerModelHandler) {
+            model = holoSection.headerModelHandler();
+        } else {
+            model = holoSection.headerModel;
+        }
     } else {
-        reuseIdentifier = holoSection.footer;
-        model = holoSection.footerModel;
+        reuseIdentifier = holoSection.footerReuseId;
+        
+        if (holoSection.footerModelHandler) {
+            model = holoSection.footerModelHandler();
+        } else {
+            model = holoSection.footerModel;
+        }
     }
     UICollectionReusableView *holoHeaderView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
@@ -120,9 +230,9 @@
         return [self.dataSource collectionView:collectionView canMoveItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    return holoRow.canMove;
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    return HoloProxyBOOLResult(cell, holoRow.canMoveSEL, holoRow.canMoveHandler, holoRow.model, holoRow.canMove);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath*)destinationIndexPath NS_AVAILABLE_IOS(9_0) {
@@ -131,8 +241,8 @@
         return;
     }
     
-    HoloCollectionSection *sourceSection = self.holoSections[sourceIndexPath.section];
-    HoloCollectionRow *sourceRow = sourceSection.rows[sourceIndexPath.row];
+    HoloCollectionSection *sourceSection = HoloCollectionSectionWithIndex(sourceIndexPath.section);
+    HoloCollectionRow *sourceRow = HoloCollectionRowWithIndexPath(sourceIndexPath);
     if (sourceRow.moveHandler) {
         sourceRow.moveHandler(sourceIndexPath, destinationIndexPath, ^(BOOL actionPerformed) {
             if (actionPerformed) {
@@ -170,18 +280,9 @@
         return [self.delegate collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
     Class cls = self.holoRowsMap[holoRow.cell];
-    if (holoRow.sizeSEL && [cls respondsToSelector:holoRow.sizeSEL]) {
-        return [self _sizeWithMethodSignatureCls:cls selector:holoRow.sizeSEL model:holoRow.model];
-    }
-    if (holoRow.size.width != CGFLOAT_MIN || holoRow.size.height != CGFLOAT_MIN) {
-        return holoRow.size;
-    }
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    return flowLayout.itemSize;
+    return HoloProxyItemSizeResult(cls, holoRow.sizeSEL, holoRow.sizeHandler, holoRow.model, holoRow.size);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
@@ -189,14 +290,16 @@
         return [self.delegate collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[section];
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.inset.top != CGFLOAT_MIN ||
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
+    if (holoSection.insetHandler) {
+        return holoSection.insetHandler();
+    } else if (holoSection.inset.top != CGFLOAT_MIN ||
         holoSection.inset.bottom != CGFLOAT_MIN ||
         holoSection.inset.left != CGFLOAT_MIN ||
         holoSection.inset.right != CGFLOAT_MIN) {
         return holoSection.inset;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.sectionInset;
     }
 }
@@ -206,11 +309,14 @@
         return [self.delegate collectionView:collectionView layout:collectionViewLayout minimumLineSpacingForSectionAtIndex:section];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[section];
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.minimumLineSpacing != CGFLOAT_MIN) {
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
+    
+    if (holoSection.minimumLineSpacingHandler) {
+        return holoSection.minimumLineSpacingHandler();
+    } else if (holoSection.minimumLineSpacing != CGFLOAT_MIN) {
         return holoSection.minimumLineSpacing;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.minimumLineSpacing;
     }
 }
@@ -220,11 +326,14 @@
         return [self.delegate collectionView:collectionView layout:collectionViewLayout minimumInteritemSpacingForSectionAtIndex:section];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[section];
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.minimumInteritemSpacing != CGFLOAT_MIN) {
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
+    
+    if (holoSection.minimumInteritemSpacingHandler) {
+        return holoSection.minimumInteritemSpacingHandler();
+    } else if (holoSection.minimumInteritemSpacing != CGFLOAT_MIN) {
         return holoSection.minimumInteritemSpacing;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.minimumInteritemSpacing;
     }
 }
@@ -234,18 +343,20 @@
         return [self.delegate collectionView:collectionView layout:collectionViewLayout referenceSizeForHeaderInSection:section];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[section];
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
     Class header = self.holoHeadersMap[holoSection.header];
+    
     if (holoSection.headerSizeSEL && [header respondsToSelector:holoSection.headerSizeSEL]) {
-        return [self _sizeWithMethodSignatureCls:header selector:holoSection.headerSizeSEL model:holoSection.headerModel];
+        return HoloProxyMethodSignatureSizeResult(header, holoSection.headerSizeSEL, holoSection.headerModel);
     } else if (holoSection.headerFooterSizeSEL && [header respondsToSelector:holoSection.headerFooterSizeSEL]) {
-        return [self _sizeWithMethodSignatureCls:header selector:holoSection.headerFooterSizeSEL model:holoSection.headerModel];
-    }
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.headerSize.width != CGFLOAT_MIN ||
+        return HoloProxyMethodSignatureSizeResult(header, holoSection.headerFooterSizeSEL, holoSection.headerModel);
+    } else if (holoSection.headerSizeHandler) {
+        return holoSection.headerSizeHandler(holoSection.headerModel);
+    } else if (holoSection.headerSize.width != CGFLOAT_MIN ||
         holoSection.headerSize.height != CGFLOAT_MIN) {
         return holoSection.headerSize;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.headerReferenceSize;
     }
 }
@@ -255,33 +366,22 @@
         return [self.delegate collectionView:collectionView layout:collectionViewLayout referenceSizeForFooterInSection:section];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[section];
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(section);
     Class footer = self.holoFootersMap[holoSection.footer];
+
     if (holoSection.footerSizeSEL && [footer respondsToSelector:holoSection.footerSizeSEL]) {
-        return [self _sizeWithMethodSignatureCls:footer selector:holoSection.footerSizeSEL model:holoSection.footerModel];
+        return HoloProxyMethodSignatureSizeResult(footer, holoSection.footerSizeSEL, holoSection.footerModel);
     } else if (holoSection.headerFooterSizeSEL && [footer respondsToSelector:holoSection.headerFooterSizeSEL]) {
-        return [self _sizeWithMethodSignatureCls:footer selector:holoSection.headerFooterSizeSEL model:holoSection.footerModel];
-    }
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    if (holoSection.footerSize.width != CGFLOAT_MIN ||
+        return HoloProxyMethodSignatureSizeResult(footer, holoSection.headerFooterSizeSEL, holoSection.footerModel);
+    } else if (holoSection.footerSizeHandler) {
+        return holoSection.footerSizeHandler(holoSection.footerModel);
+    } else if (holoSection.footerSize.width != CGFLOAT_MIN ||
         holoSection.footerSize.height != CGFLOAT_MIN) {
         return holoSection.footerSize;
     } else {
+        UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
         return flowLayout.footerReferenceSize;
     }
-}
-
-- (CGSize)_sizeWithMethodSignatureCls:(Class)cls selector:(SEL)selector model:(id)model {
-    NSMethodSignature *signature = [cls methodSignatureForSelector:selector];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    invocation.target = cls;
-    invocation.selector = selector;
-    [invocation setArgument:&model atIndex:2];
-    [invocation invoke];
-    
-    CGSize size;
-    [invocation getReturnValue:&size];
-    return size;
 }
 
 
@@ -291,9 +391,9 @@
         return [self.delegate collectionView:collectionView shouldHighlightItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    return holoRow.shouldHighlight;
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    return HoloProxyBOOLResult(cell, holoRow.shouldHighlightSEL, holoRow.shouldHighlightHandler, holoRow.model, holoRow.shouldHighlight);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -302,9 +402,9 @@
         return;
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    if (holoRow.didHighlightHandler) holoRow.didHighlightHandler(holoRow.model);
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    HoloProxyCellPerform(cell, holoRow.didHighlightSEL, holoRow.didHighlightHandler, holoRow.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -313,9 +413,9 @@
         return;
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    if (holoRow.didUnHighlightHandler) holoRow.didUnHighlightHandler(holoRow.model);
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    HoloProxyCellPerform(cell, holoRow.didUnHighlightSEL, holoRow.didUnHighlightHandler, holoRow.model);
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -323,9 +423,9 @@
         return [self.delegate collectionView:collectionView shouldSelectItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    return holoRow.shouldSelect;
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    return HoloProxyBOOLResult(cell, holoRow.shouldSelectSEL, holoRow.shouldSelectHandler, holoRow.model, holoRow.shouldSelect);
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -333,9 +433,9 @@
         return [self.delegate collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    return holoRow.shouldDeselect;
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    return HoloProxyBOOLResult(cell, holoRow.shouldDeselectSEL, holoRow.shouldDeselectHandler, holoRow.model, holoRow.shouldDeselect);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -344,9 +444,9 @@
         return;
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    if (holoRow.didSelectHandler) holoRow.didSelectHandler(holoRow.model);
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    HoloProxyCellPerform(cell, holoRow.didSelectSEL, holoRow.didSelectHandler, holoRow.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -355,9 +455,9 @@
         return;
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    if (holoRow.didDeselectHandler) holoRow.didDeselectHandler(holoRow.model);
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    HoloProxyCellPerform(cell, holoRow.didDeselectSEL, holoRow.didDeselectHandler, holoRow.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -366,9 +466,8 @@
         return;
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    if (holoRow.willDisplayHandler) holoRow.willDisplayHandler(cell, holoRow.model);
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    HoloProxyCellPerformWithCell(cell, holoRow.willDisplaySEL, holoRow.willDisplayHandler, holoRow.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -377,11 +476,8 @@
         return;
     }
     
-    if (indexPath.section >= self.holoSections.count) return;
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
-    if (indexPath.row >= holoSection.rows.count) return;
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    if (holoRow.didEndDisplayingHandler) holoRow.didEndDisplayingHandler(cell, holoRow.model);
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(indexPath);
+    HoloProxyCellPerformWithCell(cell, holoRow.didEndDisplayingSEL, holoRow.didEndDisplayingHandler, holoRow.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
@@ -390,11 +486,12 @@
         return;
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(indexPath.section);
+    
     if (elementKind == UICollectionElementKindSectionHeader) {
-        if (holoSection.willDisplayHeaderHandler) holoSection.willDisplayHeaderHandler(view, holoSection.headerModel);
+        HoloProxyViewPerformWithView(view, holoSection.willDisplayHeaderSEL, holoSection.willDisplayHeaderHandler, holoSection.headerModel);
     } else {
-        if (holoSection.willDisplayFooterHandler) holoSection.willDisplayFooterHandler(view, holoSection.footerModel);
+        HoloProxyViewPerformWithView(view, holoSection.willDisplayFooterSEL, holoSection.willDisplayFooterHandler, holoSection.footerModel);
     }
 }
 
@@ -404,12 +501,11 @@
         return;
     }
     
-    if (indexPath.section >= self.holoSections.count) return;
-    HoloCollectionSection *holoSection = self.holoSections[indexPath.section];
+    HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(indexPath.section);
     if (elementKind == UICollectionElementKindSectionHeader) {
-        if (holoSection.didEndDisplayingHeaderHandler) holoSection.didEndDisplayingHeaderHandler(view, holoSection.headerModel);
+        HoloProxyViewPerformWithView(view, holoSection.didEndDisplayingHeaderSEL, holoSection.didEndDisplayingHeaderHandler, holoSection.headerModel);
     } else {
-        if (holoSection.didEndDisplayingFooterHandler) holoSection.didEndDisplayingFooterHandler(view, holoSection.footerModel);
+        HoloProxyViewPerformWithView(view, holoSection.didEndDisplayingFooterSEL, holoSection.didEndDisplayingFooterHandler, holoSection.footerModel);
     }
 }
 
@@ -418,8 +514,7 @@
         return [self.delegate collectionView:collectionView targetIndexPathForMoveFromItemAtIndexPath:originalIndexPath toProposedIndexPath:proposedIndexPath];
     }
     
-    HoloCollectionSection *holoSection = self.holoSections[originalIndexPath.section];
-    HoloCollectionRow *holoRow = holoSection.rows[originalIndexPath.row];
+    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(originalIndexPath);
     if (holoRow.targetMoveHandler) {
         return holoRow.targetMoveHandler(originalIndexPath, proposedIndexPath);
     }

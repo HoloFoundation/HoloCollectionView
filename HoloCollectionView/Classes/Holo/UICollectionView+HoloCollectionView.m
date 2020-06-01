@@ -170,10 +170,12 @@
         
         if (operateSection.header) [self _registerHeaderFooter:operateSection.header
                                     forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                          withHeaderFootersMap:headersMap];
+                                          withHeaderFootersMap:headersMap
+                                                       reuseId:operateSection.headerReuseId];
         if (operateSection.footer) [self _registerHeaderFooter:operateSection.footer
                                     forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                          withHeaderFootersMap:footersMap];
+                                          withHeaderFootersMap:footersMap
+                                                       reuseId:operateSection.footerReuseId];
         
         // update map
         NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
@@ -190,7 +192,7 @@
                 NSAssert(NO, error);
             }
             rowsMap[row.cell] = cls;
-            [self registerClass:cls forCellWithReuseIdentifier:row.cell];
+            [self registerClass:cls forCellWithReuseIdentifier:row.reuseId];
         }
         self.holo_proxy.proxyData.rowsMap = rowsMap;
     }
@@ -212,8 +214,8 @@
 // _registerHeaderFooter
 - (void)_registerHeaderFooter:(NSString *)headerFooter
    forSupplementaryViewOfKind:(NSString *)elementKind
-         withHeaderFootersMap:(NSMutableDictionary *)headerFootersMap {
-    
+         withHeaderFootersMap:(NSMutableDictionary *)headerFootersMap
+                      reuseId:(NSString *)reuseId {
     if (headerFootersMap[headerFooter]) return;
     
     Class cls = NSClassFromString(headerFooter);
@@ -226,7 +228,7 @@
         NSAssert(NO, error);
     }
     headerFootersMap[headerFooter] = cls;
-    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:headerFooter];
+    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:reuseId];
 }
 
 // holo_removeAllSections
@@ -365,7 +367,7 @@
             NSAssert(NO, error);
         }
         rowsMap[row.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:row.cell];
+        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId];
         [rows addObject:row];
     }
     self.holo_proxy.proxyData.rowsMap = rowsMap;
@@ -461,7 +463,7 @@
             NSAssert(NO, error);
         }
         rowsMap[operateRow.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:operateRow.cell];
+        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId];
     }
     self.holo_proxy.proxyData.rowsMap = rowsMap;
     self.holo_proxy.proxyData.sections = updateArray.copy;

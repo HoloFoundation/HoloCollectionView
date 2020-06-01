@@ -19,6 +19,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGSize)holo_sizeForCellWithModel:(id)model;
 
+- (BOOL)holo_shouldHighlightForCellWithModel:(id)model;
+
+- (BOOL)holo_shouldSelectForCellWithModel:(id)model;
+
+- (BOOL)holo_shouldDeselectForCellWithModel:(id)model;
+
+- (BOOL)holo_canMoveForCellWithModel:(id)model;
+
+- (void)holo_didSelectCellWithModel:(id)model;
+
+- (void)holo_didDeselectCellWithModel:(id)model;
+
+- (void)holo_willDisplayCellWithModel:(id)model;
+
+- (void)holo_didEndDisplayingCellWithModel:(id)model;
+
+- (void)holo_didHighlightCellWithModel:(id)model;
+
+- (void)holo_didUnHighlightCellWithModel:(id)model;
+
 @end
 
 ////////////////////////////////////////////////////////////
@@ -30,6 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CGSize)holo_sizeForHeaderWithModel:(id)model;
 
+- (void)holo_willDisplayHeaderWithModel:(id)model;
+
+- (void)holo_didEndDisplayingHeaderWithModel:(id)model;
+
 @end
 
 ////////////////////////////////////////////////////////////
@@ -40,6 +64,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)holo_configureFooterWithModel:(id)model;
 
 + (CGSize)holo_sizeForFooterWithModel:(id)model;
+
+- (void)holo_willDisplayFooterWithModel:(id)model;
+
+- (void)holo_didEndDisplayingFooterWithModel:(id)model;
 
 @end
 
