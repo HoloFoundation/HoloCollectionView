@@ -7,7 +7,7 @@
 //
 
 #import "HoloExampleCollectionViewCell.h"
-#import <HoloCollectionView/HoloCollectionViewProtocol.h>
+#import <HoloCollectionView/HoloCollectionView.h>
 
 @interface HoloExampleCollectionViewCell () <HoloCollectionViewCellProtocol>
 

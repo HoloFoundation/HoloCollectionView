@@ -1,46 +1,13 @@
 //
-//  HoloCollectionViewRowMaker.m
+//  HoloCollectionRowMaker.m
 //  HoloCollectionView
 //
-//  Created by 与佳期 on 2019/9/13.
+//  Created by 与佳期 on 2020/6/3.
 //
 
-#import "HoloCollectionViewRowMaker.h"
+#import "HoloCollectionRowMaker.h"
+#import "HoloCollectionRow.h"
 
-////////////////////////////////////////////////////////////
-@implementation HoloCollectionRow
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _size = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
-        _shouldHighlight = YES;
-        _shouldSelect = YES;
-        _shouldDeselect = YES;
-        _canMove = YES;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-        _configSEL = @selector(holo_configureCellWithModel:);
-        _sizeSEL = @selector(holo_sizeForCellWithModel:);
-        _shouldHighlightSEL = @selector(holo_shouldHighlightForCellWithModel:);
-        _shouldSelectSEL = @selector(holo_shouldSelectForCellWithModel:);
-        _shouldDeselectSEL = @selector(holo_shouldDeselectForCellWithModel:);
-        _canMoveSEL = @selector(holo_canMoveForCellWithModel:);
-        _didSelectSEL = @selector(holo_didSelectCellWithModel:);
-        _didDeselectSEL = @selector(holo_didDeselectCellWithModel:);
-        _willDisplaySEL = @selector(holo_willDisplayCellWithModel:);
-        _didEndDisplayingSEL = @selector(holo_didEndDisplayingCellWithModel:);
-        _didHighlightSEL = @selector(holo_didHighlightCellWithModel:);
-        _didUnHighlightSEL = @selector(holo_didUnHighlightCellWithModel:);
-#pragma clang diagnostic pop
-    }
-    
-    return self;
-}
-
-@end
-
-////////////////////////////////////////////////////////////
 @interface HoloCollectionRowMaker ()
 
 @property (nonatomic, strong) HoloCollectionRow *collectionRow;
@@ -323,53 +290,6 @@
         _collectionRow = [HoloCollectionRow new];
     }
     return _collectionRow;
-}
-
-@end
-
-////////////////////////////////////////////////////////////
-@interface HoloCollectionViewRowMaker ()
-
-@property (nonatomic, strong) NSMutableArray<HoloCollectionRow *> *holoRows;
-
-@end
-
-@implementation HoloCollectionViewRowMaker
-
-- (HoloCollectionRowMaker * (^)(Class))row {
-    return ^id(Class cls) {
-        HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
-        rowMaker.collectionRow.cell = NSStringFromClass(cls);
-        // reuseId is equal to cell by default
-        rowMaker.collectionRow.reuseId = rowMaker.collectionRow.cell;
-        
-        [self.holoRows addObject:rowMaker.collectionRow];
-        return rowMaker;
-    };
-}
-
-- (HoloCollectionRowMaker *(^)(NSString *))rowS {
-    return ^id(id obj) {
-        HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
-        rowMaker.collectionRow.cell = obj;
-        // reuseId is equal to cell by default
-        rowMaker.collectionRow.reuseId = rowMaker.collectionRow.cell;
-        
-        [self.holoRows addObject:rowMaker.collectionRow];
-        return rowMaker;
-    };
-}
-
-- (NSArray<HoloCollectionRow *> *)install {
-    return self.holoRows;
-}
-
-#pragma mark - getter
-- (NSMutableArray<HoloCollectionRow *> *)holoRows {
-    if (!_holoRows) {
-        _holoRows = [NSMutableArray new];
-    }
-    return _holoRows;
 }
 
 @end

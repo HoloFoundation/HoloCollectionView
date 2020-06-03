@@ -1,72 +1,14 @@
 //
-//  HoloCollectionViewSectionMaker.m
+//  HoloCollectionSectionMaker.m
 //  HoloCollectionView
 //
-//  Created by 与佳期 on 2019/9/13.
+//  Created by 与佳期 on 2020/6/3.
 //
 
-#import "HoloCollectionViewSectionMaker.h"
+#import "HoloCollectionSectionMaker.h"
+#import "HoloCollectionSection.h"
 #import "HoloCollectionViewRowMaker.h"
 
-////////////////////////////////////////////////////////////
-@implementation HoloCollectionSection
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _rows = [NSArray new];
-        _inset = UIEdgeInsetsMake(CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN);
-        _headerSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
-        _footerSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
-        _minimumLineSpacing = CGFLOAT_MIN;
-        _minimumInteritemSpacing = CGFLOAT_MIN;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-        _headerConfigSEL = @selector(holo_configureHeaderWithModel:);
-        _footerConfigSEL = @selector(holo_configureFooterWithModel:);
-        _headerSizeSEL = @selector(holo_sizeForHeaderWithModel:);
-        _footerSizeSEL = @selector(holo_sizeForFooterWithModel:);
-        
-        _headerFooterConfigSEL = @selector(holo_configureHeaderFooterWithModel:);
-        _headerFooterSizeSEL = @selector(holo_sizeForHeaderFooterWithModel:);
-        
-        _willDisplayHeaderSEL = @selector(holo_willDisplayHeaderWithModel:);
-        _willDisplayFooterSEL = @selector(holo_sizeForFooterWithModel:);
-        _didEndDisplayingHeaderSEL = @selector(holo_didEndDisplayingHeaderWithModel:);
-        _didEndDisplayingFooterSEL = @selector(holo_didEndDisplayingFooterWithModel:);
-#pragma clang diagnostic pop
-    }
-    return self;
-}
-
-- (NSIndexSet *)insertRows:(NSArray<HoloCollectionRow *> *)rows atIndex:(NSInteger)index {
-    if (rows.count <= 0) return nil;
-    
-    if (index < 0) index = 0;
-    if (index > self.rows.count) index = self.rows.count;
-    
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, rows.count)];
-    NSMutableArray *array = [NSMutableArray arrayWithArray:self.rows];
-    [array insertObjects:rows atIndexes:indexSet];
-    self.rows = array;
-    return indexSet;
-}
-
-- (void)removeRow:(HoloCollectionRow *)row {
-    if (!row) return;
-    
-    NSMutableArray *array = [NSMutableArray arrayWithArray:self.rows];
-    [array removeObject:row];
-    self.rows = array;
-}
-
-- (void)removeAllRows {
-    self.rows = [NSArray new];
-}
-
-@end
-
-////////////////////////////////////////////////////////////
 @interface HoloCollectionSectionMaker ()
 
 @property (nonatomic, strong) HoloCollectionSection *section;
@@ -337,85 +279,21 @@
     };
 }
 
+
+- (HoloCollectionSection *)fetchCollectionSection {
+    return self.section;
+}
+
+- (void)giveCollectionSection:(HoloCollectionSection *)section {
+    self.section = section;
+}
+
 #pragma mark - getter
 - (HoloCollectionSection *)section {
     if (!_section) {
         _section = [HoloCollectionSection new];
     }
     return _section;
-}
-
-@end
-
-
-////////////////////////////////////////////////////////////
-@implementation HoloCollectionViewSectionMakerModel
-
-@end
-
-////////////////////////////////////////////////////////////
-@interface HoloCollectionViewSectionMaker ()
-
-@property (nonatomic, copy) NSArray<HoloCollectionSection *> *dataSections;
-
-@property (nonatomic, assign) HoloCollectionViewSectionMakerType makerType;
-
-@property (nonatomic, strong) NSMutableArray<HoloCollectionViewSectionMakerModel *> *makerModels;
-
-@end
-
-@implementation HoloCollectionViewSectionMaker
-
-- (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections
-                                makerType:(HoloCollectionViewSectionMakerType)makerType {
-    self = [super init];
-    if (self) {
-        _dataSections = sections;
-        _makerType = makerType;
-    }
-    return self;
-}
-
-- (HoloCollectionSectionMaker *(^)(NSString *))section {
-    return ^id(NSString *tag) {
-        HoloCollectionSectionMaker *sectionMaker = [HoloCollectionSectionMaker new];
-        sectionMaker.section.tag = tag;
-        
-        __block HoloCollectionSection *targetSection;
-        __block NSNumber *operateIndex;
-        if (self.makerType == HoloCollectionViewSectionMakerTypeUpdate || self.makerType == HoloCollectionViewSectionMakerTypeRemake) {
-            [self.dataSections enumerateObjectsUsingBlock:^(HoloCollectionSection * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                if ([obj.tag isEqualToString:tag] || (!obj.tag && !tag)) {
-                    targetSection = obj;
-                    operateIndex = @(idx);
-                    *stop = YES;
-                }
-            }];
-        }
-        
-        if (targetSection && self.makerType == HoloCollectionViewSectionMakerTypeUpdate) {
-            sectionMaker.section = targetSection;
-        }
-        
-        HoloCollectionViewSectionMakerModel *makerModel = [HoloCollectionViewSectionMakerModel new];
-        makerModel.operateSection = sectionMaker.section;
-        makerModel.operateIndex = operateIndex;
-        [self.makerModels addObject:makerModel];
-        
-        return sectionMaker;
-    };
-}
-
-- (NSArray<HoloCollectionViewSectionMakerModel *> *)install {
-    return self.makerModels.copy;
-}
-
-#pragma mark - getter
-- (NSMutableArray<HoloCollectionViewSectionMakerModel *> *)makerModels {
-    if (!_makerModels) {
-        _makerModels = [NSMutableArray new];
-    }
-    return _makerModels;
 }
 
 @end

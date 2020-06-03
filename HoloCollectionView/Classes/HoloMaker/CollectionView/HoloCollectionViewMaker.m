@@ -7,7 +7,6 @@
 
 #import "HoloCollectionViewMaker.h"
 
-////////////////////////////////////////////////////////////
 @interface HoloCollectionViewRHFMap ()
 
 @property (nonatomic, copy) NSString *key;
@@ -26,7 +25,7 @@
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewRHFMapMaker ()
 
 @property (nonatomic, strong) NSMutableArray<HoloCollectionViewRHFMap *> *mapArray;
@@ -53,7 +52,7 @@
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @implementation HoloCollectionViewRowMapMaker
 
 - (HoloCollectionViewRHFMap * (^)(NSString *))row {
@@ -67,7 +66,7 @@
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @implementation HoloCollectionViewHeaderMapMaker
 
 - (HoloCollectionViewRHFMap * (^)(NSString *))header {
@@ -81,7 +80,7 @@
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @implementation HoloCollectionViewFooterMapMaker
 
 - (HoloCollectionViewRHFMap * (^)(NSString *))footer {
@@ -95,12 +94,12 @@
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @implementation HoloCollectionViewModel
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewMaker ()
 
 @property (nonatomic, strong) HoloCollectionViewModel *collectionViewModel;

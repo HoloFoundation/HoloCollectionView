@@ -10,81 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-////////////////////////////////////////////////////////////
-@protocol HoloCollectionViewCellProtocol <NSObject>
-
-@optional
-
-- (void)holo_configureCellWithModel:(id)model;
-
-+ (CGSize)holo_sizeForCellWithModel:(id)model;
-
-- (BOOL)holo_shouldHighlightForCellWithModel:(id)model;
-
-- (BOOL)holo_shouldSelectForCellWithModel:(id)model;
-
-- (BOOL)holo_shouldDeselectForCellWithModel:(id)model;
-
-- (BOOL)holo_canMoveForCellWithModel:(id)model;
-
-- (void)holo_didSelectCellWithModel:(id)model;
-
-- (void)holo_didDeselectCellWithModel:(id)model;
-
-- (void)holo_willDisplayCellWithModel:(id)model;
-
-- (void)holo_didEndDisplayingCellWithModel:(id)model;
-
-- (void)holo_didHighlightCellWithModel:(id)model;
-
-- (void)holo_didUnHighlightCellWithModel:(id)model;
-
-@end
-
-////////////////////////////////////////////////////////////
-@protocol HoloCollectionViewHeaderProtocol <NSObject>
-
-@optional
-
-- (void)holo_configureHeaderWithModel:(id)model;
-
-+ (CGSize)holo_sizeForHeaderWithModel:(id)model;
-
-- (void)holo_willDisplayHeaderWithModel:(id)model;
-
-- (void)holo_didEndDisplayingHeaderWithModel:(id)model;
-
-@end
-
-////////////////////////////////////////////////////////////
-@protocol HoloCollectionViewFooterProtocol <NSObject>
-
-@optional
-
-- (void)holo_configureFooterWithModel:(id)model;
-
-+ (CGSize)holo_sizeForFooterWithModel:(id)model;
-
-- (void)holo_willDisplayFooterWithModel:(id)model;
-
-- (void)holo_didEndDisplayingFooterWithModel:(id)model;
-
-@end
-
-////////////////////////////////////////////////////////////
-@protocol HoloCollectionViewHeaderFooterProtocol <NSObject>
-@optional
-- (void)holo_configureHeaderFooterWithModel:(id)model DEPRECATED_MSG_ATTRIBUTE("Please use `headerConfigSEL` or `footerConfigSEL` api instead.");
-+ (CGSize)holo_sizeForHeaderFooterWithModel:(id)model DEPRECATED_MSG_ATTRIBUTE("Please use `headerSizeSEL` or `footerSizeSEL` api instead.");
-@end
-
-////////////////////////////////////////////////////////////
 @protocol HoloCollectionViewDelegateFlowLayout <UICollectionViewDelegateFlowLayout>
 
-
 @end
 
-////////////////////////////////////////////////////////////
+
 @protocol HoloCollectionViewDataSource <NSObject>
 
 @optional

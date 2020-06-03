@@ -6,8 +6,8 @@
 //
 
 #import "HoloCollectionViewProxyData.h"
-#import "HoloCollectionViewSectionMaker.h"
-#import "HoloCollectionViewRowMaker.h"
+#import "HoloCollectionRow.h"
+#import "HoloCollectionSection.h"
 
 @implementation HoloCollectionViewProxyData
 

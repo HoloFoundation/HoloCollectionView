@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class HoloCollectionSection, HoloCollectionRowMaker, HoloCollectionRow;
+@class HoloCollectionRow, HoloCollectionSection, HoloCollectionRowMaker;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewUpdateRowMakerType) {
     HoloCollectionViewUpdateRowMakerTypeRemake
 };
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewUpdateRowMakerModel : NSObject
 
 @property (nonatomic, strong) HoloCollectionRow *operateRow;
@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewUpdateRowMakerType) {
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewUpdateRowMaker : NSObject
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^tag)(NSString *tag);

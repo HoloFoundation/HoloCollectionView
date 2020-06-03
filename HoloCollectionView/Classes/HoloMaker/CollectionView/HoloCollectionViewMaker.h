@@ -6,46 +6,46 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HoloCollectionViewProxy.h"
+#import "HoloCollectionViewProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleHandler)(NSString *title, NSInteger index);
 
-////////////////////////////////////////////////////////////
-@interface HoloCollectionViewRHFMap : NSObject // RHFMap: RowHeaderFooterMap
+/// RHFMap: RowHeaderFooterMap
+@interface HoloCollectionViewRHFMap : NSObject
 
 @property (nonatomic, copy, readonly) void (^map)(Class cls);
 
 @end
 
-////////////////////////////////////////////////////////////
-@interface HoloCollectionViewRHFMapMaker : NSObject // RHFMapMaker: RowHeaderFooterMaker
+/// RHFMapMaker: RowHeaderFooterMaker
+@interface HoloCollectionViewRHFMapMaker : NSObject
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewRowMapMaker : HoloCollectionViewRHFMapMaker
 
 @property (nonatomic, copy, readonly) HoloCollectionViewRHFMap *(^row)(NSString *row);
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewHeaderMapMaker : HoloCollectionViewRHFMapMaker
 
 @property (nonatomic, copy, readonly) HoloCollectionViewRHFMap *(^header)(NSString *header);
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewFooterMapMaker : HoloCollectionViewRHFMapMaker
 
 @property (nonatomic, copy, readonly) HoloCollectionViewRHFMap *(^footer)(NSString *footer);
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewModel : NSObject
 
 @property (nonatomic, copy) NSArray *indexTitles;
@@ -66,7 +66,7 @@ typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleH
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewMaker : NSObject
 
 @property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^sectionIndexTitles)(NSArray<NSString *> *sectionIndexTitles);

@@ -6,15 +6,15 @@
 //
 
 #import "HoloCollectionViewUpdateRowMaker.h"
-#import "HoloCollectionViewSectionMaker.h"
-#import "HoloCollectionViewRowMaker.h"
+#import "HoloCollectionRow.h"
+#import "HoloCollectionSection.h"
+#import "HoloCollectionRowMaker.h"
 
-////////////////////////////////////////////////////////////
 @implementation HoloCollectionViewUpdateRowMakerModel
 
 @end
 
-////////////////////////////////////////////////////////////
+
 @interface HoloCollectionViewUpdateRowMaker ()
 
 @property (nonatomic, copy) NSArray<HoloCollectionSection *> *dataSections;

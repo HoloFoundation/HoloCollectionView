@@ -6,9 +6,9 @@
 //
 
 #import "HoloCollectionViewProxy.h"
+#import "HoloCollectionRow.h"
+#import "HoloCollectionSection.h"
 #import "HoloCollectionViewProxyData.h"
-#import "HoloCollectionViewRowMaker.h"
-#import "HoloCollectionViewSectionMaker.h"
 
 static HoloCollectionViewProxy *kProxySelf;
 
