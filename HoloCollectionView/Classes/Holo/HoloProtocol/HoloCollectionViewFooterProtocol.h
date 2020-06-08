@@ -11,9 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol HoloCollectionViewFooterProtocol <NSObject>
 
-@optional
+@required
 
 - (void)holo_configureFooterWithModel:(id)model;
+
+
+@optional
 
 + (CGSize)holo_sizeForFooterWithModel:(id)model;
 

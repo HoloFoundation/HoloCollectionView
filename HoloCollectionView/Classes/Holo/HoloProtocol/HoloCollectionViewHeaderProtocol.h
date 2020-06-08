@@ -11,9 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol HoloCollectionViewHeaderProtocol <NSObject>
 
-@optional
+@required
 
 - (void)holo_configureHeaderWithModel:(id)model;
+
+
+@optional
 
 + (CGSize)holo_sizeForHeaderWithModel:(id)model;
 
