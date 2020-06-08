@@ -225,13 +225,6 @@
     };
 }
 
-- (HoloCollectionRowMaker *(^)(SEL))canMoveSEL {
-    return ^id(SEL s) {
-        self.collectionRow.canMoveSEL = s;
-        return self;
-    };
-}
-
 - (HoloCollectionRowMaker *(^)(SEL))didSelectSEL {
     return ^id(SEL s) {
         self.collectionRow.didSelectSEL = s;

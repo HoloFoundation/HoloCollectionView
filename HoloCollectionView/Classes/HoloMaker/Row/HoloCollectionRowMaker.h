@@ -73,8 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^shouldDeselectSEL)(SEL shouldDeselectSEL);
 
-@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^canMoveSEL)(SEL canMoveSEL);
-
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didSelectSEL)(SEL didSelectSEL);
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^didDeselectSEL)(SEL didDeselectSEL);

@@ -26,8 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)holo_shouldDeselectForCellWithModel:(id)model;
 
-- (BOOL)holo_canMoveForCellWithModel:(id)model;
-
 - (void)holo_didSelectCellWithModel:(id)model;
 
 - (void)holo_didDeselectCellWithModel:(id)model;

@@ -24,7 +24,6 @@
         _shouldHighlightSEL = @selector(holo_shouldHighlightForCellWithModel:);
         _shouldSelectSEL = @selector(holo_shouldSelectForCellWithModel:);
         _shouldDeselectSEL = @selector(holo_shouldDeselectForCellWithModel:);
-        _canMoveSEL = @selector(holo_canMoveForCellWithModel:);
         _didSelectSEL = @selector(holo_didSelectCellWithModel:);
         _didDeselectSEL = @selector(holo_didDeselectCellWithModel:);
         _willDisplaySEL = @selector(holo_willDisplayCellWithModel:);

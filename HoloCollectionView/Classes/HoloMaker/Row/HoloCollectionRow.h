@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) SEL shouldDeselectSEL;
 
-@property (nonatomic, assign) SEL canMoveSEL;
+//@property (nonatomic, assign) SEL canMoveSEL;
 
 @property (nonatomic, assign) SEL didSelectSEL;
 

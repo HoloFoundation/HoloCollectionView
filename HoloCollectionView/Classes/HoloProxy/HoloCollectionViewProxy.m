@@ -79,7 +79,15 @@ static CGSize HoloProxyItemSizeResult(Class cls, SEL sel, CGSize (^handler)(id),
     return flowLayoutSize;
 }
 
-static BOOL HoloProxyBOOLResult(UICollectionViewCell *cell, SEL sel, BOOL (^handler)(id), id model, BOOL can) {
+static BOOL HoloProxyBOOLResult(BOOL (^handler)(id), id model, BOOL can) {
+    if (handler) {
+        return handler(model);
+    } else {
+        return can;
+    }
+}
+
+static BOOL HoloProxyBOOLResultWithCell(UICollectionViewCell *cell, SEL sel, BOOL (^handler)(id), id model, BOOL can) {
     if (!cell) return NO;
     
     if (sel && [cell respondsToSelector:sel]) {
@@ -227,8 +235,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     }
     
     HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
-    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    return HoloProxyBOOLResult(cell, holoRow.canMoveSEL, holoRow.canMoveHandler, holoRow.model, holoRow.canMove);
+    return HoloProxyBOOLResult(holoRow.canMoveHandler, holoRow.model, holoRow.canMove);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath*)destinationIndexPath NS_AVAILABLE_IOS(9_0) {
@@ -390,7 +397,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     
     HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    return HoloProxyBOOLResult(cell, holoRow.shouldHighlightSEL, holoRow.shouldHighlightHandler, holoRow.model, holoRow.shouldHighlight);
+    return HoloProxyBOOLResultWithCell(cell, holoRow.shouldHighlightSEL, holoRow.shouldHighlightHandler, holoRow.model, holoRow.shouldHighlight);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -422,7 +429,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     
     HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    return HoloProxyBOOLResult(cell, holoRow.shouldSelectSEL, holoRow.shouldSelectHandler, holoRow.model, holoRow.shouldSelect);
+    return HoloProxyBOOLResultWithCell(cell, holoRow.shouldSelectSEL, holoRow.shouldSelectHandler, holoRow.model, holoRow.shouldSelect);
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -432,7 +439,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     
     HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    return HoloProxyBOOLResult(cell, holoRow.shouldDeselectSEL, holoRow.shouldDeselectHandler, holoRow.model, holoRow.shouldDeselect);
+    return HoloProxyBOOLResultWithCell(cell, holoRow.shouldDeselectSEL, holoRow.shouldDeselectHandler, holoRow.model, holoRow.shouldDeselect);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
