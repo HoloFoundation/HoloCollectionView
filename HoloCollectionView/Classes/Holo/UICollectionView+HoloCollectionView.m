@@ -193,7 +193,7 @@
                 NSAssert(NO, error);
             }
             rowsMap[row.cell] = cls;
-            [self registerClass:cls forCellWithReuseIdentifier:row.reuseId];
+            [self registerClass:cls forCellWithReuseIdentifier:row.reuseId ?: row.cell];
         }
         self.holo_proxy.proxyData.rowsMap = rowsMap;
     }
@@ -229,7 +229,7 @@
         NSAssert(NO, error);
     }
     headerFootersMap[headerFooter] = cls;
-    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:reuseId];
+    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:reuseId ?: headerFooter];
 }
 
 // holo_removeAllSections
@@ -368,7 +368,7 @@
             NSAssert(NO, error);
         }
         rowsMap[row.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId];
+        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId ?: row.cell];
         [rows addObject:row];
     }
     self.holo_proxy.proxyData.rowsMap = rowsMap;
@@ -464,7 +464,7 @@
             NSAssert(NO, error);
         }
         rowsMap[operateRow.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId];
+        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId ?: operateRow.cell];
     }
     self.holo_proxy.proxyData.rowsMap = rowsMap;
     self.holo_proxy.proxyData.sections = updateArray.copy;

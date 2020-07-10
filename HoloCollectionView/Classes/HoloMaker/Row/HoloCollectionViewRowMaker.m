@@ -22,8 +22,6 @@
         HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
         HoloCollectionRow *collectionRow = [rowMaker fetchCollectionRow];
         collectionRow.cell = NSStringFromClass(cls);
-        // reuseId is equal to cell by default
-        collectionRow.reuseId = collectionRow.cell;
         
         [self.holoRows addObject:collectionRow];
         return rowMaker;
@@ -35,8 +33,6 @@
         HoloCollectionRowMaker *rowMaker = [HoloCollectionRowMaker new];
         HoloCollectionRow *collectionRow = [rowMaker fetchCollectionRow];
         collectionRow.cell = obj;
-        // reuseId is equal to cell by default
-        collectionRow.reuseId = collectionRow.cell;
         
         [self.holoRows addObject:collectionRow];
         return rowMaker;
