@@ -165,6 +165,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     
     HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
     if (holoRow.modelHandler) holoRow.model = holoRow.modelHandler();
+    if (holoRow.reuseIdHandler) holoRow.reuseId = holoRow.reuseIdHandler(holoRow.model);
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoRow.reuseId forIndexPath:indexPath];
     
@@ -184,24 +185,26 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(self, indexPath.section);
     
-    NSString *reuseIdentifier = nil;
     id model = nil;
+    NSString *reuseIdentifier = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        reuseIdentifier = holoSection.headerReuseId;
-        
         if (holoSection.headerModelHandler) {
             model = holoSection.headerModelHandler();
         } else {
             model = holoSection.headerModel;
         }
-    } else {
-        reuseIdentifier = holoSection.footerReuseId;
         
+        if (holoSection.headerReuseIdHandler) holoSection.headerReuseId = holoSection.headerReuseIdHandler(holoSection.headerModel);
+        reuseIdentifier = holoSection.headerReuseId;
+    } else {
         if (holoSection.footerModelHandler) {
             model = holoSection.footerModelHandler();
         } else {
             model = holoSection.footerModel;
         }
+        
+        if (holoSection.footerReuseIdHandler) holoSection.footerReuseId = holoSection.footerReuseIdHandler(holoSection.footerModel);
+        reuseIdentifier = holoSection.footerReuseId;
     }
     UICollectionReusableView *holoHeaderView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     

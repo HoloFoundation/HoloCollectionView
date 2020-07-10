@@ -95,6 +95,13 @@
     };
 }
 
+- (HoloCollectionRowMaker * (^)(NSString * (^)(id)))reuseIdHandler {
+    return ^id(id obj) {
+        self.collectionRow.reuseIdHandler = obj;
+        return self;
+    };
+}
+
 - (HoloCollectionRowMaker * (^)(CGSize (^)(id)))sizeHandler {
     return ^id(id obj) {
         self.collectionRow.sizeHandler = obj;

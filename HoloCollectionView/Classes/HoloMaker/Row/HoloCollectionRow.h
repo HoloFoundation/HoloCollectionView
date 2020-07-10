@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - priority middle
 @property (nonatomic, copy) id (^modelHandler)(void);
 
+@property (nonatomic, copy) NSString *(^reuseIdHandler)(id _Nullable model);
+
 @property (nonatomic, copy) CGSize (^sizeHandler)(id _Nullable model);
 
 @property (nonatomic, copy) BOOL (^shouldHighlightHandler)(id _Nullable model);

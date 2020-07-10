@@ -51,6 +51,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) id (^footerModelHandler)(void);
 
+@property (nonatomic, copy) NSString *(^headerReuseIdHandler)(id _Nullable model);
+
+@property (nonatomic, copy) NSString *(^footerReuseIdHandler)(id _Nullable model);
+
 @property (nonatomic, copy) CGSize (^headerSizeHandler)(id _Nullable model);
 
 @property (nonatomic, copy) CGSize (^footerSizeHandler)(id _Nullable model);

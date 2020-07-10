@@ -36,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - priority middle
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^modelHandler)(id (^)(void));
 
+@property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^reuseIdHandler)(NSString *(^)(id _Nullable model));
+
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^sizeHandler)(CGSize (^)(id _Nullable model));
 
 @property (nonatomic, copy, readonly) HoloCollectionRowMaker *(^shouldHighlightHandler)(BOOL (^)(id _Nullable model));

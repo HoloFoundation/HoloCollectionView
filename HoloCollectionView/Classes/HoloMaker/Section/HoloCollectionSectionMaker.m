@@ -106,6 +106,20 @@
     };
 }
 
+- (HoloCollectionSectionMaker * (^)(NSString * (^)(id)))headerReuseIdHandler {
+    return ^id(id obj) {
+        self.section.headerReuseIdHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(NSString * (^)(id)))footerReuseIdHandler {
+    return ^id(id obj) {
+        self.section.footerReuseIdHandler = obj;
+        return self;
+    };
+}
+
 - (HoloCollectionSectionMaker *(^)(CGSize))headerSize {
     return ^id(CGSize s) {
         self.section.headerSize = s;

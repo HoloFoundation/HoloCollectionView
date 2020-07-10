@@ -50,6 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerModelHandler)(id (^)(void));
 
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerReuseIdHandler)(NSString *(^)(id _Nullable model));
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerReuseIdHandler)(NSString *(^)(id _Nullable model));
+
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerSizeHandler)(CGSize (^)(id _Nullable model));
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerSizeHandler)(CGSize (^)(id _Nullable model));
