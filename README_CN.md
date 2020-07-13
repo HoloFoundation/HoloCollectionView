@@ -37,7 +37,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 遵守 `HoloCollectionViewCellProtocol` 协议，`HoloCollectionView` 会自动识别 `cell` 是否实现了该协议的方法并调用，常用的两个方法：
 
 ```objc
-@required;
+@required
 
 // 给 cell 赋值 model
 // 这里的 model 就是 make.model() 传入的对象
@@ -56,9 +56,9 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 你也可以通过配置 `configSEL` 、 `sizeSEL` 等属性去调用你自己的方法。更多功能同样可以在 [HoloCollectionRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionRowMaker.h) 里找到。
 
 注意像：`size`、`shouldHighlight` 等存在 `SEL` 的属性存在优先级：
-1、优先判断 `cell` 是否实现了 `sizeSEL` 方法
-2、其次判断 `sizeHandler` block 回调是否实现
-3、最后判断 `size` 属性是否赋值
+1. 优先判断 `cell` 是否实现了 `sizeSEL` 方法
+2. 其次判断 `sizeHandler` block 回调是否实现
+3. 最后判断 `size` 属性是否赋值
 
 
 ## 2、常见用法：创建 section 列表，包含 header、footer、row列表
@@ -98,7 +98,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 1、header： 遵守 `HoloCollectionViewHeaderProtocol` 协议，选择实现其中的方法，常用的两个方法：
 
 ```objc
-@required;
+@required
 
 // 给 header 赋值 model
 // 这里的 model 就是 make.headerModel() 传入的对象
@@ -115,7 +115,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 2、Footer：遵守 `HoloCollectionViewFooterProtocol` 协议，选择实现其中的方法，常用的两个方法：
 
 ```objc
-@required;
+@required
 
 // 给 footer 赋值 model
 // 这里的 model 就是 make.footerModel() 传入的对象
@@ -180,7 +180,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 ```objc
 // 为 tag 为 nil 的 section 创建 row
 [self.collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    make.row(ExampleTableViewCell.class);
+    make.row(ExampleCollectionViewCell.class);
 }];
 
 // 为指定 tag 的 section 创建 row
@@ -194,7 +194,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 }];
 
 // 为指定 tag 的 section，在指定位置插入 row
-[self.collectionView holo_insertRowsAtIndex:0 inSection:TAG block:^(HoloTableViewRowMaker * _Nonnull make) {
+[self.collectionView holo_insertRowsAtIndex:0 inSection:TAG block:^(HoloCollectionViewRowMaker * _Nonnull make) {
     make.row(ExampleCollectionViewCell.class);
 }];
 
@@ -277,7 +277,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
     .didEndDisplayingHeaderHandler(^(UIView * _Nonnull header, id  _Nullable model) {
         NSLog(@"did end display header ");
     })
-    // 以下是 header 默认调用方法，建议 header 遵守 HoloTableViewHeaderProtocol，实现如下方法
+    // 以下是 header 默认调用方法，建议 header 遵守 HoloCollectionViewHeaderProtocol，实现如下方法
     // header 赋值 model 调用的方法
     .headerConfigSEL(@selector(holo_configureHeaderWithModel:))
     // header 返回大小调用的方法，header 实现该方法的话，优先于 headerHeightHandler 属性及 headerHeight 属性
@@ -316,7 +316,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
     .didEndDisplayingFooterHandler(^(UIView * _Nonnull footer, id  _Nullable model) {
         NSLog(@"did end display footer ");
     })
-    // 以下是 footer 默认调用方法，建议 footer 遵守 HoloTableViewFooterProtocol，实现如下方法
+    // 以下是 footer 默认调用方法，建议 footer 遵守 HoloCollectionViewFooterProtocol，实现如下方法
     // footer 赋值 model 调用的方法
     .footerConfigSEL(@selector(holo_configureFooterWithModel:))
     // footer 返回大小调用的方法，footer 实现该方法的话，优先于 footerSizeHandler 属性及 footerSize 属性
@@ -341,7 +341,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 
 ```objc
 [self.collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    // #1、给 row 配置 cell 类，返回 HoloTableRowMaker 对象
+    // #1、给 row 配置 cell 类，返回 HoloCollectionRowMaker 对象
     make.row(ExampleCollectionViewCell.class)
     
     // #2、配置 cell
@@ -422,7 +422,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
         
     })
     
-    // 以下是 cell 默认调用方法，建议 cell 遵守 HoloTableViewCellProtocol，实现如下方法
+    // 以下是 cell 默认调用方法，建议 cell 遵守 HoloCollectionViewCellProtocol，实现如下方法
     // 赋值 model 调用的方法
     .configSEL(@selector(holo_configureCellWithModel:))
     // 返回大小调用的方法，cell 实现该方法的话，优先于 sizeHandler 属性及 size 属性
@@ -467,4 +467,58 @@ self.collectionView.holo_proxy.scrollDelegate = self;
 
 一旦你设置了 `dataSource`、`delegate`、`scrollDelegate` 并实现了其中某个方法，`HoloCollectionView` 将优先使用你的方法及返回值。具体逻辑参见：[HoloCollectionViewProxy.m](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloProxy/HoloCollectionViewProxy.m)
 
+
+## 8、注册 key-Class 映射
+
+`HoloCollectionView` 支持提前为 header、footer、row 注册 `key-Class` 映射。用法如下：
+
+```objc
+// 提前注册
+[self.collectionView holo_makeCollectionView:^(HoloCollectionViewMaker * _Nonnull make) {
+    make
+    .makeHeadersMap(^(HoloCollectionViewHeaderMapMaker * _Nonnull make) {
+        make.header(@"header1").map(ExampleHeaderView1.class);
+        make.header(@"header2").map(ExampleHeaderView2.class);
+        // ...
+    })
+    .makeFootersMap(^(HoloCollectionViewFooterMapMaker * _Nonnull make) {
+        make.footer(@"footer1").map(ExampleFooterView1.class);
+        make.footer(@"footer2").map(ExampleFooterView2.class);
+        // ...
+    })
+    .makeRowsMap(^(HoloCollectionViewRowMapMaker * _Nonnull make) {
+        make.row(@"cell1").map(ExampleCollectionViewCell1.class);
+        make.row(@"cell2").map(ExampleCollectionViewCell2.class);
+        // ...
+    });
+}];
+
+
+// 使用 key 值
+[self.collectionView holo_makeSections:^(HoloCollectionViewSectionMaker * _Nonnull make) {
+    // section 1
+    make.section(TAG1)
+    .headerS(@"header1")
+    .footerS(@"footer1")
+    .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
+        make.rowS(@"cell1");
+        make.rowS(@"cell2");
+    });
+    
+    // section 2
+    make.section(TAG2)
+    .headerS(@"header2")
+    .footerS(@"footer2")
+    .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
+        make.rowS(@"cell1");
+        make.rowS(@"cell2");
+    });
+    
+    // ...
+}];
+```
+
+若提前注册过  `key-Class` 映射，则 `headerS`、`footerS`、`rowS` 根据注册的映射关系取 `Class` 使用
+
+若未注册过，则 `headerS`、`footerS`、`rowS` 直接将传入的字符串通过 `NSClassFromString(NSString * _Nonnull aClassName)` 方法转化为 `Class` 使用。
 
