@@ -254,7 +254,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     HoloCollectionRow *sourceRow = HoloCollectionRowWithIndexPath(self, sourceIndexPath);
     if (sourceRow.moveHandler) {
         sourceRow.moveHandler(sourceIndexPath, destinationIndexPath, ^(BOOL actionPerformed) {
-            if (actionPerformed) {
+            if (actionPerformed && self.holoSections.count > destinationIndexPath.section) {
                 HoloCollectionSection *destinationSection = self.holoSections[destinationIndexPath.section];
                 [sourceSection removeRow:sourceRow];
                 [destinationSection insertRows:@[sourceRow] atIndex:destinationIndexPath.row];
