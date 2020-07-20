@@ -20,24 +20,22 @@ static char kHoloCollectionViewProxyKey;
         collectionViewProxy = [[HoloCollectionViewProxy alloc] initWithCollectionView:self];
         objc_setAssociatedObject(self, &kHoloCollectionViewProxyKey, collectionViewProxy, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
-        if (!self.dataSource || !self.delegate) {
-            self.dataSource = collectionViewProxy;
-            self.delegate = collectionViewProxy;
-            
-            // register UICollectionReusableView
-            Class headerFooterCls = UICollectionReusableView.class;
-            NSString *headerFooter = NSStringFromClass(headerFooterCls);
-            [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerFooter];
-            [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:headerFooter];
-            // headersMap
-            NSMutableDictionary *headersMap = collectionViewProxy.proxyData.headersMap.mutableCopy;
-            headersMap[headerFooter] = headerFooterCls;
-            collectionViewProxy.proxyData.headersMap = headersMap;
-            // footersMap
-            NSMutableDictionary *footersMap = collectionViewProxy.proxyData.footersMap.mutableCopy;
-            footersMap[headerFooter] = headerFooterCls;
-            collectionViewProxy.proxyData.footersMap = footersMap;
-        }
+        self.dataSource = collectionViewProxy;
+        self.delegate = collectionViewProxy;
+        
+        // register UICollectionReusableView
+        Class headerFooterCls = UICollectionReusableView.class;
+        NSString *headerFooter = NSStringFromClass(headerFooterCls);
+        [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerFooter];
+        [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:headerFooter];
+        // headersMap
+        NSMutableDictionary *headersMap = collectionViewProxy.proxyData.headersMap.mutableCopy;
+        headersMap[headerFooter] = headerFooterCls;
+        collectionViewProxy.proxyData.headersMap = headersMap;
+        // footersMap
+        NSMutableDictionary *footersMap = collectionViewProxy.proxyData.footersMap.mutableCopy;
+        footersMap[headerFooter] = headerFooterCls;
+        collectionViewProxy.proxyData.footersMap = footersMap;
     }
     return collectionViewProxy;
 }
