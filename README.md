@@ -6,15 +6,27 @@
 [![Platform](https://img.shields.io/cocoapods/p/HoloCollectionView.svg?style=flat)](https://cocoapods.org/pods/HoloCollectionView)
 
 
-[中文介绍](https://github.com/HoloFoundation/HoloCollectionView/blob/master/README_CN.md)
+`HoloCollectionView` provides chained syntax calls that encapsulate delegate methods for `UICollectionView`. The delegate methods for `UICollectionView` is distributed to each `cell`, each `cell` having its own method for setting Class, model, size, and click event, etc.
+
+
+## Features
+
+- [x] Provide section and row maker to handle proxy events of `HoloCollectionView`.
+- [x] Provide protocols, implemented in cells, headers and footers to handle proxy events of `HoloCollectionView`.
+- [x] Support to regist maps (key-Class) for row, header and footer.
+- [ ] Diff reload data.
+- [ ] Adapt new APIs from iOS 13 and iOS 14.
+- [ ] Modern Objective-C and better Swift support.
+
 
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+
 ## Usage
 
-`HoloCollectionView` provides chained syntax calls that encapsulate delegate methods for `UICollectionView`. The delegate methods for `UICollectionView` is distributed to each `cell`, each `cell` having its own method for setting Class, model, size, and click event, etc.
+[中文介绍](https://github.com/HoloFoundation/HoloCollectionView/blob/master/README_CN.md)
 
 ### 1. Make a simple cell list
 
@@ -42,7 +54,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 // etc.
 ```
 
-The `holo_makeRows:` method is used to create a list of `rows`. Each `row` is a `cell`. **More properties provided for row see: [HoloCollectionViewRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionViewRowMaker.h) and [HoloCollectionRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionRowMaker.h)**
+The `holo_makeRows:` method is used to create a list of rows. Each `row` is a `cell`. **More properties provided for row see: [HoloCollectionViewRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionViewRowMaker.h) and [HoloCollectionRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionRowMaker.h)**
 
 
 #### Requirements for cell
@@ -229,7 +241,7 @@ Like `cell`, properties that contain `SEL` also have a priority.
 [self.collectionView reloadData];
 ```
 
-`UICollectionView+HoloCollectionView.h` provides a series of methods for manipulating `rows`, including adding, inserting, updating, resetting, deleting, etc.
+`UICollectionView+HoloCollectionView.h` provides a series of methods for manipulating rows, including adding, inserting, updating, resetting, deleting, etc.
 **More methods provided for row see: [UICollectionView+HoloCollectionView.h (row 部分)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L147-L329)**
 
 
