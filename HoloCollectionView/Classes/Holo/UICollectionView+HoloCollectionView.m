@@ -39,8 +39,7 @@
         [self registerClass:obj forCellWithReuseIdentifier:key];
         
         if (![obj.new isKindOfClass:UICollectionViewCell.class]) {
-            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", NSStringFromClass(obj)];
-            NSAssert(NO, error);
+            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", NSStringFromClass(obj));
         }
     }];
     self.holo_proxy.proxyData.rowsMap = rowsMap;
@@ -51,8 +50,7 @@
         [self registerClass:obj forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:key];
 
         if (![obj.new isKindOfClass:UICollectionReusableView.class]) {
-            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", NSStringFromClass(obj)];
-            NSAssert(NO, error);
+            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", NSStringFromClass(obj));
         }
     }];
     self.holo_proxy.proxyData.headersMap = headersMap;
@@ -63,8 +61,7 @@
         [self registerClass:obj forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:key];
 
         if (![obj.new isKindOfClass:UICollectionReusableView.class]) {
-            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", NSStringFromClass(obj)];
-            NSAssert(NO, error);
+            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", NSStringFromClass(obj));
         }
     }];
     self.holo_proxy.proxyData.footersMap = footersMap;
@@ -185,12 +182,10 @@
             
             Class cls = NSClassFromString(row.cell);
             if (!cls) {
-                NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a cell class with the name: %@.", row.cell];
-                NSAssert(NO, error);
+                NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", row.cell);
             }
             if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-                NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", row.cell];
-                NSAssert(NO, error);
+                NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", row.cell);
             }
             rowsMap[row.cell] = cls;
             [self registerClass:cls forCellWithReuseIdentifier:row.reuseId ?: row.cell];
@@ -221,12 +216,10 @@
     
     Class cls = NSClassFromString(headerFooter);
     if (!cls) {
-        NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a headerFooter class with the name: %@.", headerFooter];
-        NSAssert(NO, error);
+        NSAssert(NO, @"[HoloCollectionView] No found a headerFooter class with the name: %@.", headerFooter);
     }
     if (![cls.new isKindOfClass:UICollectionReusableView.class]) {
-        NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", headerFooter];
-        NSAssert(NO, error);
+        NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", headerFooter);
     }
     headerFootersMap[headerFooter] = cls;
     [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:reuseId ?: headerFooter];
@@ -360,12 +353,10 @@
         
         Class cls = NSClassFromString(row.cell);
         if (!cls) {
-            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a cell class with the name: %@.", row.cell];
-            NSAssert(NO, error);
+            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", row.cell);
         }
         if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", row.cell];
-            NSAssert(NO, error);
+            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", row.cell);
         }
         rowsMap[row.cell] = cls;
         [self registerClass:cls forCellWithReuseIdentifier:row.reuseId ?: row.cell];
@@ -456,12 +447,10 @@
         
         Class cls = NSClassFromString(operateRow.cell);
         if (!cls) {
-            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] No found a cell class with the name: %@.", operateRow.cell];
-            NSAssert(NO, error);
+            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", operateRow.cell);
         }
         if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSString *error = [NSString stringWithFormat:@"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", operateRow.cell];
-            NSAssert(NO, error);
+            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", operateRow.cell);
         }
         rowsMap[operateRow.cell] = cls;
         [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId ?: operateRow.cell];
