@@ -13,16 +13,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @required
 
-- (void)holo_configureHeaderWithModel:(id)model;
+- (void)holo_configureHeaderWithModel:(id _Nullable)model;
 
 
 @optional
 
-+ (CGSize)holo_sizeForHeaderWithModel:(id)model;
++ (CGSize)holo_sizeForHeaderWithModel:(id _Nullable)model;
 
-- (void)holo_willDisplayHeaderWithModel:(id)model;
+- (void)holo_willDisplayHeaderWithModel:(id _Nullable)model;
 
-- (void)holo_didEndDisplayingHeaderWithModel:(id)model;
+- (void)holo_didEndDisplayingHeaderWithModel:(id _Nullable)model;
 
 @end
 

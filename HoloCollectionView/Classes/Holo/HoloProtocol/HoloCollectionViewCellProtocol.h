@@ -13,30 +13,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 @required
 
-- (void)holo_configureCellWithModel:(id)model;
+- (void)holo_configureCellWithModel:(id _Nullable)model;
 
 
 @optional
 
-+ (CGSize)holo_sizeForCellWithModel:(id)model;
++ (CGSize)holo_sizeForCellWithModel:(id _Nullable)model;
 
-- (BOOL)holo_shouldHighlightForCellWithModel:(id)model;
+- (BOOL)holo_shouldHighlightForCellWithModel:(id _Nullable)model;
 
-- (BOOL)holo_shouldSelectForCellWithModel:(id)model;
+- (BOOL)holo_shouldSelectForCellWithModel:(id _Nullable)model;
 
-- (BOOL)holo_shouldDeselectForCellWithModel:(id)model;
+- (BOOL)holo_shouldDeselectForCellWithModel:(id _Nullable)model;
 
-- (void)holo_didSelectCellWithModel:(id)model;
+- (void)holo_didSelectCellWithModel:(id _Nullable)model;
 
-- (void)holo_didDeselectCellWithModel:(id)model;
+- (void)holo_didDeselectCellWithModel:(id _Nullable)model;
 
-- (void)holo_willDisplayCellWithModel:(id)model;
+- (void)holo_willDisplayCellWithModel:(id _Nullable)model;
 
-- (void)holo_didEndDisplayingCellWithModel:(id)model;
+- (void)holo_didEndDisplayingCellWithModel:(id _Nullable)model;
 
-- (void)holo_didHighlightCellWithModel:(id)model;
+- (void)holo_didHighlightCellWithModel:(id _Nullable)model;
 
-- (void)holo_didUnHighlightCellWithModel:(id)model;
+- (void)holo_didUnHighlightCellWithModel:(id _Nullable)model;
 
 @end
 

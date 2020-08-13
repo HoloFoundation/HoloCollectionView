@@ -13,16 +13,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @required
 
-- (void)holo_configureFooterWithModel:(id)model;
+- (void)holo_configureFooterWithModel:(id _Nullable)model;
 
 
 @optional
 
-+ (CGSize)holo_sizeForFooterWithModel:(id)model;
++ (CGSize)holo_sizeForFooterWithModel:(id _Nullable)model;
 
-- (void)holo_willDisplayFooterWithModel:(id)model;
+- (void)holo_willDisplayFooterWithModel:(id _Nullable)model;
 
-- (void)holo_didEndDisplayingFooterWithModel:(id)model;
+- (void)holo_didEndDisplayingFooterWithModel:(id _Nullable)model;
 
 @end
 
