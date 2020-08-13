@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## 1.1.0 (13/08/2020)
+
+- Add `_Nullable` to method parameters in cell protocol, header protocol and footer protocol.
+
 ## 1.0.0 (23/07/2020)
 
 - Refactor the update, remake and insert methods for `HoloCollectionView` and optimize the code logic.
