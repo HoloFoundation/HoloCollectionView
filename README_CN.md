@@ -397,6 +397,14 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
     .didDeselectHandler(^(id  _Nullable model) {
         
     })
+    // configSEL 执行之前被调用
+    .beforeConfigureHandler(^(UICollectionViewCell * _Nonnull cell, id  _Nullable model) {
+        
+    })
+    // configSEL 执行之后被调用
+    .afterConfigureHandler(^(UICollectionViewCell * _Nonnull cell, id  _Nullable model) {
+        
+    })
     // cell 即将出现
     .willDisplayHandler(^(UICollectionViewCell * _Nonnull cell, id  _Nullable model) {
         
