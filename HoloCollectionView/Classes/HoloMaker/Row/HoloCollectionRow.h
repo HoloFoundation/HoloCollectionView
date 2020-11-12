@@ -49,7 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) void (^didDeselectHandler)(id _Nullable model);
 
-@property (nonatomic, copy) void (^cellForRowHandler)(UICollectionViewCell *cell, id _Nullable model);
+@property (nonatomic, copy) void (^beforeConfigureHandler)(UICollectionViewCell *cell, id _Nullable model);
+
+@property (nonatomic, copy) void (^afterConfigureHandler)(UICollectionViewCell *cell, id _Nullable model);
 
 @property (nonatomic, copy) void (^willDisplayHandler)(UICollectionViewCell *cell, id _Nullable model);
 

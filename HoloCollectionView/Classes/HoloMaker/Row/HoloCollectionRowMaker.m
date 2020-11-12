@@ -151,9 +151,16 @@
     };
 }
 
-- (HoloCollectionRowMaker * (^)(void (^)(UICollectionViewCell *, id)))cellForRowHandler {
+- (HoloCollectionRowMaker * (^)(void (^)(UICollectionViewCell *, id)))beforeConfigureHandler {
     return ^id(id obj) {
-        self.collectionRow.cellForRowHandler = obj;
+        self.collectionRow.beforeConfigureHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionRowMaker * (^)(void (^)(UICollectionViewCell *, id)))afterConfigureHandler {
+    return ^id(id obj) {
+        self.collectionRow.afterConfigureHandler = obj;
         return self;
     };
 }

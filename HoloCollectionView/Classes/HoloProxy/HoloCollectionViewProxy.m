@@ -170,9 +170,9 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoRow.reuseId forIndexPath:indexPath];
     
-    // Performed before `configSEL`, you can catch cell and configure its properties in this handler
-    if (holoRow.cellForRowHandler) {
-        holoRow.cellForRowHandler(cell, holoRow.model);
+    // Performed before `configSEL`
+    if (holoRow.beforeConfigureHandler) {
+        holoRow.beforeConfigureHandler(cell, holoRow.model);
     }
     
     if (holoRow.configSEL && [cell respondsToSelector:holoRow.configSEL]) {
@@ -181,6 +181,12 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         [cell performSelector:holoRow.configSEL withObject:holoRow.model];
 #pragma clang diagnostic pop
     }
+    
+    // Performed after `configSEL`
+    if (holoRow.afterConfigureHandler) {
+        holoRow.afterConfigureHandler(cell, holoRow.model);
+    }
+    
     return cell;
 }
 
