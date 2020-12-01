@@ -23,6 +23,9 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+## Integration with 3rd party libraries
+
+- [HoloCollectionViewDiffPlugin](https://github.com/HoloFoundation/HoloCollectionViewDiffPlugin) - plugin to support [DeepDiff](https://github.com/onmyway133/DeepDiff), diff reload a section of `UICollectionView`. `DeepDiff` tells the difference between 2 collections and the changes as edit steps.
 
 ## Usage
 
