@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HoloCollectionSection : NSObject
 
-@property (nonatomic, copy, nullable) NSArray<HoloCollectionRow *> *rows;
+@property (nonatomic, copy) NSArray<HoloCollectionRow *> *rows;
 
 @property (nonatomic, copy, nullable) NSString *tag;
 
