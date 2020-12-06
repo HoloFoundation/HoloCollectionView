@@ -18,9 +18,9 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewUpdateRowMakerType) {
 
 @interface HoloCollectionViewUpdateRowMakerModel : NSObject
 
-@property (nonatomic, strong) HoloCollectionRow *operateRow;
+@property (nonatomic, strong, nullable) HoloCollectionRow *operateRow;
 
-@property (nonatomic, strong) NSIndexPath *operateIndexPath;
+@property (nonatomic, strong, nullable) NSIndexPath *operateIndexPath;
 
 @end
 

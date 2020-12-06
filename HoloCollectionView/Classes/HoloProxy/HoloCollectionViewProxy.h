@@ -17,11 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) HoloCollectionViewProxyData *proxyData;
 
-@property (nonatomic, weak) id<UIScrollViewDelegate> scrollDelegate;
+@property (nonatomic, weak, nullable) id<UIScrollViewDelegate> scrollDelegate;
 
-@property (nonatomic, weak) id<HoloCollectionViewDataSource> dataSource;
+@property (nonatomic, weak, nullable) id<HoloCollectionViewDataSource> dataSource;
 
-@property (nonatomic, weak) id<HoloCollectionViewDelegateFlowLayout> delegate;
+@property (nonatomic, weak, nullable) id<HoloCollectionViewDelegateFlowLayout> delegate;
 
 @end
 

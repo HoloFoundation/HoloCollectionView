@@ -20,9 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSDictionary<NSString *, Class> *footersMap;
 
-@property (nonatomic, copy) NSArray<NSString *> *sectionIndexTitles;
+@property (nonatomic, copy, nullable) NSArray<NSString *> *sectionIndexTitles;
 
-@property (nonatomic, copy) NSIndexPath *(^indexPathForIndexTitleHandler)(NSString *title, NSInteger index);
+@property (nonatomic, copy, nullable) NSIndexPath *(^indexPathForIndexTitleHandler)(NSString *title, NSInteger index);
 
 - (NSIndexSet *)insertSections:(NSArray<HoloCollectionSection *> *)sections anIndex:(NSInteger)index;
 
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSIndexSet *)removeSections:(NSArray<NSString *> *)tags;
 
-- (HoloCollectionSection *)sectionWithTag:(NSString * _Nullable)tag;
+- (HoloCollectionSection * _Nullable)sectionWithTag:(NSString * _Nullable)tag;
 
 - (NSArray<NSIndexPath *> *)removeAllRowsInSections:(NSArray<NSString *> *)tags;
 

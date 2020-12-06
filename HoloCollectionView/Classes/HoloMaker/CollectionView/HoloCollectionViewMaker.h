@@ -48,21 +48,21 @@ typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleH
 
 @interface HoloCollectionViewModel : NSObject
 
-@property (nonatomic, copy) NSArray *indexTitles;
+@property (nonatomic, copy, nullable) NSArray *indexTitles;
 
-@property (nonatomic, copy) HoloCollectionViewSectionForSectionIndexTitleHandler indexTitlesHandler;
+@property (nonatomic, copy, nullable) HoloCollectionViewSectionForSectionIndexTitleHandler indexTitlesHandler;
 
-@property (nonatomic, weak) id<HoloCollectionViewDelegateFlowLayout> delegate;
+@property (nonatomic, weak, nullable) id<HoloCollectionViewDelegateFlowLayout> delegate;
 
-@property (nonatomic, weak) id<HoloCollectionViewDataSource> dataSource;
+@property (nonatomic, weak, nullable) id<HoloCollectionViewDataSource> dataSource;
 
-@property (nonatomic, weak) id<UIScrollViewDelegate> scrollDelegate;
+@property (nonatomic, weak, nullable) id<UIScrollViewDelegate> scrollDelegate;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *rowsMap;
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, Class> *rowsMap;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *headersMap;
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, Class> *headersMap;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *footersMap;
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, Class> *footersMap;
 
 @end
 

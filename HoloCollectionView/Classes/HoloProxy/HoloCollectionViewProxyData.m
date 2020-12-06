@@ -12,10 +12,10 @@
 @implementation HoloCollectionViewProxyData
 
 - (NSIndexSet *)insertSections:(NSArray<HoloCollectionSection *> *)sections anIndex:(NSInteger)index {
-    if (sections.count <= 0) return nil;
+    if (sections.count <= 0) return [NSIndexSet new];
     
     if (index < 0) index = 0;
-        if (index > self.sections.count) index = self.sections.count;
+    if (index > self.sections.count) index = self.sections.count;
     
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, sections.count)];
     NSMutableArray *array = [NSMutableArray arrayWithArray:self.sections];

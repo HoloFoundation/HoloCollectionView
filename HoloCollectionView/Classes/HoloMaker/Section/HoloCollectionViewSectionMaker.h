@@ -20,9 +20,9 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewSectionMakerType) {
 
 @interface HoloCollectionViewSectionMakerModel : NSObject
 
-@property (nonatomic, strong) HoloCollectionSection *operateSection;
+@property (nonatomic, strong, nullable) HoloCollectionSection *operateSection;
 
-@property (nonatomic, strong) NSNumber *operateIndex;
+@property (nonatomic, strong, nullable) NSNumber *operateIndex;
 
 @end
 

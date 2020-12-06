@@ -11,14 +11,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HoloCollectionRow : NSObject
 
-@property (nonatomic, copy) NSString *cell;
+@property (nonatomic, copy, nullable) NSString *cell;
 
 #pragma mark - priority low
-@property (nonatomic, strong) id model;
+@property (nonatomic, strong, nullable) id model;
 
-@property (nonatomic, copy) NSString *reuseId;
+@property (nonatomic, copy, nullable) NSString *reuseId;
 
-@property (nonatomic, copy) NSString *tag;
+@property (nonatomic, copy, nullable) NSString *tag;
 
 @property (nonatomic, assign) CGSize size;
 
@@ -31,39 +31,39 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL canMove;
 
 #pragma mark - priority middle
-@property (nonatomic, copy) id (^modelHandler)(void);
+@property (nonatomic, copy, nullable) id (^modelHandler)(void);
 
-@property (nonatomic, copy) NSString *(^reuseIdHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) NSString *(^reuseIdHandler)(id _Nullable model);
 
-@property (nonatomic, copy) CGSize (^sizeHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) CGSize (^sizeHandler)(id _Nullable model);
 
-@property (nonatomic, copy) BOOL (^shouldHighlightHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) BOOL (^shouldHighlightHandler)(id _Nullable model);
 
-@property (nonatomic, copy) BOOL (^shouldSelectHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) BOOL (^shouldSelectHandler)(id _Nullable model);
 
-@property (nonatomic, copy) BOOL (^shouldDeselectHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) BOOL (^shouldDeselectHandler)(id _Nullable model);
 
-@property (nonatomic, copy) BOOL (^canMoveHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) BOOL (^canMoveHandler)(id _Nullable model);
 
-@property (nonatomic, copy) void (^didSelectHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) void (^didSelectHandler)(id _Nullable model);
 
-@property (nonatomic, copy) void (^didDeselectHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) void (^didDeselectHandler)(id _Nullable model);
 
-@property (nonatomic, copy) void (^beforeConfigureHandler)(UICollectionViewCell *cell, id _Nullable model);
+@property (nonatomic, copy, nullable) void (^beforeConfigureHandler)(UICollectionViewCell *cell, id _Nullable model);
 
-@property (nonatomic, copy) void (^afterConfigureHandler)(UICollectionViewCell *cell, id _Nullable model);
+@property (nonatomic, copy, nullable) void (^afterConfigureHandler)(UICollectionViewCell *cell, id _Nullable model);
 
-@property (nonatomic, copy) void (^willDisplayHandler)(UICollectionViewCell *cell, id _Nullable model);
+@property (nonatomic, copy, nullable) void (^willDisplayHandler)(UICollectionViewCell *cell, id _Nullable model);
 
-@property (nonatomic, copy) void (^didEndDisplayingHandler)(UICollectionViewCell *cell, id _Nullable model);
+@property (nonatomic, copy, nullable) void (^didEndDisplayingHandler)(UICollectionViewCell *cell, id _Nullable model);
 
-@property (nonatomic, copy) void (^didHighlightHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) void (^didHighlightHandler)(id _Nullable model);
 
-@property (nonatomic, copy) void (^didUnHighlightHandler)(id _Nullable model);
+@property (nonatomic, copy, nullable) void (^didUnHighlightHandler)(id _Nullable model);
 
-@property (nonatomic, copy) NSIndexPath *(^targetMoveHandler)(NSIndexPath *atIndexPath, NSIndexPath *toIndexPath);
+@property (nonatomic, copy, nullable) NSIndexPath *(^targetMoveHandler)(NSIndexPath *atIndexPath, NSIndexPath *toIndexPath);
 
-@property (nonatomic, copy) void (^moveHandler)(NSIndexPath *atIndexPath, NSIndexPath *toIndexPath, void(^completionHandler)(BOOL actionPerformed));
+@property (nonatomic, copy, nullable) void (^moveHandler)(NSIndexPath *atIndexPath, NSIndexPath *toIndexPath, void(^completionHandler)(BOOL actionPerformed));
 
 #pragma mark - priority high
 @property (nonatomic, assign) SEL configSEL;
