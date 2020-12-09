@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## 1.3.0 (08/12/2020)
+
+- Add `nullable` to property.
+
+
 ## 1.2.0 (12/11/2020)
 
 - Add `beforeConfigureHandler` and `afterConfigureHandler`, performed before and after `configSEL`.
