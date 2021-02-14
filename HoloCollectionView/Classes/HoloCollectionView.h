@@ -9,33 +9,33 @@
 #define HoloCollectionView_h
 
 // Holo
-#import "HoloCollectionViewMacro.h"
-#import "HoloCollectionViewProtocol.h"
-#import "HoloCollectionViewCellProtocol.h"
-#import "HoloCollectionViewHeaderProtocol.h"
-#import "HoloCollectionViewFooterProtocol.h"
-#import "HoloCollectionViewHeaderFooterProtocol.h"
-#import "UICollectionView+HoloCollectionView.h"
+#import <HoloCollectionView/HoloCollectionViewMacro.h>
+#import <HoloCollectionView/HoloCollectionViewProtocol.h>
+#import <HoloCollectionView/HoloCollectionViewCellProtocol.h>
+#import <HoloCollectionView/HoloCollectionViewHeaderProtocol.h>
+#import <HoloCollectionView/HoloCollectionViewFooterProtocol.h>
+#import <HoloCollectionView/HoloCollectionViewHeaderFooterProtocol.h>
+#import <HoloCollectionView/UICollectionView+HoloCollectionView.h>
 
 // HoloMaker (Row)
-#import "HoloCollectionRow.h"
-#import "HoloCollectionRowMaker.h"
-#import "HoloCollectionViewRowMaker.h"
+#import <HoloCollectionView/HoloCollectionRow.h>
+#import <HoloCollectionView/HoloCollectionRowMaker.h>
+#import <HoloCollectionView/HoloCollectionViewRowMaker.h>
 
 // HoloMaker (Section)
-#import "HoloCollectionSection.h"
-#import "HoloCollectionSectionMaker.h"
-#import "HoloCollectionViewSectionMaker.h"
+#import <HoloCollectionView/HoloCollectionSection.h>
+#import <HoloCollectionView/HoloCollectionSectionMaker.h>
+#import <HoloCollectionView/HoloCollectionViewSectionMaker.h>
 
 // HoloMaker (CollectionView)
-#import "HoloCollectionViewMaker.h"
+#import <HoloCollectionView/HoloCollectionViewMaker.h>
 
 // HoloMaker (Update)
-#import "HoloCollectionViewUpdateRowMaker.h"
+#import <HoloCollectionView/HoloCollectionViewUpdateRowMaker.h>
 
 // HoloProxy
-#import "HoloCollectionViewProxy.h"
-#import "HoloCollectionViewProxyData.h"
-#import "UICollectionView+HoloCollectionViewProxy.h"
+#import <HoloCollectionView/HoloCollectionViewProxy.h>
+#import <HoloCollectionView/HoloCollectionViewProxyData.h>
+#import <HoloCollectionView/UICollectionView+HoloCollectionViewProxy.h>
 
 #endif /* HoloCollectionView_h */
