@@ -1,6 +1,6 @@
 # HoloCollectionView
 
-[![CI Status](https://img.shields.io/travis/gonghonglou/HoloCollectionView.svg?style=flat)](https://travis-ci.org/gonghonglou/HoloCollectionView)
+[![CI Status](https://img.shields.io/travis/HoloFoundation/HoloCollectionView.svg?style=flat)](https://travis-ci.org/HoloFoundation/HoloCollectionView)
 [![Version](https://img.shields.io/cocoapods/v/HoloCollectionView.svg?style=flat)](https://cocoapods.org/pods/HoloCollectionView)
 [![License](https://img.shields.io/cocoapods/l/HoloCollectionView.svg?style=flat)](https://cocoapods.org/pods/HoloCollectionView)
 [![Platform](https://img.shields.io/cocoapods/p/HoloCollectionView.svg?style=flat)](https://cocoapods.org/pods/HoloCollectionView)
