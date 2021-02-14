@@ -8,12 +8,16 @@
 #ifndef HoloCollectionViewMacro_h
 #define HoloCollectionViewMacro_h
 
+#if !defined(TAG)
 #define TAG @"HOLO_DEFAULT_TAG"
+#endif
 
+#if !defined(HoloLog)
 #ifdef DEBUG
 #define HoloLog(...) NSLog(__VA_ARGS__)
 #else
 #define HoloLog(...)
+#endif
 #endif
 
 #endif /* HoloCollectionViewMacro_h */
