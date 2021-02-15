@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class HoloCollectionSection, HoloCollectionViewRowMaker;
+@class HoloCollectionSection, HoloCollectionViewItemMaker, HoloCollectionViewRowMaker;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -87,7 +87,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^didEndDisplayingFooterSEL)(SEL didEndDisplayingFooterSEL);
 
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^makeRows)(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make));
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^makeItems)(void(NS_NOESCAPE ^)(HoloCollectionViewItemMaker *make));
+
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^makeRows)(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make)) DEPRECATED_MSG_ATTRIBUTE("Please use `makeItems` api instead.");
 
 
 - (HoloCollectionSection *)fetchCollectionSection;

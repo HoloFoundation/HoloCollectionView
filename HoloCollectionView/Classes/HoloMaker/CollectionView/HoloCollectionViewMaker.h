@@ -12,22 +12,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleHandler)(NSString *title, NSInteger index);
 
-/// RHFMap: RowHeaderFooterMap
+/// RHFMap: ItemHeaderFooterMap
 @interface HoloCollectionViewRHFMap : NSObject
 
 @property (nonatomic, copy, readonly) void (^map)(Class cls);
 
 @end
 
-/// RHFMapMaker: RowHeaderFooterMaker
+/// RHFMapMaker: ItemHeaderFooterMaker
 @interface HoloCollectionViewRHFMapMaker : NSObject
 
 @end
 
 
-@interface HoloCollectionViewRowMapMaker : HoloCollectionViewRHFMapMaker
+@interface HoloCollectionViewItemMapMaker : HoloCollectionViewRHFMapMaker
 
-@property (nonatomic, copy, readonly) HoloCollectionViewRHFMap *(^row)(NSString *row);
+@property (nonatomic, copy, readonly) HoloCollectionViewRHFMap *(^item)(NSString *item);
 
 @end
 
@@ -58,7 +58,7 @@ typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleH
 
 @property (nonatomic, weak, nullable) id<UIScrollViewDelegate> scrollDelegate;
 
-@property (nonatomic, copy, nullable) NSDictionary<NSString *, Class> *rowsMap;
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, Class> *itemsMap;
 
 @property (nonatomic, copy, nullable) NSDictionary<NSString *, Class> *headersMap;
 
@@ -79,7 +79,7 @@ typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleH
 
 @property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^scrollDelegate)(id<UIScrollViewDelegate> scrollDelegate);
 
-@property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^makeRowsMap)(void(NS_NOESCAPE ^)(HoloCollectionViewRowMapMaker *make));
+@property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^makeItemsMap)(void(NS_NOESCAPE ^)(HoloCollectionViewItemMapMaker *make));
 
 @property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^makeHeadersMap)(void(NS_NOESCAPE ^)(HoloCollectionViewHeaderMapMaker *make));
 

@@ -6,7 +6,7 @@
 //
 
 #import "HoloCollectionViewProxy.h"
-#import "HoloCollectionRow.h"
+#import "HoloCollectionItem.h"
 #import "HoloCollectionSection.h"
 #import "HoloCollectionViewProxyData.h"
 
@@ -16,7 +16,7 @@
 
 @property (nonatomic, copy, readonly) NSArray<HoloCollectionSection *> *holoSections;
 
-@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoRowsMap;
+@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoItemsMap;
 
 @property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoHeadersMap;
 
@@ -41,12 +41,12 @@ static HoloCollectionSection *HoloCollectionSectionWithIndex(HoloCollectionViewP
     return holoSection;
 }
 
-static HoloCollectionRow *HoloCollectionRowWithIndexPath(HoloCollectionViewProxy *holoProxy, NSIndexPath *indexPath) {
+static HoloCollectionItem *HoloCollectionItemWithIndexPath(HoloCollectionViewProxy *holoProxy, NSIndexPath *indexPath) {
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(holoProxy, indexPath.section);
-    if (indexPath.row >= holoSection.rows.count) return nil;
+    if (indexPath.item >= holoSection.items.count) return nil;
     
-    HoloCollectionRow *holoRow = holoSection.rows[indexPath.row];
-    return holoRow;
+    HoloCollectionItem *holoItem = holoSection.items[indexPath.item];
+    return holoItem;
 }
 
 static NSInvocation *HoloProxyInvocation(id target, SEL sel, id model) {
@@ -155,7 +155,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     }
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(self, section);
-    return holoSection.rows.count;
+    return holoSection.items.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -163,28 +163,28 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return [self.dataSource collectionView:collectionView cellForItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
-    if (holoRow.modelHandler) holoRow.model = holoRow.modelHandler();
-    if (holoRow.reuseIdHandler) holoRow.reuseId = holoRow.reuseIdHandler(holoRow.model);
-    if (!holoRow.reuseId) holoRow.reuseId = holoRow.cell;
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
+    if (holoItem.modelHandler) holoItem.model = holoItem.modelHandler();
+    if (holoItem.reuseIdHandler) holoItem.reuseId = holoItem.reuseIdHandler(holoItem.model);
+    if (!holoItem.reuseId) holoItem.reuseId = holoItem.cell;
     
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoRow.reuseId forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoItem.reuseId forIndexPath:indexPath];
     
     // Performed before `configSEL`
-    if (holoRow.beforeConfigureHandler) {
-        holoRow.beforeConfigureHandler(cell, holoRow.model);
+    if (holoItem.beforeConfigureHandler) {
+        holoItem.beforeConfigureHandler(cell, holoItem.model);
     }
     
-    if (holoRow.configSEL && [cell respondsToSelector:holoRow.configSEL]) {
+    if (holoItem.configSEL && [cell respondsToSelector:holoItem.configSEL]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [cell performSelector:holoRow.configSEL withObject:holoRow.model];
+        [cell performSelector:holoItem.configSEL withObject:holoItem.model];
 #pragma clang diagnostic pop
     }
     
     // Performed after `configSEL`
-    if (holoRow.afterConfigureHandler) {
-        holoRow.afterConfigureHandler(cell, holoRow.model);
+    if (holoItem.afterConfigureHandler) {
+        holoItem.afterConfigureHandler(cell, holoItem.model);
     }
     
     return cell;
@@ -251,8 +251,8 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return [self.dataSource collectionView:collectionView canMoveItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
-    return HoloProxyBOOLResult(holoRow.canMoveHandler, holoRow.model, holoRow.canMove);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
+    return HoloProxyBOOLResult(holoItem.canMoveHandler, holoItem.model, holoItem.canMove);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath*)destinationIndexPath NS_AVAILABLE_IOS(9_0) {
@@ -262,13 +262,13 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     }
     
     HoloCollectionSection *sourceSection = HoloCollectionSectionWithIndex(self, sourceIndexPath.section);
-    HoloCollectionRow *sourceRow = HoloCollectionRowWithIndexPath(self, sourceIndexPath);
-    if (sourceRow.moveHandler) {
-        sourceRow.moveHandler(sourceIndexPath, destinationIndexPath, ^(BOOL actionPerformed) {
+    HoloCollectionItem *sourceItem = HoloCollectionItemWithIndexPath(self, sourceIndexPath);
+    if (sourceItem.moveHandler) {
+        sourceItem.moveHandler(sourceIndexPath, destinationIndexPath, ^(BOOL actionPerformed) {
             if (actionPerformed && self.holoSections.count > destinationIndexPath.section) {
                 HoloCollectionSection *destinationSection = self.holoSections[destinationIndexPath.section];
-                [sourceSection removeRow:sourceRow];
-                [destinationSection insertRows:@[sourceRow] atIndex:destinationIndexPath.row];
+                [sourceSection removeItem:sourceItem];
+                [destinationSection insertItems:@[sourceItem] atIndex:destinationIndexPath.item];
             }
         });
     }
@@ -300,10 +300,10 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return [self.delegate collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
-    Class cls = self.holoRowsMap[holoRow.cell];
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
+    Class cls = self.holoItemsMap[holoItem.cell];
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
-    return HoloProxyItemSizeResult(cls, holoRow.sizeSEL, holoRow.sizeHandler, holoRow.model, holoRow.size, flowLayout.itemSize);
+    return HoloProxyItemSizeResult(cls, holoItem.sizeSEL, holoItem.sizeHandler, holoItem.model, holoItem.size, flowLayout.itemSize);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
@@ -412,9 +412,9 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return [self.delegate collectionView:collectionView shouldHighlightItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    return HoloProxyBOOLResultWithCell(cell, holoRow.shouldHighlightSEL, holoRow.shouldHighlightHandler, holoRow.model, holoRow.shouldHighlight);
+    return HoloProxyBOOLResultWithCell(cell, holoItem.shouldHighlightSEL, holoItem.shouldHighlightHandler, holoItem.model, holoItem.shouldHighlight);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -423,9 +423,9 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return;
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    HoloProxyCellPerform(cell, holoRow.didHighlightSEL, holoRow.didHighlightHandler, holoRow.model);
+    HoloProxyCellPerform(cell, holoItem.didHighlightSEL, holoItem.didHighlightHandler, holoItem.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -434,9 +434,9 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return;
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    HoloProxyCellPerform(cell, holoRow.didUnHighlightSEL, holoRow.didUnHighlightHandler, holoRow.model);
+    HoloProxyCellPerform(cell, holoItem.didUnHighlightSEL, holoItem.didUnHighlightHandler, holoItem.model);
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -444,9 +444,9 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return [self.delegate collectionView:collectionView shouldSelectItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    return HoloProxyBOOLResultWithCell(cell, holoRow.shouldSelectSEL, holoRow.shouldSelectHandler, holoRow.model, holoRow.shouldSelect);
+    return HoloProxyBOOLResultWithCell(cell, holoItem.shouldSelectSEL, holoItem.shouldSelectHandler, holoItem.model, holoItem.shouldSelect);
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -454,9 +454,9 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return [self.delegate collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath];
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    return HoloProxyBOOLResultWithCell(cell, holoRow.shouldDeselectSEL, holoRow.shouldDeselectHandler, holoRow.model, holoRow.shouldDeselect);
+    return HoloProxyBOOLResultWithCell(cell, holoItem.shouldDeselectSEL, holoItem.shouldDeselectHandler, holoItem.model, holoItem.shouldDeselect);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -465,9 +465,9 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return;
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    HoloProxyCellPerform(cell, holoRow.didSelectSEL, holoRow.didSelectHandler, holoRow.model);
+    HoloProxyCellPerform(cell, holoItem.didSelectSEL, holoItem.didSelectHandler, holoItem.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -476,9 +476,9 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return;
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    HoloProxyCellPerform(cell, holoRow.didDeselectSEL, holoRow.didDeselectHandler, holoRow.model);
+    HoloProxyCellPerform(cell, holoItem.didDeselectSEL, holoItem.didDeselectHandler, holoItem.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -487,8 +487,8 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return;
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
-    HoloProxyCellPerformWithCell(cell, holoRow.willDisplaySEL, holoRow.willDisplayHandler, holoRow.model);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
+    HoloProxyCellPerformWithCell(cell, holoItem.willDisplaySEL, holoItem.willDisplayHandler, holoItem.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -497,8 +497,8 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return;
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, indexPath);
-    HoloProxyCellPerformWithCell(cell, holoRow.didEndDisplayingSEL, holoRow.didEndDisplayingHandler, holoRow.model);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
+    HoloProxyCellPerformWithCell(cell, holoItem.didEndDisplayingSEL, holoItem.didEndDisplayingHandler, holoItem.model);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
@@ -535,9 +535,9 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return [self.delegate collectionView:collectionView targetIndexPathForMoveFromItemAtIndexPath:originalIndexPath toProposedIndexPath:proposedIndexPath];
     }
     
-    HoloCollectionRow *holoRow = HoloCollectionRowWithIndexPath(self, originalIndexPath);
-    if (holoRow.targetMoveHandler) {
-        return holoRow.targetMoveHandler(originalIndexPath, proposedIndexPath);
+    HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, originalIndexPath);
+    if (holoItem.targetMoveHandler) {
+        return holoItem.targetMoveHandler(originalIndexPath, proposedIndexPath);
     }
     return proposedIndexPath;
 }
@@ -654,8 +654,8 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     return self.proxyData.sections;
 }
 
-- (NSDictionary<NSString *, Class> *)holoRowsMap {
-    return self.proxyData.rowsMap;
+- (NSDictionary<NSString *, Class> *)holoItemsMap {
+    return self.proxyData.itemsMap;
 }
 
 - (NSDictionary<NSString *,Class> *)holoHeadersMap {

@@ -12,14 +12,14 @@ flowLayout...
 UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
 [self.view addSubview:collectionView];
 
-[collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
+[collectionView holo_makeItems:^(HoloCollectionViewItemMaker * _Nonnull make) {
     // make a cell
-    make.row(ExampleCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
+    make.item(ExampleCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
     
     // make a list
     for (NSObject *obj in NSArray.new) {
-        make.row(ExampleCollectionViewCell.class).model(obj).didSelectHandler(^(id  _Nullable model) {
-            NSLog(@"did select row : %@", model);
+        make.item(ExampleCollectionViewCell.class).model(obj).didSelectHandler(^(id  _Nullable model) {
+            NSLog(@"did select item : %@", model);
         });
     }
 }];
@@ -29,7 +29,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 // etc...
 ```
 
-`holo_makeRows:` 方法的作用是创建一系列的 `row`，每个 `row` 就是一个 `cell`，你可以方便的通过 for 循环创建一个 `cell` 列表。**关于 row 提供的更多功能参见： [HoloCollectionViewRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionViewRowMaker.h) 及 [HoloCollectionRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionRowMaker.h)**
+`holo_makeItems:` 方法的作用是创建一系列的 `item`，每个 `item` 就是一个 `cell`，你可以方便的通过 for 循环创建一个 `cell` 列表。**关于 item 提供的更多功能参见： [HoloCollectionViewItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionViewItemMaker.h) 及 [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h)**
 
 
 ### 对 Cell 的要求
@@ -53,7 +53,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 
  **`HoloCollectionViewCellProtocol` 协议更多方法参见：[HoloCollectionViewCellProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Holo/HoloProtocol/HoloCollectionViewCellProtocol.h)**
 
-你也可以通过配置 `configSEL` 、 `sizeSEL` 等属性去调用你自己的方法。更多功能同样可以在 [HoloCollectionRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionRowMaker.h) 里找到。
+你也可以通过配置 `configSEL` 、 `sizeSEL` 等属性去调用你自己的方法。更多功能同样可以在 [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h) 里找到。
 
 注意像：`size`、`shouldHighlight` 等存在 `SEL` 的属性存在优先级：
 1. 优先判断 `cell` 是否实现了 `sizeSEL` 方法
@@ -61,7 +61,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 3. 最后判断 `size` 属性是否赋值
 
 
-## 2、常见用法：创建 section 列表，包含 header、footer、row列表
+## 2、常见用法：创建 section 列表，包含 header、footer、item列表
 
 ```objc
 UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
@@ -74,14 +74,14 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
     make.section(TAG)
     .header(ExampleHeaderView.class).headerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
     .footer(ExampleFooterView.class).footerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
-    .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
+    .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
         // make a cell
-        make.row(ExampleCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
+        make.item(ExampleCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
         
         // make a list
         for (NSObject *obj in NSArray.new) {
-            make.row(ExampleCollectionViewCell.class).model(obj).didSelectHandler(^(id  _Nullable model) {
-                NSLog(@"did select row : %@", model);
+            make.item(ExampleCollectionViewCell.class).model(obj).didSelectHandler(^(id  _Nullable model) {
+                NSLog(@"did select item : %@", model);
             });
         }
     });
@@ -178,50 +178,50 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 ## 4、cell 的增删改
 
 ```objc
-// 为 tag 为 nil 的 section 创建 row
-[self.collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    make.row(ExampleCollectionViewCell.class);
+// 为 tag 为 nil 的 section 创建 item
+[self.collectionView holo_makeItems:^(HoloCollectionViewItemMaker * _Nonnull make) {
+    make.item(ExampleCollectionViewCell.class);
 }];
 
-// 为指定 tag 的 section 创建 row
-[self.collectionView holo_makeRowsInSection:TAG block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    make.row(ExampleCollectionViewCell.class);
+// 为指定 tag 的 section 创建 item
+[self.collectionView holo_makeItemsInSection:TAG block:^(HoloCollectionViewItemMaker * _Nonnull make) {
+    make.item(ExampleCollectionViewCell.class);
 }];
 
-// 为 tag 为 nil 的 section，在指定位置插入 row
-[self.collectionView holo_insertRowsAtIndex:0 block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    make.row(ExampleCollectionViewCell.class);
+// 为 tag 为 nil 的 section，在指定位置插入 item
+[self.collectionView holo_insertItemsAtIndex:0 block:^(HoloCollectionViewItemMaker * _Nonnull make) {
+    make.item(ExampleCollectionViewCell.class);
 }];
 
-// 为指定 tag 的 section，在指定位置插入 row
-[self.collectionView holo_insertRowsAtIndex:0 inSection:TAG block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    make.row(ExampleCollectionViewCell.class);
+// 为指定 tag 的 section，在指定位置插入 item
+[self.collectionView holo_insertItemsAtIndex:0 inSection:TAG block:^(HoloCollectionViewItemMaker * _Nonnull make) {
+    make.item(ExampleCollectionViewCell.class);
 }];
 
-// 更新 row，根据 tag 值匹配 cell 更新给定的属性
-[self.collectionView holo_updateRows:^(HoloCollectionViewUpdateRowMaker * _Nonnull make) {
+// 更新 item，根据 tag 值匹配 cell 更新给定的属性
+[self.collectionView holo_updateItems:^(HoloCollectionViewUpdateItemMaker * _Nonnull make) {
     make.tag(TAG).size(CGSizeMake(100, 200));
 }];
 
-// 重置 row，根据 tag 值匹配 cell，将原有属性清空，赋值新的属性
-[self.collectionView holo_remakeRows:^(HoloCollectionViewUpdateRowMaker * _Nonnull make) {
+// 重置 item，根据 tag 值匹配 cell，将原有属性清空，赋值新的属性
+[self.collectionView holo_remakeItems:^(HoloCollectionViewUpdateItemMaker * _Nonnull make) {
     make.tag(TAG).model(NSDictionary.new).size(CGSizeMake(100, 200));
 }];
 
-// 根据 tag 值匹配 section，将其中的 row 清空
-[self.collectionView holo_removeAllRowsInSections:@[TAG]];
-// 根据 tag 值匹配 row 删除
-[self.collectionView holo_removeRows:@[TAG]];
+// 根据 tag 值匹配 section，将其中的 item 清空
+[self.collectionView holo_removeAllItemsInSections:@[TAG]];
+// 根据 tag 值匹配 item 删除
+[self.collectionView holo_removeItems:@[TAG]];
 
 
 // reloadData
 [self.collectionView reloadData];
 ```
 
-`UICollectionView+HoloCollectionView.h` 提供了一系列的操作 `row` 的方法，包括添加、插入、更新、重置、删除等操作，**关于操作 row 的更多方法参见：[UICollectionView+HoloCollectionView.h (row 部分)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L147-L329)**
+`UICollectionView+HoloCollectionView.h` 提供了一系列的操作 `item` 的方法，包括添加、插入、更新、重置、删除等操作，**关于操作 item 的更多方法参见：[UICollectionView+HoloCollectionView.h (item 部分)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L147-L329)**
 
 
-## 5、全量用法：创建 section，设置 header、footer、row
+## 5、全量用法：创建 section，设置 header、footer、item
 
 参见：[HoloCollectionViewSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionViewSectionMaker.h) 及  [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionSectionMaker.h) 
 
@@ -326,23 +326,23 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
     // footer 已经出现调用的方法，footer 实现该方法的话，优先于 didEndDisplayingFooterHandler 属性
     .didEndDisplayingFooterSEL(@selector(holo_didEndDisplayingFooterWithModel:))
     
-    // #3、配置 row（下一节 makeRow 方法里细讲）
-    .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.row(ExampleCollectionViewCell.class);
+    // #3、配置 item（下一节 makeItem 方法里细讲）
+    .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
+        make.item(ExampleCollectionViewCell.class);
     });
 }];
 ```
 
 
-## 6、全量用法：创建 row
+## 6、全量用法：创建 item
 
-参见：[HoloCollectionViewRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionViewRowMaker.h) 及 [HoloCollectionRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionRowMaker.h)
+参见：[HoloCollectionViewItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionViewItemMaker.h) 及 [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h)
 
 
 ```objc
-[self.collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    // #1、给 row 配置 cell 类，返回 HoloCollectionRowMaker 对象
-    make.row(ExampleCollectionViewCell.class)
+[self.collectionView holo_makeItems:^(HoloCollectionViewItemMaker * _Nonnull make) {
+    // #1、给 item 配置 cell 类，返回 HoloCollectionItemMaker 对象
+    make.item(ExampleCollectionViewCell.class)
     
     // #2、配置 cell
     // model 数据
@@ -478,7 +478,7 @@ self.collectionView.holo_proxy.scrollDelegate = self;
 
 ## 8、注册 key-Class 映射
 
-`HoloCollectionView` 支持提前为 header、footer、row 注册 `key-Class` 映射。用法如下：
+`HoloCollectionView` 支持提前为 header、footer、item 注册 `key-Class` 映射。用法如下：
 
 ```objc
 // 提前注册
@@ -494,9 +494,9 @@ self.collectionView.holo_proxy.scrollDelegate = self;
         make.footer(@"footer2").map(ExampleFooterView2.class);
         // ...
     })
-    .makeRowsMap(^(HoloCollectionViewRowMapMaker * _Nonnull make) {
-        make.row(@"cell1").map(ExampleCollectionViewCell1.class);
-        make.row(@"cell2").map(ExampleCollectionViewCell2.class);
+    .makeItemsMap(^(HoloCollectionViewItemMapMaker * _Nonnull make) {
+        make.item(@"cell1").map(ExampleCollectionViewCell1.class);
+        make.item(@"cell2").map(ExampleCollectionViewCell2.class);
         // ...
     });
 }];
@@ -508,25 +508,25 @@ self.collectionView.holo_proxy.scrollDelegate = self;
     make.section(TAG1)
     .headerS(@"header1")
     .footerS(@"footer1")
-    .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.rowS(@"cell1");
-        make.rowS(@"cell2");
+    .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
+        make.itemS(@"cell1");
+        make.itemS(@"cell2");
     });
     
     // section 2
     make.section(TAG2)
     .headerS(@"header2")
     .footerS(@"footer2")
-    .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.rowS(@"cell1");
-        make.rowS(@"cell2");
+    .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
+        make.itemS(@"cell1");
+        make.itemS(@"cell2");
     });
     
     // ...
 }];
 ```
 
-若提前注册过  `key-Class` 映射，则 `headerS`、`footerS`、`rowS` 根据注册的映射关系取 `Class` 使用
+若提前注册过  `key-Class` 映射，则 `headerS`、`footerS`、`itemS` 根据注册的映射关系取 `Class` 使用
 
-若未注册过，则 `headerS`、`footerS`、`rowS` 直接将传入的字符串通过 `NSClassFromString(NSString * _Nonnull aClassName)` 方法转化为 `Class` 使用。
+若未注册过，则 `headerS`、`footerS`、`itemS` 直接将传入的字符串通过 `NSClassFromString(NSString * _Nonnull aClassName)` 方法转化为 `Class` 使用。
 

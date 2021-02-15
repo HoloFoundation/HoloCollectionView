@@ -17,10 +17,10 @@
 #import <HoloCollectionView/HoloCollectionViewHeaderFooterProtocol.h>
 #import <HoloCollectionView/UICollectionView+HoloCollectionView.h>
 
-// HoloMaker (Row)
-#import <HoloCollectionView/HoloCollectionRow.h>
-#import <HoloCollectionView/HoloCollectionRowMaker.h>
-#import <HoloCollectionView/HoloCollectionViewRowMaker.h>
+// HoloMaker (Item)
+#import <HoloCollectionView/HoloCollectionItem.h>
+#import <HoloCollectionView/HoloCollectionItemMaker.h>
+#import <HoloCollectionView/HoloCollectionViewItemMaker.h>
 
 // HoloMaker (Section)
 #import <HoloCollectionView/HoloCollectionSection.h>
@@ -31,11 +31,17 @@
 #import <HoloCollectionView/HoloCollectionViewMaker.h>
 
 // HoloMaker (Update)
-#import <HoloCollectionView/HoloCollectionViewUpdateRowMaker.h>
+#import <HoloCollectionView/HoloCollectionViewUpdateItemMaker.h>
 
 // HoloProxy
 #import <HoloCollectionView/HoloCollectionViewProxy.h>
 #import <HoloCollectionView/HoloCollectionViewProxyData.h>
 #import <HoloCollectionView/UICollectionView+HoloCollectionViewProxy.h>
+
+
+#import <HoloCollectionView/UICollectionView+HoloDeprecated.h>
+#import <HoloCollectionView/HoloCollectionViewRowMaker.h>
+#import <HoloCollectionView/HoloCollectionViewUpdateRowMaker.h>
+
 
 #endif /* HoloCollectionView_h */

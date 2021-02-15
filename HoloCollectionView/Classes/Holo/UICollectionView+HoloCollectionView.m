@@ -6,12 +6,12 @@
 //
 
 #import "UICollectionView+HoloCollectionView.h"
-#import "HoloCollectionRow.h"
+#import "HoloCollectionItem.h"
 #import "HoloCollectionSection.h"
 #import "HoloCollectionViewMaker.h"
-#import "HoloCollectionViewRowMaker.h"
+#import "HoloCollectionViewItemMaker.h"
 #import "HoloCollectionViewSectionMaker.h"
-#import "HoloCollectionViewUpdateRowMaker.h"
+#import "HoloCollectionViewUpdateItemMaker.h"
 #import "HoloCollectionViewMacro.h"
 #import "HoloCollectionViewProxy.h"
 #import "HoloCollectionViewProxyData.h"
@@ -32,23 +32,23 @@
     if (collectionViewModel.dataSource) self.holo_proxy.dataSource = collectionViewModel.dataSource;
     if (collectionViewModel.scrollDelegate) self.holo_proxy.scrollDelegate = collectionViewModel.scrollDelegate;
     
-    // rowsMap
-    NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
-    [collectionViewModel.rowsMap enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, Class  _Nonnull obj, BOOL * _Nonnull stop) {
-        rowsMap[key] = obj;
+    // itemsMap
+    NSMutableDictionary *itemsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
+    [collectionViewModel.itemsMap enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, Class  _Nonnull obj, BOOL * _Nonnull stop) {
+        itemsMap[key] = obj;
         [self registerClass:obj forCellWithReuseIdentifier:key];
         
         if (![obj.new isKindOfClass:UICollectionViewCell.class]) {
             NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", NSStringFromClass(obj));
         }
     }];
-    self.holo_proxy.proxyData.rowsMap = rowsMap;
+    self.holo_proxy.proxyData.itemsMap = itemsMap;
     // headersMap
     NSMutableDictionary *headersMap = self.holo_proxy.proxyData.headersMap.mutableCopy;
     [collectionViewModel.headersMap enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, Class  _Nonnull obj, BOOL * _Nonnull stop) {
         headersMap[key] = obj;
         [self registerClass:obj forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:key];
-
+        
         if (![obj.new isKindOfClass:UICollectionReusableView.class]) {
             NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", NSStringFromClass(obj));
         }
@@ -59,7 +59,7 @@
     [collectionViewModel.footersMap enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, Class  _Nonnull obj, BOOL * _Nonnull stop) {
         footersMap[key] = obj;
         [self registerClass:obj forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:key];
-
+        
         if (![obj.new isKindOfClass:UICollectionReusableView.class]) {
             NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", NSStringFromClass(obj));
         }
@@ -176,21 +176,21 @@
                                                        reuseId:operateSection.footerReuseId];
         
         // update map
-        NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
-        for (HoloCollectionRow *row in operateSection.rows) {
-            if (rowsMap[row.cell]) continue;
+        NSMutableDictionary *itemsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
+        for (HoloCollectionItem *item in operateSection.items) {
+            if (itemsMap[item.cell]) continue;
             
-            Class cls = NSClassFromString(row.cell);
+            Class cls = NSClassFromString(item.cell);
             if (!cls) {
-                NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", row.cell);
+                NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", item.cell);
             }
             if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-                NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", row.cell);
+                NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", item.cell);
             }
-            rowsMap[row.cell] = cls;
-            [self registerClass:cls forCellWithReuseIdentifier:row.reuseId ?: row.cell];
+            itemsMap[item.cell] = cls;
+            [self registerClass:cls forCellWithReuseIdentifier:item.reuseId ?: item.cell];
         }
-        self.holo_proxy.proxyData.rowsMap = rowsMap;
+        self.holo_proxy.proxyData.itemsMap = itemsMap;
     }
     self.holo_proxy.proxyData.headersMap = headersMap;
     self.holo_proxy.proxyData.footersMap = footersMap;
@@ -264,107 +264,107 @@
     if (autoReload) [self deleteSections:indexSet];
 }
 
-#pragma mark - row
-// holo_makeRows
-- (void)holo_makeRows:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block {
-    [self _holo_insertRowsAtIndex:NSIntegerMax
-                        inSection:nil
-                            block:block
-                       autoReload:NO];
+#pragma mark - item
+// holo_makeItems
+- (void)holo_makeItems:(void (NS_NOESCAPE ^)(HoloCollectionViewItemMaker *))block {
+    [self _holo_insertItemsAtIndex:NSIntegerMax
+                         inSection:nil
+                             block:block
+                        autoReload:NO];
 }
 
-- (void)holo_makeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
-           autoReload:(BOOL)autoReload {
-    [self _holo_insertRowsAtIndex:NSIntegerMax
-                        inSection:nil
-                            block:block
-                       autoReload:autoReload];
+- (void)holo_makeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewItemMaker *make))block
+            autoReload:(BOOL)autoReload {
+    [self _holo_insertItemsAtIndex:NSIntegerMax
+                         inSection:nil
+                             block:block
+                        autoReload:autoReload];
 }
 
-// holo_makeRowsInSection
-- (void)holo_makeRowsInSection:(NSString *)tag
-                         block:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block {
-    [self _holo_insertRowsAtIndex:NSIntegerMax
-                        inSection:tag
-                            block:block
-                       autoReload:NO];
+// holo_makeItemsInSection
+- (void)holo_makeItemsInSection:(NSString *)tag
+                          block:(void (NS_NOESCAPE ^)(HoloCollectionViewItemMaker *))block {
+    [self _holo_insertItemsAtIndex:NSIntegerMax
+                         inSection:tag
+                             block:block
+                        autoReload:NO];
 }
 
-- (void)holo_makeRowsInSection:(NSString *)tag
-                         block:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block
-                    autoReload:(BOOL)autoReload {
-    [self _holo_insertRowsAtIndex:NSIntegerMax
-                        inSection:tag
-                            block:block
-                       autoReload:autoReload];
-}
-
-- (void)holo_insertRowsAtIndex:(NSInteger)index
-                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block {
-    [self _holo_insertRowsAtIndex:index
-                        inSection:nil
-                            block:block
-                       autoReload:NO];
-}
-
-- (void)holo_insertRowsAtIndex:(NSInteger)index
-                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
-                    autoReload:(BOOL)autoReload {
-    [self _holo_insertRowsAtIndex:index
-                        inSection:nil
-                            block:block
-                       autoReload:autoReload];
-}
-
-- (void)holo_insertRowsAtIndex:(NSInteger)index
-                     inSection:(NSString *)tag
-                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block {
-    [self _holo_insertRowsAtIndex:index
-                        inSection:tag
-                            block:block
-                       autoReload:NO];
-}
-
-- (void)holo_insertRowsAtIndex:(NSInteger)index
-                     inSection:(NSString *)tag
-                         block:(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make))block
-                    autoReload:(BOOL)autoReload {
-    [self _holo_insertRowsAtIndex:index
-                        inSection:tag
-                            block:block
-                       autoReload:autoReload];
-}
-
-- (void)_holo_insertRowsAtIndex:(NSInteger)index
-                      inSection:(NSString *)tag
-                          block:(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *))block
+- (void)holo_makeItemsInSection:(NSString *)tag
+                          block:(void (NS_NOESCAPE ^)(HoloCollectionViewItemMaker *))block
                      autoReload:(BOOL)autoReload {
-    HoloCollectionViewRowMaker *maker = [HoloCollectionViewRowMaker new];
+    [self _holo_insertItemsAtIndex:NSIntegerMax
+                         inSection:tag
+                             block:block
+                        autoReload:autoReload];
+}
+
+- (void)holo_insertItemsAtIndex:(NSInteger)index
+                          block:(void(NS_NOESCAPE ^)(HoloCollectionViewItemMaker *make))block {
+    [self _holo_insertItemsAtIndex:index
+                         inSection:nil
+                             block:block
+                        autoReload:NO];
+}
+
+- (void)holo_insertItemsAtIndex:(NSInteger)index
+                          block:(void(NS_NOESCAPE ^)(HoloCollectionViewItemMaker *make))block
+                     autoReload:(BOOL)autoReload {
+    [self _holo_insertItemsAtIndex:index
+                         inSection:nil
+                             block:block
+                        autoReload:autoReload];
+}
+
+- (void)holo_insertItemsAtIndex:(NSInteger)index
+                      inSection:(NSString *)tag
+                          block:(void(NS_NOESCAPE ^)(HoloCollectionViewItemMaker *make))block {
+    [self _holo_insertItemsAtIndex:index
+                         inSection:tag
+                             block:block
+                        autoReload:NO];
+}
+
+- (void)holo_insertItemsAtIndex:(NSInteger)index
+                      inSection:(NSString *)tag
+                          block:(void(NS_NOESCAPE ^)(HoloCollectionViewItemMaker *make))block
+                     autoReload:(BOOL)autoReload {
+    [self _holo_insertItemsAtIndex:index
+                         inSection:tag
+                             block:block
+                        autoReload:autoReload];
+}
+
+- (void)_holo_insertItemsAtIndex:(NSInteger)index
+                       inSection:(NSString *)tag
+                           block:(void (NS_NOESCAPE ^)(HoloCollectionViewItemMaker *))block
+                      autoReload:(BOOL)autoReload {
+    HoloCollectionViewItemMaker *maker = [HoloCollectionViewItemMaker new];
     if (block) block(maker);
     
     // update cell-cls map and register class
-    NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
-    NSMutableArray *rows = [NSMutableArray new];
-    for (HoloCollectionRow *row in [maker install]) {
-        if (rowsMap[row.cell]) {
-            [rows addObject:row];
+    NSMutableDictionary *itemsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
+    NSMutableArray *items = [NSMutableArray new];
+    for (HoloCollectionItem *item in [maker install]) {
+        if (itemsMap[item.cell]) {
+            [items addObject:item];
             continue;
         }
         
-        Class cls = NSClassFromString(row.cell);
+        Class cls = NSClassFromString(item.cell);
         if (!cls) {
-            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", row.cell);
+            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", item.cell);
         }
         if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", row.cell);
+            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", item.cell);
         }
-        rowsMap[row.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId ?: row.cell];
-        [rows addObject:row];
+        itemsMap[item.cell] = cls;
+        [self registerClass:cls forCellWithReuseIdentifier:item.reuseId ?: item.cell];
+        [items addObject:item];
     }
-    self.holo_proxy.proxyData.rowsMap = rowsMap;
+    self.holo_proxy.proxyData.itemsMap = itemsMap;
     
-    // append rows and refresh view
+    // append items and refresh view
     BOOL isNewOne = NO;
     HoloCollectionSection *targetSection = [self.holo_proxy.proxyData sectionWithTag:tag];
     if (!targetSection) {
@@ -373,134 +373,134 @@
         [self.holo_proxy.proxyData insertSections:@[targetSection] anIndex:NSIntegerMax];
         isNewOne = YES;
     }
-    NSIndexSet *indexSet = [targetSection insertRows:rows atIndex:index];
+    NSIndexSet *indexSet = [targetSection insertItems:items atIndex:index];
     NSInteger sectionIndex = [self.holo_proxy.proxyData.sections indexOfObject:targetSection];
     if (autoReload && isNewOne) {
         [self insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
     } else if (autoReload) {
         NSMutableArray *indePathArray = [NSMutableArray new];
         [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
-            [indePathArray addObject:[NSIndexPath indexPathForRow:idx inSection:sectionIndex]];
+            [indePathArray addObject:[NSIndexPath indexPathForItem:idx inSection:sectionIndex]];
         }];
         [self insertItemsAtIndexPaths:[indePathArray copy]];
     }
 }
 
-// holo_updateRows
-- (void)holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block {
-    [self _holo_updateRowsWithMakerType:HoloCollectionViewUpdateRowMakerTypeUpdate
-                                  block:block
-                                 reload:NO];
+// holo_updateItems
+- (void)holo_updateItems:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *))block {
+    [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeUpdate
+                                   block:block
+                                  reload:NO];
 }
 
-- (void)holo_updateRows:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block
-             autoReload:(BOOL)autoReload {
-    [self _holo_updateRowsWithMakerType:HoloCollectionViewUpdateRowMakerTypeUpdate
-                                  block:block
-                                 reload:autoReload];
+- (void)holo_updateItems:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *))block
+              autoReload:(BOOL)autoReload {
+    [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeUpdate
+                                   block:block
+                                  reload:autoReload];
 }
 
-// holo_remakeRows
-- (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block {
-    [self _holo_updateRowsWithMakerType:HoloCollectionViewUpdateRowMakerTypeRemake
-                                  block:block
-                                 reload:NO];
+// holo_remakeItems
+- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block {
+    [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeRemake
+                                   block:block
+                                  reload:NO];
 }
 
-- (void)holo_remakeRows:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *make))block
-             autoReload:(BOOL)autoReload {
-    [self _holo_updateRowsWithMakerType:HoloCollectionViewUpdateRowMakerTypeRemake
-                                  block:block
-                                 reload:autoReload];
+- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+              autoReload:(BOOL)autoReload {
+    [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeRemake
+                                   block:block
+                                  reload:autoReload];
 }
 
 
-- (void)_holo_updateRowsWithMakerType:(HoloCollectionViewUpdateRowMakerType)makerType
-                                block:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block
-                               reload:(BOOL)reload {
-    HoloCollectionViewUpdateRowMaker *maker = [[HoloCollectionViewUpdateRowMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections makerType:makerType];
+- (void)_holo_updateItemsWithMakerType:(HoloCollectionViewUpdateItemMakerType)makerType
+                                 block:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *))block
+                                reload:(BOOL)reload {
+    HoloCollectionViewUpdateItemMaker *maker = [[HoloCollectionViewUpdateItemMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections makerType:makerType];
     if (block) block(maker);
     
     // update data and map
-    NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.rowsMap.mutableCopy;
+    NSMutableDictionary *itemsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
     NSMutableArray *updateIndexPaths = [NSMutableArray new];
     NSMutableArray *updateArray = [NSMutableArray arrayWithArray:self.holo_proxy.proxyData.sections];
-    for (HoloCollectionViewUpdateRowMakerModel *makerModel in [maker install]) {
-        HoloCollectionRow *operateRow = makerModel.operateRow;
-        // HoloCollectionViewUpdateRowMakerTypeUpdate || HoloCollectionViewUpdateRowMakerTypeRemake
+    for (HoloCollectionViewUpdateItemMakerModel *makerModel in [maker install]) {
+        HoloCollectionItem *operateItem = makerModel.operateItem;
+        // HoloCollectionViewUpdateItemMakerTypeUpdate || HoloCollectionViewUpdateItemMakerTypeRemake
         if (!makerModel.operateIndexPath) {
-            HoloLog(@"[HoloCollectionView] No found a row with the tag: %@.", operateRow.tag);
+            HoloLog(@"[HoloCollectionView] No found a item with the tag: %@.", operateItem.tag);
             continue;
         }
         
         // update || remake
         [updateIndexPaths addObject:makerModel.operateIndexPath];
         
-        if (makerType == HoloCollectionViewUpdateRowMakerTypeRemake) {
+        if (makerType == HoloCollectionViewUpdateItemMakerTypeRemake) {
             HoloCollectionSection *section = updateArray[makerModel.operateIndexPath.section];
-            NSMutableArray *rows = [NSMutableArray arrayWithArray:section.rows];
-            [rows replaceObjectAtIndex:makerModel.operateIndexPath.row withObject:operateRow];
-            section.rows = rows;
+            NSMutableArray *items = [NSMutableArray arrayWithArray:section.items];
+            [items replaceObjectAtIndex:makerModel.operateIndexPath.item withObject:operateItem];
+            section.items = items;
         }
         
-        if (rowsMap[operateRow.cell]) continue;
+        if (itemsMap[operateItem.cell]) continue;
         
-        Class cls = NSClassFromString(operateRow.cell);
+        Class cls = NSClassFromString(operateItem.cell);
         if (!cls) {
-            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", operateRow.cell);
+            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", operateItem.cell);
         }
         if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", operateRow.cell);
+            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", operateItem.cell);
         }
-        rowsMap[operateRow.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId ?: operateRow.cell];
+        itemsMap[operateItem.cell] = cls;
+        [self registerClass:cls forCellWithReuseIdentifier:operateItem.reuseId ?: operateItem.cell];
     }
-    self.holo_proxy.proxyData.rowsMap = rowsMap;
+    self.holo_proxy.proxyData.itemsMap = itemsMap;
     self.holo_proxy.proxyData.sections = updateArray.copy;
     
-    // refresh rows
+    // refresh items
     if (reload && updateIndexPaths.count > 0) {
         [self reloadItemsAtIndexPaths:updateIndexPaths];
     }
 }
 
-// holo_removeAllRowsInSections
-- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags {
-    [self _holo_removeAllRowsInSections:tags
-                             autoReload:NO];
+// holo_removeAllItemsInSections
+- (void)holo_removeAllItemsInSections:(NSArray<NSString *> *)tags {
+    [self _holo_removeAllItemsInSections:tags
+                              autoReload:NO];
 }
 
-- (void)holo_removeAllRowsInSections:(NSArray<NSString *> *)tags
-                          autoReload:(BOOL)autoReload {
-    [self _holo_removeAllRowsInSections:tags
-                             autoReload:autoReload];
-}
-
-- (void)_holo_removeAllRowsInSections:(NSArray<NSString *> *)tags
+- (void)holo_removeAllItemsInSections:(NSArray<NSString *> *)tags
                            autoReload:(BOOL)autoReload {
-    NSArray *indexPaths = [self.holo_proxy.proxyData removeAllRowsInSections:tags];
+    [self _holo_removeAllItemsInSections:tags
+                              autoReload:autoReload];
+}
+
+- (void)_holo_removeAllItemsInSections:(NSArray<NSString *> *)tags
+                            autoReload:(BOOL)autoReload {
+    NSArray *indexPaths = [self.holo_proxy.proxyData removeAllItemsInSections:tags];
     if (autoReload && indexPaths.count > 0) {
         [self deleteItemsAtIndexPaths:indexPaths];
     }
 }
 
-// holo_removeRow
-- (void)holo_removeRows:(NSArray<NSString *> *)tags {
-    [self _holo_removeRow:tags
-               autoReload:NO];
+// holo_removeItem
+- (void)holo_removeItems:(NSArray<NSString *> *)tags {
+    [self _holo_removeItem:tags
+                autoReload:NO];
 }
 
-- (void)holo_removeRows:(NSArray<NSString *> *)tags
-             autoReload:(BOOL)autoReload {
-    [self _holo_removeRow:tags
-               autoReload:autoReload];
+- (void)holo_removeItems:(NSArray<NSString *> *)tags
+              autoReload:(BOOL)autoReload {
+    [self _holo_removeItem:tags
+                autoReload:autoReload];
 }
 
-- (void)_holo_removeRow:(NSArray<NSString *> *)tags
-             autoReload:(BOOL)autoReload {
-    NSArray *indexPaths = [self.holo_proxy.proxyData removeRows:tags];
+- (void)_holo_removeItem:(NSArray<NSString *> *)tags
+              autoReload:(BOOL)autoReload {
+    NSArray *indexPaths = [self.holo_proxy.proxyData removeItems:tags];
     if (indexPaths.count <= 0) {
-        HoloLog(@"[HoloCollectionView] No found any row with these tags: %@.", tags);
+        HoloLog(@"[HoloCollectionView] No found any item with these tags: %@.", tags);
         return;
     }
     if (autoReload) [self deleteItemsAtIndexPaths:indexPaths];

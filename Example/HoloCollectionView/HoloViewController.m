@@ -39,14 +39,14 @@
         make.section(TAG)
         .header(HoloExampleHeaderView.class).headerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
         .footer(HoloExampleFooterView.class).footerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
-        .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
-            make.row(HoloExampleCollectionViewCell.class).model(@{@"bgColor": [UIColor lightGrayColor], @"text": @"cell"});
+        .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
+            make.item(HoloExampleCollectionViewCell.class).model(@{@"bgColor": [UIColor lightGrayColor], @"text": @"cell"});
         });
     }];
     
-    [self.collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
+    [self.collectionView holo_makeItems:^(HoloCollectionViewItemMaker * _Nonnull make) {
         for (NSDictionary *dict in [self _modelsFromOtherWay]) {
-            make.row(HoloExampleCollectionViewCell.class)
+            make.item(HoloExampleCollectionViewCell.class)
             .model(dict)
             .didSelectHandler(^(id  _Nullable model) {
                 NSLog(@"did select row : %@", model);
@@ -59,8 +59,8 @@
 
 #pragma mark - buttonAction
 - (void)buttonAction:(UIButton *)sender {
-    [self.collectionView holo_insertRowsAtIndex:0 inSection:TAG block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.row(HoloExampleCollectionViewCell.class);
+    [self.collectionView holo_insertItemsAtIndex:0 inSection:TAG block:^(HoloCollectionViewItemMaker * _Nonnull make) {
+        make.item(HoloExampleCollectionViewCell.class);
     } autoReload:YES];
 }
 
