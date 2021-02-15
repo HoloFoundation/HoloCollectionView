@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 
+## 1.4.0 (16/02/2021)
+
+- Update `HoloCollectionView.h`, use angle-bracketed instead of double-quoted.
+- Update `HoloCollectionMacro`, add `#if !defined()`.
+
+
 ## 1.3.0 (08/12/2020)
 
 - Add `nullable` to property.
