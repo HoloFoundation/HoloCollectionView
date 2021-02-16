@@ -27,9 +27,9 @@ All notable changes to this project will be documented in this file.
 ## 1.0.0 (23/07/2020)
 
 - Refactor the update, remake and insert methods for `HoloCollectionView` and optimize the code logic.
-- Provide more properties of section and row maker to handle proxy events of `HoloCollectionView`.
+- Provide more properties of section and item maker to handle proxy events of `HoloCollectionView`.
 - Provide more protocols, implemented in cells, headers and footers to handle proxy events of `HoloCollectionView`.
-- Support to regist maps (key-Class) for row, header and footer.
+- Support to regist maps (key-Class) for item, header and footer.
 - Check the index in `HoloCollectionViewProxy` for safety.
 
 

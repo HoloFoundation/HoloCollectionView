@@ -6,13 +6,13 @@
 //
 
 #import <Foundation/Foundation.h>
-@class HoloCollectionRow;
+@class HoloCollectionItem;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface HoloCollectionSection : NSObject
 
-@property (nonatomic, copy) NSArray<HoloCollectionRow *> *rows;
+@property (nonatomic, copy) NSArray<HoloCollectionItem *> *items;
 
 @property (nonatomic, copy, nullable) NSString *tag;
 
@@ -88,11 +88,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) SEL didEndDisplayingFooterSEL;
 
 
-- (NSIndexSet *)insertRows:(NSArray<HoloCollectionRow *> *)rows atIndex:(NSInteger)index;
+- (NSIndexSet *)insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index;
 
-- (void)removeRow:(HoloCollectionRow *)row;
+- (void)removeItem:(HoloCollectionItem *)item;
 
-- (void)removeAllRows;
+- (void)removeAllItems;
 
 @end
 

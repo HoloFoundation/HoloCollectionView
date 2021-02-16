@@ -12,7 +12,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _rows = [NSArray new];
+        _items = [NSArray new];
         _inset = UIEdgeInsetsMake(CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN);
         _headerSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
         _footerSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
@@ -37,29 +37,29 @@
     return self;
 }
 
-- (NSIndexSet *)insertRows:(NSArray<HoloCollectionRow *> *)rows atIndex:(NSInteger)index {
-    if (rows.count <= 0) return [NSIndexSet new];
+- (NSIndexSet *)insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index {
+    if (items.count <= 0) return [NSIndexSet new];
     
     if (index < 0) index = 0;
-    if (index > self.rows.count) index = self.rows.count;
+    if (index > self.items.count) index = self.items.count;
     
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, rows.count)];
-    NSMutableArray *array = [NSMutableArray arrayWithArray:self.rows];
-    [array insertObjects:rows atIndexes:indexSet];
-    self.rows = array;
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, items.count)];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:self.items];
+    [array insertObjects:items atIndexes:indexSet];
+    self.items = array;
     return indexSet;
 }
 
-- (void)removeRow:(HoloCollectionRow *)row {
-    if (!row) return;
+- (void)removeItem:(HoloCollectionItem *)item {
+    if (!item) return;
     
-    NSMutableArray *array = [NSMutableArray arrayWithArray:self.rows];
-    [array removeObject:row];
-    self.rows = array;
+    NSMutableArray *array = [NSMutableArray arrayWithArray:self.items];
+    [array removeObject:item];
+    self.items = array;
 }
 
-- (void)removeAllRows {
-    self.rows = [NSArray new];
+- (void)removeAllItems {
+    self.items = [NSArray new];
 }
 
 @end

@@ -1,5 +1,5 @@
 //
-//  HoloCollectionRow.h
+//  HoloCollectionItem.h
 //  HoloCollectionView
 //
 //  Created by 与佳期 on 2020/6/3.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HoloCollectionRow : NSObject
+@interface HoloCollectionItem : NSObject
 
 @property (nonatomic, copy, nullable) NSString *cell;
 

@@ -7,6 +7,7 @@
 
 #import "HoloCollectionSectionMaker.h"
 #import "HoloCollectionSection.h"
+#import "HoloCollectionViewItemMaker.h"
 #import "HoloCollectionViewRowMaker.h"
 
 @interface HoloCollectionSectionMaker ()
@@ -275,12 +276,22 @@
 }
 
 
+- (HoloCollectionSectionMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewItemMaker *)))makeItems {
+    return ^id(void(^block)(HoloCollectionViewItemMaker *make)) {
+        HoloCollectionViewItemMaker *maker = [HoloCollectionViewItemMaker new];
+        if (block) block(maker);
+        
+        [self.section insertItems:[maker install] atIndex:NSIntegerMax];
+        return self;
+    };
+}
+
 - (HoloCollectionSectionMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewRowMaker *)))makeRows {
     return ^id(void(^block)(HoloCollectionViewRowMaker *make)) {
         HoloCollectionViewRowMaker *maker = [HoloCollectionViewRowMaker new];
         if (block) block(maker);
         
-        [self.section insertRows:[maker install] atIndex:NSIntegerMax];
+        [self.section insertItems:[maker install] atIndex:NSIntegerMax];
         return self;
     };
 }

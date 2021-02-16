@@ -53,9 +53,9 @@
 @end
 
 
-@implementation HoloCollectionViewRowMapMaker
+@implementation HoloCollectionViewItemMapMaker
 
-- (HoloCollectionViewRHFMap * (^)(NSString *))row {
+- (HoloCollectionViewRHFMap * (^)(NSString *))item {
     return ^id(id obj) {
         HoloCollectionViewRHFMap *map = [HoloCollectionViewRHFMap new];
         map.key = obj;
@@ -143,12 +143,12 @@
     };
 }
 
-- (HoloCollectionViewMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewRowMapMaker *)))makeRowsMap {
-    return ^id(void(^block)(HoloCollectionViewRowMapMaker *make)) {
-        HoloCollectionViewRowMapMaker *maker = [HoloCollectionViewRowMapMaker new];
+- (HoloCollectionViewMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewItemMapMaker *)))makeItemsMap {
+    return ^id(void(^block)(HoloCollectionViewItemMapMaker *make)) {
+        HoloCollectionViewItemMapMaker *maker = [HoloCollectionViewItemMapMaker new];
         if (block) block(maker);
         
-        self.collectionViewModel.rowsMap = [maker install];
+        self.collectionViewModel.itemsMap = [maker install];
         return self;
     };
 }

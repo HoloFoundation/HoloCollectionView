@@ -6,7 +6,7 @@
 //
 
 #import "HoloCollectionViewProxyData.h"
-#import "HoloCollectionRow.h"
+#import "HoloCollectionItem.h"
 #import "HoloCollectionSection.h"
 
 @implementation HoloCollectionViewProxyData
@@ -51,34 +51,34 @@
     return nil;
 }
 
-- (NSArray<NSIndexPath *> *)removeAllRowsInSections:(NSArray<NSString *> *)tags {
+- (NSArray<NSIndexPath *> *)removeAllItemsInSections:(NSArray<NSString *> *)tags {
     NSMutableArray *array = [NSMutableArray new];
     for (HoloCollectionSection *section in self.sections) {
         if (section.tag && [tags containsObject:section.tag]) {
             NSInteger sectionIndex = [self.sections indexOfObject:section];
-            for (NSInteger index = 0; index < section.rows.count; index++) {
-                [array addObject:[NSIndexPath indexPathForRow:index inSection:sectionIndex]];
+            for (NSInteger index = 0; index < section.items.count; index++) {
+                [array addObject:[NSIndexPath indexPathForItem:index inSection:sectionIndex]];
             }
-            [section removeAllRows];
+            [section removeAllItems];
         }
     }
     return [array copy];
 }
 
-- (NSArray<NSIndexPath *> *)removeRows:(NSArray<NSString *> *)tags {
+- (NSArray<NSIndexPath *> *)removeItems:(NSArray<NSString *> *)tags {
     NSMutableArray *array = [NSMutableArray new];
     for (HoloCollectionSection *section in self.sections) {
-        NSMutableArray<HoloCollectionRow *> *rows = [NSMutableArray new];
-        for (HoloCollectionRow *row in section.rows) {
-            if (row.tag && [tags containsObject:row.tag]) {
+        NSMutableArray<HoloCollectionItem *> *items = [NSMutableArray new];
+        for (HoloCollectionItem *item in section.items) {
+            if (item.tag && [tags containsObject:item.tag]) {
                 NSInteger sectionIndex = [self.sections indexOfObject:section];
-                NSInteger rowIndex = [section.rows indexOfObject:row];
-                [array addObject:[NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex]];
-                [rows addObject:row];
+                NSInteger itemIndex = [section.items indexOfObject:item];
+                [array addObject:[NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex]];
+                [items addObject:item];
             }
         }
-        for (HoloCollectionRow *row in rows) {
-            [section removeRow:row];
+        for (HoloCollectionItem *item in items) {
+            [section removeItem:item];
         }
     }
     return [array copy];
@@ -92,11 +92,11 @@
     return _sections;
 }
 
-- (NSDictionary<NSString *, Class> *)rowsMap {
-    if (!_rowsMap) {
-        _rowsMap = [NSDictionary new];
+- (NSDictionary<NSString *, Class> *)itemsMap {
+    if (!_itemsMap) {
+        _itemsMap = [NSDictionary new];
     }
-    return _rowsMap;
+    return _itemsMap;
 }
 
 - (NSDictionary<NSString *,Class> *)headersMap {

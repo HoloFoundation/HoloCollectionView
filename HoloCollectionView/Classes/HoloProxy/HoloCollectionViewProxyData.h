@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSArray<HoloCollectionSection *> *sections;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *rowsMap;
+@property (nonatomic, copy) NSDictionary<NSString *, Class> *itemsMap;
 
 @property (nonatomic, copy) NSDictionary<NSString *, Class> *headersMap;
 
@@ -32,9 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (HoloCollectionSection * _Nullable)sectionWithTag:(NSString * _Nullable)tag;
 
-- (NSArray<NSIndexPath *> *)removeAllRowsInSections:(NSArray<NSString *> *)tags;
+- (NSArray<NSIndexPath *> *)removeAllItemsInSections:(NSArray<NSString *> *)tags;
 
-- (NSArray<NSIndexPath *> *)removeRows:(NSArray<NSString *> *)tags;
+- (NSArray<NSIndexPath *> *)removeItems:(NSArray<NSString *> *)tags;
 
 @end
 

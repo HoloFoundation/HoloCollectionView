@@ -11,9 +11,9 @@
 
 ## Features
 
-- [x] Provide section and row maker to handle proxy events of `HoloCollectionView`.
+- [x] Provide section and item maker to handle proxy events of `HoloCollectionView`.
 - [x] Provide protocols, implemented in cells, headers and footers to handle proxy events of `HoloCollectionView`.
-- [x] Support to regist maps (key-Class) for row, header and footer.
+- [x] Support to regist maps (key-Class) for item, header and footer.
 - [x] Diff reload data. [HoloCollectionViewDiffPlugin](https://github.com/HoloFoundation/HoloCollectionViewDiffPlugin) to support `DeepDiff`
 - [ ] Adapt new APIs from iOS 13 and iOS 14.
 - [ ] Modern Objective-C and better Swift support.
@@ -40,14 +40,14 @@ flowLayout...
 UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
 [self.view addSubview:collectionView];
 
-[collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
+[collectionView holo_makeItems:^(HoloCollectionViewItemMaker * _Nonnull make) {
     // make a cell
-    make.row(ExampleCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
+    make.item(ExampleCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
     
     // make a list
     for (NSObject *obj in NSArray.new) {
-        make.row(ExampleCollectionViewCell.class).model(obj).didSelectHandler(^(id  _Nullable model) {
-            NSLog(@"did select row : %@", model);
+        make.item(ExampleCollectionViewCell.class).model(obj).didSelectHandler(^(id  _Nullable model) {
+            NSLog(@"did select item : %@", model);
         });
     }
 }];
@@ -57,7 +57,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 // etc.
 ```
 
-The `holo_makeRows:` method is used to create a list of rows. Each `row` is a `cell`. **More properties provided for row see: [HoloCollectionViewRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionViewRowMaker.h) and [HoloCollectionRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionRowMaker.h)**
+The `holo_makeItems:` method is used to create a list of items. Each `item` is a `cell`. **More properties provided for item see: [HoloCollectionViewItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionViewItemMaker.h) and [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h)**
 
 
 #### Requirements for cell
@@ -81,7 +81,7 @@ Conforms to protocol `HoloCollectionViewCellProtocol`, `HoloCollectionView` will
 
 **See `HoloCollectionViewCellProtocol` more methods: [HoloCollectionViewCellProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Holo/HoloProtocol/HoloCollectionViewCellProtocol.h)**
 
-You can also call your own methods by configuring properties such as `configSEL`, `sizeSEL`, etc. More properties can find in [HoloCollectionRowMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Row/HoloCollectionRowMaker.h).
+You can also call your own methods by configuring properties such as `configSEL`, `sizeSEL`, etc. More properties can find in [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h).
 
 Note that attributes such as `size`, `shouldHighlight`, etc. that exist `SEL` have priority:
 1. First judge whether `cell` implements `sizeSEL` method
@@ -89,7 +89,7 @@ Note that attributes such as `size`, `shouldHighlight`, etc. that exist `SEL` ha
 3. Finally, determine whether the property `size` is assigned
 
 
-### 2. Make a section list (contain header, footer, row)
+### 2. Make a section list (contain header, footer, item)
 
 ```objc
 UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
@@ -102,14 +102,14 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
     make.section(TAG)
     .header(ExampleHeaderView.class).headerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
     .footer(ExampleFooterView.class).footerSize(CGSizeMake(HOLO_SCREEN_WIDTH, 100))
-    .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
+    .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
         // make a cell
-        make.row(ExampleCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
+        make.item(ExampleCollectionViewCell.class).model(NSDictionary.new).size(CGSizeMake(100, 200));
         
         // make a list
         for (NSObject *obj in NSArray.new) {
-            make.row(ExampleCollectionViewCell.class).model(obj).didSelectHandler(^(id  _Nullable model) {
-                NSLog(@"did select row : %@", model);
+            make.item(ExampleCollectionViewCell.class).model(obj).didSelectHandler(^(id  _Nullable model) {
+                NSLog(@"did select item : %@", model);
             });
         }
     });
@@ -197,55 +197,55 @@ Like `cell`, properties that contain `SEL` also have a priority.
 ```
 
 `UICollectionView+HoloCollectionView.h` provides a series of methods for manipulating `sections`, including adding, inserting, updating, resetting, deleting, etc.
-**More methods provided for section see: [UICollectionView+HoloCollectionView.h (section 部分)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L24-L145)**
+**More methods provided for section see: [UICollectionView+HoloCollectionView.h (about section)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L24-L145)**
 
 
-### 4. Methods for row
+### 4. Methods for item
 
 ```objc
 // adding
-[self.collectionView holo_makeRows:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    make.row(ExampleCollectionViewCell.class);
+[self.collectionView holo_makeItems:^(HoloCollectionViewItemMaker * _Nonnull make) {
+    make.item(ExampleCollectionViewCell.class);
 }];
 
 // adding to section with tag value
-[self.collectionView holo_makeRowsInSection:TAG block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    make.row(ExampleCollectionViewCell.class);
+[self.collectionView holo_makeItemsInSection:TAG block:^(HoloCollectionViewItemMaker * _Nonnull make) {
+    make.item(ExampleCollectionViewCell.class);
 }];
 
 // inserting at index
-[self.collectionView holo_insertRowsAtIndex:0 block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    make.row(ExampleCollectionViewCell.class);
+[self.collectionView holo_insertItemsAtIndex:0 block:^(HoloCollectionViewItemMaker * _Nonnull make) {
+    make.item(ExampleCollectionViewCell.class);
 }];
 
 // inserting at index to section with tag value
-[self.collectionView holo_insertRowsAtIndex:0 inSection:TAG block:^(HoloCollectionViewRowMaker * _Nonnull make) {
-    make.row(ExampleCollectionViewCell.class);
+[self.collectionView holo_insertItemsAtIndex:0 inSection:TAG block:^(HoloCollectionViewItemMaker * _Nonnull make) {
+    make.item(ExampleCollectionViewCell.class);
 }];
 
 // updating
-[self.collectionView holo_updateRows:^(HoloCollectionViewUpdateRowMaker * _Nonnull make) {
+[self.collectionView holo_updateItems:^(HoloCollectionViewUpdateItemMaker * _Nonnull make) {
     make.tag(TAG).size(CGSizeMake(100, 200));
 }];
 
 // resetting
-[self.collectionView holo_remakeRows:^(HoloCollectionViewUpdateRowMaker * _Nonnull make) {
+[self.collectionView holo_remakeItems:^(HoloCollectionViewUpdateItemMaker * _Nonnull make) {
     make.tag(TAG).model(NSDictionary.new).size(CGSizeMake(100, 200));
 }];
 
 // deleting
-[self.collectionView holo_removeAllRowsInSections:@[TAG]];
+[self.collectionView holo_removeAllItemsInSections:@[TAG]];
 
 // deleting
-[self.collectionView holo_removeRows:@[TAG]];
+[self.collectionView holo_removeItems:@[TAG]];
 
 
 // reloadData
 [self.collectionView reloadData];
 ```
 
-`UICollectionView+HoloCollectionView.h` provides a series of methods for manipulating rows, including adding, inserting, updating, resetting, deleting, etc.
-**More methods provided for row see: [UICollectionView+HoloCollectionView.h (row 部分)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L147-L329)**
+`UICollectionView+HoloCollectionView.h` provides a series of methods for manipulating items, including adding, inserting, updating, resetting, deleting, etc.
+**More methods provided for item see: [UICollectionView+HoloCollectionView.h (about item)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L147-L329)**
 
 
 ### 5. Retrieve Delegate
@@ -269,7 +269,7 @@ Once you set up `dataSource`, `delegate`, `scrollDelegate` and implement some of
 
 ### 6. Regist key-Class map
 
-`HoloCollectionView` supports key value mappings for headers, footers, and rows in advance. For example:
+`HoloCollectionView` supports key value mappings for headers, footers, and items in advance. For example:
 
 ```objc
 // regist key-Class map
@@ -285,9 +285,9 @@ Once you set up `dataSource`, `delegate`, `scrollDelegate` and implement some of
         make.footer(@"footer2").map(ExampleFooterView2.class);
         // ...
     })
-    .makeRowsMap(^(HoloTCollectionViewRowMapMaker * _Nonnull make) {
-        make.row(@"cell1").map(ExampleCollectionViewCell1.class);
-        make.row(@"cell2").map(ExampleCollectionViewCell2.class);
+    .makeItemsMap(^(HoloTCollectionViewItemMapMaker * _Nonnull make) {
+        make.item(@"cell1").map(ExampleCollectionViewCell1.class);
+        make.item(@"cell2").map(ExampleCollectionViewCell2.class);
         // ...
     });
 }];
@@ -299,27 +299,27 @@ Once you set up `dataSource`, `delegate`, `scrollDelegate` and implement some of
     make.section(TAG1)
     .headerS(@"header1")
     .footerS(@"footer1")
-    .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.rowS(@"cell1");
-        make.rowS(@"cell2");
+    .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
+        make.itemS(@"cell1");
+        make.itemS(@"cell2");
     });
     
     // section 2
     make.section(TAG2)
     .headerS(@"header2")
     .footerS(@"footer2")
-    .makeRows(^(HoloCollectionViewRowMaker * _Nonnull make) {
-        make.rowS(@"cell1");
-        make.rowS(@"cell2");
+    .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
+        make.itemS(@"cell1");
+        make.itemS(@"cell2");
     });
     
     // ...
 }];
 ```
 
-If you have registered `key-class` mapping in advance, `headerS`, `footerS` and `rowS` are used to fetch `Class` according to the registered mapping
+If you have registered `key-class` mapping in advance, `headerS`, `footerS` and `itemS` are used to fetch `Class` according to the registered mapping
 
-If you are not registered, `headerS`, `footerS`, `rowS` directly convert the string passed in to `Class` using the `NSClassFromString(NSString * _Nonnull aClassName)` method.
+If you are not registered, `headerS`, `footerS`, `itemS` directly convert the string passed in to `Class` using the `NSClassFromString(NSString * _Nonnull aClassName)` method.
 
 
 ## Installation

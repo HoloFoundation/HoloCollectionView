@@ -1,13 +1,13 @@
 //
-//  HoloCollectionRow.m
+//  HoloCollectionItem.m
 //  HoloCollectionView
 //
 //  Created by 与佳期 on 2020/6/3.
 //
 
-#import "HoloCollectionRow.h"
+#import "HoloCollectionItem.h"
 
-@implementation HoloCollectionRow
+@implementation HoloCollectionItem
 
 - (instancetype)init {
     self = [super init];
