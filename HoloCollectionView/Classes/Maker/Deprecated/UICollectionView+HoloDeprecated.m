@@ -100,20 +100,21 @@
     NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
     NSMutableArray *rows = [NSMutableArray new];
     for (HoloCollectionItem *row in [maker install]) {
-        if (rowsMap[row.cell]) {
+        Class cls = row.cell;
+        NSString *key = NSStringFromClass(cls);
+        if (rowsMap[key]) {
             [rows addObject:row];
             continue;
         }
         
-        Class cls = NSClassFromString(row.cell);
         if (!cls) {
-            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", row.cell);
+            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", key);
         }
         if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", row.cell);
+            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", key);
         }
-        rowsMap[row.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId ?: row.cell];
+        rowsMap[key] = cls;
+        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId ?: key];
         [rows addObject:row];
     }
     self.holo_proxy.proxyData.itemsMap = rowsMap;
@@ -197,17 +198,18 @@
             section.items = rows;
         }
         
-        if (rowsMap[operateRow.cell]) continue;
+        Class cls = operateRow.cell;
+        NSString *key = NSStringFromClass(cls);
+        if (rowsMap[key]) continue;
         
-        Class cls = NSClassFromString(operateRow.cell);
         if (!cls) {
-            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", operateRow.cell);
+            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", key);
         }
         if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", operateRow.cell);
+            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", key);
         }
-        rowsMap[operateRow.cell] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId ?: operateRow.cell];
+        rowsMap[key] = cls;
+        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId ?: key];
     }
     self.holo_proxy.proxyData.itemsMap = rowsMap;
     self.holo_proxy.proxyData.sections = updateArray.copy;

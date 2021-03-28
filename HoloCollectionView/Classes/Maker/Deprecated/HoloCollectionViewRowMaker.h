@@ -14,8 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) HoloCollectionItemMaker *(^row)(Class row);
 
-@property (nonatomic, copy, readonly) HoloCollectionItemMaker *(^rowS)(NSString *rowString);
-
 - (NSArray<HoloCollectionItem *> *)install;
 
 @end

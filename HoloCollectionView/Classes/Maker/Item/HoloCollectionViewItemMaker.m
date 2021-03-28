@@ -22,18 +22,7 @@
     return ^id(Class cls) {
         HoloCollectionItemMaker *itemMaker = [HoloCollectionItemMaker new];
         HoloCollectionItem *collectionItem = [itemMaker fetchCollectionItem];
-        collectionItem.cell = NSStringFromClass(cls);
-        
-        [self.holoItems addObject:collectionItem];
-        return itemMaker;
-    };
-}
-
-- (HoloCollectionItemMaker *(^)(NSString *))itemS {
-    return ^id(id obj) {
-        HoloCollectionItemMaker *itemMaker = [HoloCollectionItemMaker new];
-        HoloCollectionItem *collectionItem = [itemMaker fetchCollectionItem];
-        collectionItem.cell = obj;
+        collectionItem.cell = cls;
         
         [self.holoItems addObject:collectionItem];
         return itemMaker;

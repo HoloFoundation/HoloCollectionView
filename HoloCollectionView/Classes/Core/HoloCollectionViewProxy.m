@@ -166,7 +166,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
     if (holoItem.modelHandler) holoItem.model = holoItem.modelHandler();
     if (holoItem.reuseIdHandler) holoItem.reuseId = holoItem.reuseIdHandler(holoItem.model);
-    if (!holoItem.reuseId) holoItem.reuseId = holoItem.cell;
+    if (!holoItem.reuseId) holoItem.reuseId = NSStringFromClass(holoItem.cell);
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoItem.reuseId forIndexPath:indexPath];
     
@@ -301,7 +301,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     }
     
     HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
-    Class cls = self.holoItemsMap[holoItem.cell];
+    Class cls = holoItem.cell;
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     return HoloProxyItemSizeResult(cls, holoItem.sizeSEL, holoItem.sizeHandler, holoItem.model, holoItem.size, flowLayout.itemSize);
 }

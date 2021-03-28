@@ -14,8 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) HoloCollectionItemMaker *(^item)(Class item);
 
-@property (nonatomic, copy, readonly) HoloCollectionItemMaker *(^itemS)(NSString *itemString);
-
 #pragma mark - priority low
 @property (nonatomic, copy, readonly) HoloCollectionItemMaker *(^model)(id model);
 

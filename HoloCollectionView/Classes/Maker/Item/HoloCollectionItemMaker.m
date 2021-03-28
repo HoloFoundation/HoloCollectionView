@@ -18,14 +18,7 @@
 
 - (HoloCollectionItemMaker * (^)(Class))item {
     return ^id(Class cls) {
-        self.collectionItem.cell = NSStringFromClass(cls);
-        return self;
-    };
-}
-
-- (HoloCollectionItemMaker *(^)(NSString *))itemS {
-    return ^id(id obj) {
-        self.collectionItem.cell = obj;
+        self.collectionItem.cell = cls;
         return self;
     };
 }
