@@ -20,28 +20,14 @@
 
 - (HoloCollectionSectionMaker * (^)(Class))header {
     return ^id(Class cls) {
-        self.section.header = NSStringFromClass(cls);
+        self.section.header = cls;
         return self;
     };
 }
 
 - (HoloCollectionSectionMaker * (^)(Class))footer {
     return ^id(Class cls) {
-        self.section.footer = NSStringFromClass(cls);
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker *(^)(NSString *))headerS {
-    return ^id(id obj) {
-        self.section.header = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker *(^)(NSString *))footerS {
-    return ^id(id obj) {
-        self.section.footer = obj;
+        self.section.footer = cls;
         return self;
     };
 }

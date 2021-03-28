@@ -16,10 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footer)(Class footer);
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerS)(NSString *headerString);
-
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerS)(NSString *footerString);
-
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerReuseId)(NSString *headerReuseId);
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerReuseId)(NSString *footerReuseId);

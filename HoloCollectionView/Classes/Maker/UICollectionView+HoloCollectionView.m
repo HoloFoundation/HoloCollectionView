@@ -209,21 +209,22 @@
 }
 
 // _registerHeaderFooter
-- (void)_registerHeaderFooter:(NSString *)headerFooter
+- (void)_registerHeaderFooter:(Class)headerFooter
    forSupplementaryViewOfKind:(NSString *)elementKind
          withHeaderFootersMap:(NSMutableDictionary *)headerFootersMap
                       reuseId:(NSString *)reuseId {
-    if (headerFootersMap[headerFooter]) return;
+    Class cls = headerFooter;
+    NSString *key = NSStringFromClass(cls);
+    if (headerFootersMap[key]) return;
     
-    Class cls = NSClassFromString(headerFooter);
     if (!cls) {
-        NSAssert(NO, @"[HoloCollectionView] No found a headerFooter class with the name: %@.", headerFooter);
+        NSAssert(NO, @"[HoloCollectionView] No found a headerFooter class with the name: %@.", key);
     }
     if (![cls.new isKindOfClass:UICollectionReusableView.class]) {
-        NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", headerFooter);
+        NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", key);
     }
-    headerFootersMap[headerFooter] = cls;
-    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:reuseId ?: headerFooter];
+    headerFootersMap[key] = cls;
+    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:reuseId ?: key];
 }
 
 // holo_removeAllSections

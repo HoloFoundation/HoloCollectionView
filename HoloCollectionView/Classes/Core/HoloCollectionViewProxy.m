@@ -207,7 +207,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         }
         
         if (holoSection.headerReuseIdHandler) holoSection.headerReuseId = holoSection.headerReuseIdHandler(holoSection.headerModel);
-        if (!holoSection.headerReuseId) holoSection.headerReuseId = holoSection.header;
+        if (!holoSection.headerReuseId) holoSection.headerReuseId = NSStringFromClass(holoSection.header);
         reuseIdentifier = holoSection.headerReuseId;
     } else {
         if (holoSection.footerModelHandler) {
@@ -217,7 +217,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         }
         
         if (holoSection.footerReuseIdHandler) holoSection.footerReuseId = holoSection.footerReuseIdHandler(holoSection.footerModel);
-        if (!holoSection.footerReuseId) holoSection.footerReuseId = holoSection.footer;
+        if (!holoSection.footerReuseId) holoSection.footerReuseId = NSStringFromClass(holoSection.footer);
         reuseIdentifier = holoSection.footerReuseId;
     }
     UICollectionReusableView *holoHeaderView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
@@ -365,7 +365,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     }
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(self, section);
-    Class header = self.holoHeadersMap[holoSection.header];
+    Class header = holoSection.header;
     
     if (holoSection.headerSizeSEL && [header respondsToSelector:holoSection.headerSizeSEL]) {
         return HoloProxyMethodSignatureSizeResult(header, holoSection.headerSizeSEL, holoSection.headerModel);
@@ -388,7 +388,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     }
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(self, section);
-    Class footer = self.holoFootersMap[holoSection.footer];
+    Class footer = holoSection.footer;
 
     if (holoSection.footerSizeSEL && [footer respondsToSelector:holoSection.footerSizeSEL]) {
         return HoloProxyMethodSignatureSizeResult(footer, holoSection.footerSizeSEL, holoSection.footerModel);
