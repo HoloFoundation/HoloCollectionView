@@ -151,11 +151,28 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) SEL didEndDisplayingFooterSEL;
 
 
-- (NSIndexSet *)insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index;
+/**
+ *  Add a item to current section.
+ */
+- (void)addItem:(HoloCollectionItem *)item;
 
+/**
+ *  remove a item from current section.
+ */
 - (void)removeItem:(HoloCollectionItem *)item;
 
+/**
+ *  Remove all rows of current section.
+ */
 - (void)removeAllItems;
+
+/**
+ *  Insert a item to current section somewhere.
+ */
+- (void)insertRow:(HoloCollectionItem *)item atIndex:(NSInteger)index;
+
+
+- (NSIndexSet *)insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index;
 
 @end
 
