@@ -14,14 +14,6 @@
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 
-@property (nonatomic, copy, readonly) NSArray<HoloCollectionSection *> *holoSections;
-
-@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoItemsMap;
-
-@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoHeadersMap;
-
-@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoFootersMap;
-
 @end
 
 @implementation HoloCollectionViewProxy
@@ -36,8 +28,8 @@
 
 
 static HoloCollectionSection *HoloCollectionSectionWithIndex(HoloCollectionViewProxy *holoProxy, NSInteger section) {
-    if (section >= holoProxy.holoSections.count) return nil;
-    HoloCollectionSection *holoSection = holoProxy.holoSections[section];
+    if (section >= holoProxy.proxyData.sections.count) return nil;
+    HoloCollectionSection *holoSection = holoProxy.proxyData.sections[section];
     return holoSection;
 }
 
@@ -146,7 +138,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return [self.dataSource numberOfSectionsInCollectionView:collectionView];
     }
     
-    return self.holoSections.count;
+    return self.proxyData.sections.count;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -265,8 +257,8 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     HoloCollectionItem *sourceItem = HoloCollectionItemWithIndexPath(self, sourceIndexPath);
     if (sourceItem.moveHandler) {
         sourceItem.moveHandler(sourceIndexPath, destinationIndexPath, ^(BOOL actionPerformed) {
-            if (actionPerformed && self.holoSections.count > destinationIndexPath.section) {
-                HoloCollectionSection *destinationSection = self.holoSections[destinationIndexPath.section];
+            if (actionPerformed && self.proxyData.sections.count > destinationIndexPath.section) {
+                HoloCollectionSection *destinationSection = self.proxyData.sections[destinationIndexPath.section];
                 [sourceSection removeItem:sourceItem];
                 [destinationSection insertItems:@[sourceItem] atIndex:destinationIndexPath.item];
             }
@@ -648,22 +640,6 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         _proxyData = [HoloCollectionViewProxyData new];
     }
     return _proxyData;
-}
-
-- (NSArray<HoloCollectionSection *> *)holoSections {
-    return self.proxyData.sections;
-}
-
-- (NSDictionary<NSString *, Class> *)holoItemsMap {
-    return self.proxyData.itemsMap;
-}
-
-- (NSDictionary<NSString *,Class> *)holoHeadersMap {
-    return self.proxyData.headersMap;
-}
-
-- (NSDictionary<NSString *,Class> *)holoFootersMap {
-    return self.proxyData.footersMap;
 }
 
 @end

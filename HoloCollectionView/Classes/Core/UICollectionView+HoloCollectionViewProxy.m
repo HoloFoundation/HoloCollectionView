@@ -24,18 +24,22 @@ static char kHoloCollectionViewProxyKey;
         self.delegate = collectionViewProxy;
         
         // register UICollectionReusableView
-        Class headerFooterCls = UICollectionReusableView.class;
-        NSString *headerFooter = NSStringFromClass(headerFooterCls);
-        [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerFooter];
-        [self registerClass:headerFooterCls forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:headerFooter];
+        Class cls = UICollectionReusableView.class;
+        NSString *key = NSStringFromClass(cls);
         // headersMap
-        NSMutableDictionary *headersMap = collectionViewProxy.proxyData.headersMap.mutableCopy;
-        headersMap[headerFooter] = headerFooterCls;
-        collectionViewProxy.proxyData.headersMap = headersMap;
+        if (!collectionViewProxy.proxyData.headersMap[key]) {
+            [self registerClass:cls forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:key];
+            NSMutableDictionary *headersMap = collectionViewProxy.proxyData.headersMap.mutableCopy;
+            headersMap[key] = cls;
+            collectionViewProxy.proxyData.headersMap = headersMap;
+        }
         // footersMap
-        NSMutableDictionary *footersMap = collectionViewProxy.proxyData.footersMap.mutableCopy;
-        footersMap[headerFooter] = headerFooterCls;
-        collectionViewProxy.proxyData.footersMap = footersMap;
+        if (!collectionViewProxy.proxyData.footersMap[key]) {
+            [self registerClass:cls forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:key];
+            NSMutableDictionary *footersMap = collectionViewProxy.proxyData.footersMap.mutableCopy;
+            footersMap[key] = cls;
+            collectionViewProxy.proxyData.footersMap = footersMap;
+        }
     }
     return collectionViewProxy;
 }

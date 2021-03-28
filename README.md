@@ -267,61 +267,6 @@ self.collectionView.holo_proxy.scrollDelegate = self;
 Once you set up `dataSource`, `delegate`, `scrollDelegate` and implement some of their methods, `HoloCollectionView` will use your methods and return values first. For specific logic, please refer to: [HoloCollectionViewProxy.m](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloProxy/HoloCollectionViewProxy.m)
 
 
-### 6. Regist key-Class map
-
-`HoloCollectionView` supports key value mappings for headers, footers, and items in advance. For example:
-
-```objc
-// regist key-Class map
-[self.collectionView holo_makeCollectionView:^(HoloCollectionViewMaker * _Nonnull make) {
-    make
-    .makeHeadersMap(^(HoloCollectionViewHeaderMapMaker * _Nonnull make) {
-        make.header(@"header1").map(ExampleHeaderView1.class);
-        make.header(@"header2").map(ExampleHeaderView2.class);
-        // ...
-    })
-    .makeFootersMap(^(HoloCollectionViewFooterMapMaker * _Nonnull make) {
-        make.footer(@"footer1").map(ExampleFooterView1.class);
-        make.footer(@"footer2").map(ExampleFooterView2.class);
-        // ...
-    })
-    .makeItemsMap(^(HoloTCollectionViewItemMapMaker * _Nonnull make) {
-        make.item(@"cell1").map(ExampleCollectionViewCell1.class);
-        make.item(@"cell2").map(ExampleCollectionViewCell2.class);
-        // ...
-    });
-}];
-
-
-// use the key value
-[self.collectionView holo_makeSections:^(HoloCollectionViewSectionMaker * _Nonnull make) {
-    // section 1
-    make.section(TAG1)
-    .headerS(@"header1")
-    .footerS(@"footer1")
-    .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
-        make.itemS(@"cell1");
-        make.itemS(@"cell2");
-    });
-    
-    // section 2
-    make.section(TAG2)
-    .headerS(@"header2")
-    .footerS(@"footer2")
-    .makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
-        make.itemS(@"cell1");
-        make.itemS(@"cell2");
-    });
-    
-    // ...
-}];
-```
-
-If you have registered `key-class` mapping in advance, `headerS`, `footerS` and `itemS` are used to fetch `Class` according to the registered mapping
-
-If you are not registered, `headerS`, `footerS`, `itemS` directly convert the string passed in to `Class` using the `NSClassFromString(NSString * _Nonnull aClassName)` method.
-
-
 ## Installation
 
 HoloCollectionView is available through [CocoaPods](https://cocoapods.org). To install
