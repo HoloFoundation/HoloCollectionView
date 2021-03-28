@@ -32,6 +32,45 @@
     };
 }
 
+- (HoloCollectionSectionMaker * (^)(id))headerModel {
+    return ^id(id obj) {
+        self.section.headerModel = obj;
+        return self;
+    };
+}
+- (HoloCollectionSectionMaker * (^)(id (^)(void)))headerModelHandler {
+    return ^id(id obj) {
+        self.section.headerModelHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(id))footerModel {
+    return ^id(id obj) {
+        self.section.footerModel = obj;
+        return self;
+    };
+}
+- (HoloCollectionSectionMaker * (^)(id (^)(void)))footerModelHandler {
+    return ^id(id obj) {
+        self.section.footerModelHandler = obj;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(SEL))headerConfigSEL {
+    return ^id(SEL s) {
+        self.section.headerConfigSEL = s;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker *(^)(SEL))footerConfigSEL {
+    return ^id(SEL s) {
+        self.section.footerConfigSEL = s;
+        return self;
+    };
+}
 
 - (HoloCollectionSectionMaker *(^)(NSString *))headerReuseId {
     return ^id(id obj) {
@@ -40,7 +79,6 @@
     };
 }
 
-
 - (HoloCollectionSectionMaker *(^)(NSString *))footerReuseId {
     return ^id(id obj) {
         self.section.footerReuseId = obj;
@@ -48,11 +86,15 @@
     };
 }
 
-
-#pragma mark - priority low
 - (HoloCollectionSectionMaker * (^)(UIEdgeInsets))inset {
     return ^id(UIEdgeInsets i) {
         self.section.inset = i;
+        return self;
+    };
+}
+- (HoloCollectionSectionMaker * (^)(UIEdgeInsets (^)(void)))insetHandler {
+    return ^id(id obj) {
+        self.section.insetHandler = obj;
         return self;
     };
 }
@@ -63,6 +105,12 @@
         return self;
     };
 }
+- (HoloCollectionSectionMaker * (^)(CGFloat (^)(void)))minimumLineSpacingHandler {
+    return ^id(id obj) {
+        self.section.minimumLineSpacingHandler = obj;
+        return self;
+    };
+}
 
 - (HoloCollectionSectionMaker * (^)(CGFloat))minimumInteritemSpacing {
     return ^id(CGFloat f) {
@@ -70,17 +118,9 @@
         return self;
     };
 }
-
-- (HoloCollectionSectionMaker * (^)(id))headerModel {
+- (HoloCollectionSectionMaker * (^)(CGFloat (^)(void)))minimumInteritemSpacingHandler {
     return ^id(id obj) {
-        self.section.headerModel = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(id))footerModel {
-    return ^id(id obj) {
-        self.section.footerModel = obj;
+        self.section.minimumInteritemSpacingHandler = obj;
         return self;
     };
 }
@@ -105,6 +145,18 @@
         return self;
     };
 }
+- (HoloCollectionSectionMaker * (^)(CGSize (^)(id)))headerSizeHandler {
+    return ^id(id obj) {
+        self.section.headerSizeHandler = obj;
+        return self;
+    };
+}
+- (HoloCollectionSectionMaker *(^)(SEL))headerSizeSEL {
+    return ^id(SEL s) {
+        self.section.headerSizeSEL = s;
+        return self;
+    };
+}
 
 - (HoloCollectionSectionMaker *(^)(CGSize))footerSize {
     return ^id(CGSize s) {
@@ -112,53 +164,15 @@
         return self;
     };
 }
-
-#pragma mark - priority middle
-- (HoloCollectionSectionMaker * (^)(UIEdgeInsets (^)(void)))insetHandler {
-    return ^id(id obj) {
-        self.section.insetHandler = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(CGFloat (^)(void)))minimumLineSpacingHandler {
-    return ^id(id obj) {
-        self.section.minimumLineSpacingHandler = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(CGFloat (^)(void)))minimumInteritemSpacingHandler {
-    return ^id(id obj) {
-        self.section.minimumInteritemSpacingHandler = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(id (^)(void)))headerModelHandler {
-    return ^id(id obj) {
-        self.section.headerModelHandler = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(id (^)(void)))footerModelHandler {
-    return ^id(id obj) {
-        self.section.footerModelHandler = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(CGSize (^)(id)))headerSizeHandler {
-    return ^id(id obj) {
-        self.section.headerSizeHandler = obj;
-        return self;
-    };
-}
-
 - (HoloCollectionSectionMaker * (^)(CGSize (^)(id)))footerSizeHandler {
     return ^id(id obj) {
         self.section.footerSizeHandler = obj;
+        return self;
+    };
+}
+- (HoloCollectionSectionMaker *(^)(SEL))footerSizeSEL {
+    return ^id(SEL s) {
+        self.section.footerSizeSEL = s;
         return self;
     };
 }
@@ -169,10 +183,22 @@
         return self;
     };
 }
+- (HoloCollectionSectionMaker * (^)(SEL))willDisplayHeaderSEL {
+    return ^id(SEL s) {
+        self.section.willDisplayHeaderSEL = s;
+        return self;
+    };
+}
 
 - (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))willDisplayFooterHandler {
     return ^id(id obj) {
         self.section.willDisplayFooterHandler = obj;
+        return self;
+    };
+}
+- (HoloCollectionSectionMaker * (^)(SEL))willDisplayFooterSEL {
+    return ^id(SEL s) {
+        self.section.willDisplayFooterSEL = s;
         return self;
     };
 }
@@ -183,6 +209,12 @@
         return self;
     };
 }
+- (HoloCollectionSectionMaker * (^)(SEL))didEndDisplayingHeaderSEL {
+    return ^id(SEL s) {
+        self.section.didEndDisplayingHeaderSEL = s;
+        return self;
+    };
+}
 
 - (HoloCollectionSectionMaker *(^)(void (^)(UIView *, id)))didEndDisplayingFooterHandler {
     return ^id(id obj) {
@@ -190,35 +222,13 @@
         return self;
     };
 }
-
-#pragma mark - priority high
-- (HoloCollectionSectionMaker *(^)(SEL))headerConfigSEL {
+- (HoloCollectionSectionMaker * (^)(SEL))didEndDisplayingFooterSEL {
     return ^id(SEL s) {
-        self.section.headerConfigSEL = s;
+        self.section.didEndDisplayingFooterSEL = s;
         return self;
     };
 }
 
-- (HoloCollectionSectionMaker *(^)(SEL))footerConfigSEL {
-    return ^id(SEL s) {
-        self.section.footerConfigSEL = s;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker *(^)(SEL))headerSizeSEL {
-    return ^id(SEL s) {
-        self.section.headerSizeSEL = s;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker *(^)(SEL))footerSizeSEL {
-    return ^id(SEL s) {
-        self.section.footerSizeSEL = s;
-        return self;
-    };
-}
 
 - (HoloCollectionSectionMaker *(^)(SEL))headerFooterConfigSEL {
     return ^id(SEL s) {
@@ -229,34 +239,6 @@
 - (HoloCollectionSectionMaker *(^)(SEL))headerFooterSizeSEL {
     return ^id(SEL s) {
         self.section.headerFooterSizeSEL = s;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(SEL))willDisplayHeaderSEL {
-    return ^id(SEL s) {
-        self.section.willDisplayHeaderSEL = s;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(SEL))willDisplayFooterSEL {
-    return ^id(SEL s) {
-        self.section.willDisplayFooterSEL = s;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(SEL))didEndDisplayingHeaderSEL {
-    return ^id(SEL s) {
-        self.section.didEndDisplayingHeaderSEL = s;
-        return self;
-    };
-}
-
-- (HoloCollectionSectionMaker * (^)(SEL))didEndDisplayingFooterSEL {
-    return ^id(SEL s) {
-        self.section.didEndDisplayingFooterSEL = s;
         return self;
     };
 }
