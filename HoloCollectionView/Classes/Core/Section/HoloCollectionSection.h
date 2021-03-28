@@ -151,11 +151,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) SEL didEndDisplayingFooterSEL;
 
 
-
-@property (nonatomic, assign) SEL headerFooterConfigSEL;
-@property (nonatomic, assign) SEL headerFooterSizeSEL;
-
-
 - (NSIndexSet *)insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index;
 
 - (void)removeItem:(HoloCollectionItem *)item;

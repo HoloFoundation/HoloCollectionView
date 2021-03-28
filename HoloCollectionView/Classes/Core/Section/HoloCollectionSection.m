@@ -24,10 +24,7 @@
         _footerConfigSEL = @selector(holo_configureFooterWithModel:);
         _headerSizeSEL = @selector(holo_sizeForHeaderWithModel:);
         _footerSizeSEL = @selector(holo_sizeForFooterWithModel:);
-        
-        _headerFooterConfigSEL = @selector(holo_configureHeaderFooterWithModel:);
-        _headerFooterSizeSEL = @selector(holo_sizeForHeaderFooterWithModel:);
-        
+                
         _willDisplayHeaderSEL = @selector(holo_willDisplayHeaderWithModel:);
         _willDisplayFooterSEL = @selector(holo_sizeForFooterWithModel:);
         _didEndDisplayingHeaderSEL = @selector(holo_didEndDisplayingHeaderWithModel:);

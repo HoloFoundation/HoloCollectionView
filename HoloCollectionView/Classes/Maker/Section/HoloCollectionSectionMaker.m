@@ -230,20 +230,6 @@
 }
 
 
-- (HoloCollectionSectionMaker *(^)(SEL))headerFooterConfigSEL {
-    return ^id(SEL s) {
-        self.section.headerFooterConfigSEL = s;
-        return self;
-    };
-}
-- (HoloCollectionSectionMaker *(^)(SEL))headerFooterSizeSEL {
-    return ^id(SEL s) {
-        self.section.headerFooterSizeSEL = s;
-        return self;
-    };
-}
-
-
 - (HoloCollectionSectionMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewItemMaker *)))makeItems {
     return ^id(void(^block)(HoloCollectionViewItemMaker *make)) {
         HoloCollectionViewItemMaker *maker = [HoloCollectionViewItemMaker new];

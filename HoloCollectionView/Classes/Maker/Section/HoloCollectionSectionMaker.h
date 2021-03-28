@@ -141,9 +141,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^didEndDisplayingFooterSEL)(SEL didEndDisplayingFooterSEL);
 
 
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterConfigSEL)(SEL headerFooterConfigSEL) DEPRECATED_MSG_ATTRIBUTE("Please use `headerConfigSEL` or `footerConfigSEL` api instead.");
-@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerFooterSizeSEL)(SEL headerFooterSizeSEL) DEPRECATED_MSG_ATTRIBUTE("Please use `headerSizeSEL` or `footerSizeSEL` api instead.");
-
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^makeItems)(void(NS_NOESCAPE ^)(HoloCollectionViewItemMaker *make));
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^makeRows)(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make)) DEPRECATED_MSG_ATTRIBUTE("Please use `makeItems` api instead.");

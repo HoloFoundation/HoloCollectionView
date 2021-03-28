@@ -228,12 +228,6 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [holoHeaderView performSelector:holoSection.footerConfigSEL withObject:model];
 #pragma clang diagnostic pop
-    } else if (holoSection.headerFooterConfigSEL &&
-               [holoHeaderView respondsToSelector:holoSection.headerFooterConfigSEL]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [holoHeaderView performSelector:holoSection.headerFooterConfigSEL withObject:model];
-#pragma clang diagnostic pop
     }
     return holoHeaderView;
 }
@@ -361,8 +355,6 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     
     if (holoSection.headerSizeSEL && [header respondsToSelector:holoSection.headerSizeSEL]) {
         return HoloProxyMethodSignatureSizeResult(header, holoSection.headerSizeSEL, holoSection.headerModel);
-    } else if (holoSection.headerFooterSizeSEL && [header respondsToSelector:holoSection.headerFooterSizeSEL]) {
-        return HoloProxyMethodSignatureSizeResult(header, holoSection.headerFooterSizeSEL, holoSection.headerModel);
     } else if (holoSection.headerSizeHandler) {
         return holoSection.headerSizeHandler(holoSection.headerModel);
     } else if (holoSection.headerSize.width != CGFLOAT_MIN ||
@@ -384,8 +376,6 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
 
     if (holoSection.footerSizeSEL && [footer respondsToSelector:holoSection.footerSizeSEL]) {
         return HoloProxyMethodSignatureSizeResult(footer, holoSection.footerSizeSEL, holoSection.footerModel);
-    } else if (holoSection.headerFooterSizeSEL && [footer respondsToSelector:holoSection.headerFooterSizeSEL]) {
-        return HoloProxyMethodSignatureSizeResult(footer, holoSection.headerFooterSizeSEL, holoSection.footerModel);
     } else if (holoSection.footerSizeHandler) {
         return holoSection.footerSizeHandler(holoSection.footerModel);
     } else if (holoSection.footerSize.width != CGFLOAT_MIN ||
