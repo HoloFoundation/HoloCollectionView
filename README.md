@@ -57,7 +57,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 // etc.
 ```
 
-The `holo_makeItems:` method is used to create a list of items. Each `item` is a `cell`. **More properties provided for item see: [HoloCollectionViewItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionViewItemMaker.h) and [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h)**
+The `holo_makeItems:` method is used to create a list of items **with a default section**. Each `item` is a `cell`. **More properties provided for item see: [HoloCollectionViewItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Item/HoloCollectionViewItemMaker.h) and [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Item/HoloCollectionItemMaker.h)**
 
 
 #### Requirements for cell
@@ -79,9 +79,9 @@ Conforms to protocol `HoloCollectionViewCellProtocol`, `HoloCollectionView` will
 + (CGSize)holo_sizeForCellWithModel:(id)model;
 ```
 
-**See `HoloCollectionViewCellProtocol` more methods: [HoloCollectionViewCellProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Holo/HoloProtocol/HoloCollectionViewCellProtocol.h)**
+**See `HoloCollectionViewCellProtocol` more methods: [HoloCollectionViewCellProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/Protocol/HoloCollectionViewCellProtocol.h)**
 
-You can also call your own methods by configuring properties such as `configSEL`, `sizeSEL`, etc. More properties can find in [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h).
+You can also call your own methods by configuring properties such as `configSEL`, `sizeSEL`, etc. More properties can find in [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Item/HoloCollectionItemMaker.h).
 
 Note that attributes such as `size`, `shouldHighlight`, etc. that exist `SEL` have priority:
 1. First judge whether `cell` implements `sizeSEL` method
@@ -118,7 +118,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 [collectionView reloadData];
 ```
 
-The `holo_makeSections:` method is used to create a list of `section`. **More properties provided for section see: [HoloCollectionViewSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionViewSectionMaker.h) and  [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionSectionMaker.h)**
+The `holo_makeSections:` method is used to create a list of `section`. **More properties provided for section see: [HoloCollectionViewSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Section/HoloCollectionViewSectionMaker.h) and  [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Section/HoloCollectionSectionMaker.h)**
 
 
 #### Requirements for header and footer
@@ -155,9 +155,9 @@ The `holo_makeSections:` method is used to create a list of `section`. **More pr
 + (CGSize)holo_sizeForFooterWithModel:(id)model;
 ```
 
-**See `HoloCollectionViewHeaderProtocol` and `HoloCollectionViewFooterProtocol` more methods: [HoloCollectionViewHeaderProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Holo/HoloProtocol/HoloCollectionViewHeaderProtocol.h) and [HoloCollectionViewFooterProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Holo/HoloProtocol/HoloCollectionViewFooterProtocol.h)**
+**See `HoloCollectionViewHeaderProtocol` and `HoloCollectionViewFooterProtocol` more methods: [HoloCollectionViewHeaderProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/Protocol/HoloCollectionViewHeaderProtocol.h) and [HoloCollectionViewFooterProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/Protocol/HoloCollectionViewFooterProtocol.h)**
 
-You can also call your own methods by configuring properties such as `headerConfigSEL`, `footerConfigSEL`, etc. More properties can find in   [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionSectionMaker.h).
+You can also call your own methods by configuring properties such as `headerConfigSEL`, `footerConfigSEL`, etc. More properties can find in   [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Section/HoloCollectionSectionMaker.h).
 
 Like `cell`, properties that contain `SEL` also have a priority.
 
@@ -197,7 +197,7 @@ Like `cell`, properties that contain `SEL` also have a priority.
 ```
 
 `UICollectionView+HoloCollectionView.h` provides a series of methods for manipulating `sections`, including adding, inserting, updating, resetting, deleting, etc.
-**More methods provided for section see: [UICollectionView+HoloCollectionView.h (about section)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L24-L145)**
+**More methods provided for section see: [UICollectionView+HoloCollectionView.h (about section)](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/UICollectionView%2BHoloCollectionView.h#L24-L145)**
 
 
 ### 4. Methods for item
@@ -245,7 +245,7 @@ Like `cell`, properties that contain `SEL` also have a priority.
 ```
 
 `UICollectionView+HoloCollectionView.h` provides a series of methods for manipulating items, including adding, inserting, updating, resetting, deleting, etc.
-**More methods provided for item see: [UICollectionView+HoloCollectionView.h (about item)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L147-L329)**
+**More methods provided for item see: [UICollectionView+HoloCollectionView.h (about item)](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/UICollectionView%2BHoloCollectionView.h#L147-L329)**
 
 
 ### 5. Retrieve Delegate
@@ -264,7 +264,37 @@ self.collectionView.holo_proxy.scrollDelegate = self;
 }];
 ```
 
-Once you set up `dataSource`, `delegate`, `scrollDelegate` and implement some of their methods, `HoloCollectionView` will use your methods and return values first. For specific logic, please refer to: [HoloCollectionViewProxy.m](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloProxy/HoloCollectionViewProxy.m)
+Once you set up `dataSource`, `delegate`, `scrollDelegate` and implement some of their methods, `HoloCollectionView` will use your methods and return values first. For specific logic, please refer to: [HoloCollectionViewProxy.m](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/HoloCollectionViewProxy.m)
+
+
+### 6. Reload a table view by setting datasource with `HoloCollectionSection` and `HoloCollectionItem`
+
+Make a section list with `HoloTableSection` and `HoloTableRow`:
+
+```objc
+HoloCollectionSection *section = [HoloCollectionSection new];
+section.tag = TAG;
+
+section.header = ExampleHeaderView.class;
+section.headerModel = @{@"title":@"header"};
+section.headerSize = CGSizeMake(HOLO_SCREEN_WIDTH, 100);
+
+section.footer = ExampleFooterView.class;
+section.footerModel = @{@"title":@"footer"};
+section.footerSize = CGSizeMake(HOLO_SCREEN_WIDTH, 100);
+
+NSMutableArray *items = [NSMutableArray new];
+for (NSDictionary *dict in self.modelArray) {
+    HoloCollectionItem *item = [HoloCollectionItem new];
+    item.cell = ExampleCollectionViewCell.class;
+    item.model = dict;
+    [items addObject:item];
+}
+section.items = items;
+
+self.collectionView.holo_sections = @[section];
+[self.collectionView reloadData];
+```
 
 
 ## Installation
