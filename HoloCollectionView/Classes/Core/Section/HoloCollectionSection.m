@@ -54,7 +54,7 @@
     self.items = [NSArray new];
 }
 
-- (void)insertRow:(HoloCollectionItem *)item atIndex:(NSInteger)index {
+- (void)insertItem:(HoloCollectionItem *)item atIndex:(NSInteger)index {
     if (!item) return;
     
     if (index < 0) index = 0;
@@ -63,19 +63,6 @@
     NSMutableArray *array = [NSMutableArray arrayWithArray:self.items];
     [array insertObject:item atIndex:index];
     self.items = array;
-}
-
-- (NSIndexSet *)insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index {
-    if (items.count <= 0) return [NSIndexSet new];
-    
-    if (index < 0) index = 0;
-    if (index > self.items.count) index = self.items.count;
-    
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, items.count)];
-    NSMutableArray *array = [NSMutableArray arrayWithArray:self.items];
-    [array insertObjects:items atIndexes:indexSet];
-    self.items = array;
-    return indexSet;
 }
 
 @end

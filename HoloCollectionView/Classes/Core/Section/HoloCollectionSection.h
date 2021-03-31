@@ -169,10 +169,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Insert a item to current section somewhere.
  */
-- (void)insertRow:(HoloCollectionItem *)item atIndex:(NSInteger)index;
-
-
-- (NSIndexSet *)insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index;
+- (void)insertItem:(HoloCollectionItem *)item atIndex:(NSInteger)index;
 
 @end
 

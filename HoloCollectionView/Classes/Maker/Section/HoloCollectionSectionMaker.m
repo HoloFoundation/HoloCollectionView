@@ -235,7 +235,9 @@
         HoloCollectionViewItemMaker *maker = [HoloCollectionViewItemMaker new];
         if (block) block(maker);
         
-        [self.section insertItems:[maker install] atIndex:NSIntegerMax];
+        NSMutableArray *array = [NSMutableArray arrayWithArray:self.section.items];
+        [array addObjectsFromArray:[maker install]];
+        self.section.items = array.copy;
         return self;
     };
 }
@@ -245,7 +247,9 @@
         HoloCollectionViewRowMaker *maker = [HoloCollectionViewRowMaker new];
         if (block) block(maker);
         
-        [self.section insertItems:[maker install] atIndex:NSIntegerMax];
+        NSMutableArray *array = [NSMutableArray arrayWithArray:self.section.items];
+        [array addObjectsFromArray:[maker install]];
+        self.section.items = array.copy;
         return self;
     };
 }
