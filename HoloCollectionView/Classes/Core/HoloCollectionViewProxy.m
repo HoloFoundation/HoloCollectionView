@@ -254,7 +254,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
             if (actionPerformed && self.proxyData.sections.count > destinationIndexPath.section) {
                 HoloCollectionSection *destinationSection = self.proxyData.sections[destinationIndexPath.section];
                 [sourceSection removeItem:sourceItem];
-                [destinationSection insertItems:@[sourceItem] atIndex:destinationIndexPath.item];
+                [destinationSection insertItem:sourceItem atIndex:destinationIndexPath.item];
             }
         });
     }
