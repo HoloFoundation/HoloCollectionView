@@ -114,7 +114,10 @@
             NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", key);
         }
         rowsMap[key] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId ?: key];
+        
+        if (row.reuseIdHandler) row.reuseId = row.reuseIdHandler(row.model);
+        if (!row.reuseId) row.reuseId = key;
+        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId];
         [rows addObject:row];
     }
     self.holo_proxy.proxyData.itemsMap = rowsMap;
@@ -209,7 +212,10 @@
             NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", key);
         }
         rowsMap[key] = cls;
-        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId ?: key];
+        
+        if (operateRow.reuseIdHandler) operateRow.reuseId = operateRow.reuseIdHandler(operateRow.model);
+        if (!operateRow.reuseId) operateRow.reuseId = key;
+        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId];
     }
     self.holo_proxy.proxyData.itemsMap = rowsMap;
     self.holo_proxy.proxyData.sections = updateArray.copy;

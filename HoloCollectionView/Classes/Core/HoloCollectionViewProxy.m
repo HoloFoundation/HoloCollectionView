@@ -160,6 +160,13 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     if (holoItem.reuseIdHandler) holoItem.reuseId = holoItem.reuseIdHandler(holoItem.model);
     if (!holoItem.reuseId) holoItem.reuseId = NSStringFromClass(holoItem.cell);
     
+    if (!self.proxyData.itemsMap[holoItem.reuseId]) {
+        [collectionView registerClass:holoItem.cell forCellWithReuseIdentifier:holoItem.reuseId];
+        NSMutableDictionary *itemsMap = [NSMutableDictionary dictionaryWithDictionary:self.proxyData.itemsMap];
+        itemsMap[holoItem.reuseId] = holoItem.cell;
+        self.proxyData.itemsMap = itemsMap.copy;
+    }
+    
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoItem.reuseId forIndexPath:indexPath];
     
     // Performed before `configSEL`
@@ -201,6 +208,13 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         if (holoSection.headerReuseIdHandler) holoSection.headerReuseId = holoSection.headerReuseIdHandler(holoSection.headerModel);
         if (!holoSection.headerReuseId) holoSection.headerReuseId = NSStringFromClass(holoSection.header);
         reuseIdentifier = holoSection.headerReuseId;
+        
+        if (!self.proxyData.headersMap[reuseIdentifier]) {
+            [collectionView registerClass:holoSection.header forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:reuseIdentifier];
+            NSMutableDictionary *headersMap = [NSMutableDictionary dictionaryWithDictionary:self.proxyData.itemsMap];
+            headersMap[reuseIdentifier] = holoSection.header;
+            self.proxyData.headersMap = headersMap.copy;
+        }
     } else {
         if (holoSection.footerModelHandler) {
             model = holoSection.footerModelHandler();
@@ -211,6 +225,13 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         if (holoSection.footerReuseIdHandler) holoSection.footerReuseId = holoSection.footerReuseIdHandler(holoSection.footerModel);
         if (!holoSection.footerReuseId) holoSection.footerReuseId = NSStringFromClass(holoSection.footer);
         reuseIdentifier = holoSection.footerReuseId;
+        
+        if (!self.proxyData.footersMap[reuseIdentifier]) {
+            [collectionView registerClass:holoSection.footer forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:reuseIdentifier];
+            NSMutableDictionary *footersMap = [NSMutableDictionary dictionaryWithDictionary:self.proxyData.itemsMap];
+            footersMap[reuseIdentifier] = holoSection.footer;
+            self.proxyData.footersMap = footersMap.copy;
+        }
     }
     UICollectionReusableView *holoHeaderView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
