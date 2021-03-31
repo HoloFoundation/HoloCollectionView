@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class HoloCollectionSection;
+@class HoloCollectionItem, HoloCollectionSection;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<NSIndexPath *> *)removeAllItemsInSections:(NSArray<NSString *> *)tags;
 
 - (NSArray<NSIndexPath *> *)removeItems:(NSArray<NSString *> *)tags;
+
+- (NSIndexSet *)section:(HoloCollectionSection *)section insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index;
 
 @end
 

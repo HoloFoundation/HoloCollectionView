@@ -14,14 +14,6 @@
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 
-@property (nonatomic, copy, readonly) NSArray<HoloCollectionSection *> *holoSections;
-
-@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoItemsMap;
-
-@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoHeadersMap;
-
-@property (nonatomic, copy, readonly) NSDictionary<NSString *, Class> *holoFootersMap;
-
 @end
 
 @implementation HoloCollectionViewProxy
@@ -36,8 +28,8 @@
 
 
 static HoloCollectionSection *HoloCollectionSectionWithIndex(HoloCollectionViewProxy *holoProxy, NSInteger section) {
-    if (section >= holoProxy.holoSections.count) return nil;
-    HoloCollectionSection *holoSection = holoProxy.holoSections[section];
+    if (section >= holoProxy.proxyData.sections.count) return nil;
+    HoloCollectionSection *holoSection = holoProxy.proxyData.sections[section];
     return holoSection;
 }
 
@@ -146,7 +138,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         return [self.dataSource numberOfSectionsInCollectionView:collectionView];
     }
     
-    return self.holoSections.count;
+    return self.proxyData.sections.count;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -166,7 +158,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
     if (holoItem.modelHandler) holoItem.model = holoItem.modelHandler();
     if (holoItem.reuseIdHandler) holoItem.reuseId = holoItem.reuseIdHandler(holoItem.model);
-    if (!holoItem.reuseId) holoItem.reuseId = holoItem.cell;
+    if (!holoItem.reuseId) holoItem.reuseId = NSStringFromClass(holoItem.cell);
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoItem.reuseId forIndexPath:indexPath];
     
@@ -207,7 +199,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         }
         
         if (holoSection.headerReuseIdHandler) holoSection.headerReuseId = holoSection.headerReuseIdHandler(holoSection.headerModel);
-        if (!holoSection.headerReuseId) holoSection.headerReuseId = holoSection.header;
+        if (!holoSection.headerReuseId) holoSection.headerReuseId = NSStringFromClass(holoSection.header);
         reuseIdentifier = holoSection.headerReuseId;
     } else {
         if (holoSection.footerModelHandler) {
@@ -217,7 +209,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         }
         
         if (holoSection.footerReuseIdHandler) holoSection.footerReuseId = holoSection.footerReuseIdHandler(holoSection.footerModel);
-        if (!holoSection.footerReuseId) holoSection.footerReuseId = holoSection.footer;
+        if (!holoSection.footerReuseId) holoSection.footerReuseId = NSStringFromClass(holoSection.footer);
         reuseIdentifier = holoSection.footerReuseId;
     }
     UICollectionReusableView *holoHeaderView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
@@ -235,12 +227,6 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         [holoHeaderView performSelector:holoSection.footerConfigSEL withObject:model];
-#pragma clang diagnostic pop
-    } else if (holoSection.headerFooterConfigSEL &&
-               [holoHeaderView respondsToSelector:holoSection.headerFooterConfigSEL]) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [holoHeaderView performSelector:holoSection.headerFooterConfigSEL withObject:model];
 #pragma clang diagnostic pop
     }
     return holoHeaderView;
@@ -265,10 +251,10 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     HoloCollectionItem *sourceItem = HoloCollectionItemWithIndexPath(self, sourceIndexPath);
     if (sourceItem.moveHandler) {
         sourceItem.moveHandler(sourceIndexPath, destinationIndexPath, ^(BOOL actionPerformed) {
-            if (actionPerformed && self.holoSections.count > destinationIndexPath.section) {
-                HoloCollectionSection *destinationSection = self.holoSections[destinationIndexPath.section];
+            if (actionPerformed && self.proxyData.sections.count > destinationIndexPath.section) {
+                HoloCollectionSection *destinationSection = self.proxyData.sections[destinationIndexPath.section];
                 [sourceSection removeItem:sourceItem];
-                [destinationSection insertItems:@[sourceItem] atIndex:destinationIndexPath.item];
+                [destinationSection insertItem:sourceItem atIndex:destinationIndexPath.item];
             }
         });
     }
@@ -301,7 +287,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     }
     
     HoloCollectionItem *holoItem = HoloCollectionItemWithIndexPath(self, indexPath);
-    Class cls = self.holoItemsMap[holoItem.cell];
+    Class cls = holoItem.cell;
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     return HoloProxyItemSizeResult(cls, holoItem.sizeSEL, holoItem.sizeHandler, holoItem.model, holoItem.size, flowLayout.itemSize);
 }
@@ -365,12 +351,10 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     }
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(self, section);
-    Class header = self.holoHeadersMap[holoSection.header];
+    Class header = holoSection.header;
     
     if (holoSection.headerSizeSEL && [header respondsToSelector:holoSection.headerSizeSEL]) {
         return HoloProxyMethodSignatureSizeResult(header, holoSection.headerSizeSEL, holoSection.headerModel);
-    } else if (holoSection.headerFooterSizeSEL && [header respondsToSelector:holoSection.headerFooterSizeSEL]) {
-        return HoloProxyMethodSignatureSizeResult(header, holoSection.headerFooterSizeSEL, holoSection.headerModel);
     } else if (holoSection.headerSizeHandler) {
         return holoSection.headerSizeHandler(holoSection.headerModel);
     } else if (holoSection.headerSize.width != CGFLOAT_MIN ||
@@ -388,12 +372,10 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
     }
     
     HoloCollectionSection *holoSection = HoloCollectionSectionWithIndex(self, section);
-    Class footer = self.holoFootersMap[holoSection.footer];
+    Class footer = holoSection.footer;
 
     if (holoSection.footerSizeSEL && [footer respondsToSelector:holoSection.footerSizeSEL]) {
         return HoloProxyMethodSignatureSizeResult(footer, holoSection.footerSizeSEL, holoSection.footerModel);
-    } else if (holoSection.headerFooterSizeSEL && [footer respondsToSelector:holoSection.headerFooterSizeSEL]) {
-        return HoloProxyMethodSignatureSizeResult(footer, holoSection.headerFooterSizeSEL, holoSection.footerModel);
     } else if (holoSection.footerSizeHandler) {
         return holoSection.footerSizeHandler(holoSection.footerModel);
     } else if (holoSection.footerSize.width != CGFLOAT_MIN ||
@@ -648,22 +630,6 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
         _proxyData = [HoloCollectionViewProxyData new];
     }
     return _proxyData;
-}
-
-- (NSArray<HoloCollectionSection *> *)holoSections {
-    return self.proxyData.sections;
-}
-
-- (NSDictionary<NSString *, Class> *)holoItemsMap {
-    return self.proxyData.itemsMap;
-}
-
-- (NSDictionary<NSString *,Class> *)holoHeadersMap {
-    return self.proxyData.headersMap;
-}
-
-- (NSDictionary<NSString *,Class> *)holoFootersMap {
-    return self.proxyData.footersMap;
 }
 
 @end

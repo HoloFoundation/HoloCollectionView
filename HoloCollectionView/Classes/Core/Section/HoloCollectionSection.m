@@ -24,10 +24,7 @@
         _footerConfigSEL = @selector(holo_configureFooterWithModel:);
         _headerSizeSEL = @selector(holo_sizeForHeaderWithModel:);
         _footerSizeSEL = @selector(holo_sizeForFooterWithModel:);
-        
-        _headerFooterConfigSEL = @selector(holo_configureHeaderFooterWithModel:);
-        _headerFooterSizeSEL = @selector(holo_sizeForHeaderFooterWithModel:);
-        
+                
         _willDisplayHeaderSEL = @selector(holo_willDisplayHeaderWithModel:);
         _willDisplayFooterSEL = @selector(holo_sizeForFooterWithModel:);
         _didEndDisplayingHeaderSEL = @selector(holo_didEndDisplayingHeaderWithModel:);
@@ -37,17 +34,12 @@
     return self;
 }
 
-- (NSIndexSet *)insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index {
-    if (items.count <= 0) return [NSIndexSet new];
+- (void)addItem:(HoloCollectionItem *)item {
+    if (!item) return;
     
-    if (index < 0) index = 0;
-    if (index > self.items.count) index = self.items.count;
-    
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, items.count)];
     NSMutableArray *array = [NSMutableArray arrayWithArray:self.items];
-    [array insertObjects:items atIndexes:indexSet];
+    [array addObject:item];
     self.items = array;
-    return indexSet;
 }
 
 - (void)removeItem:(HoloCollectionItem *)item {
@@ -60,6 +52,17 @@
 
 - (void)removeAllItems {
     self.items = [NSArray new];
+}
+
+- (void)insertItem:(HoloCollectionItem *)item atIndex:(NSInteger)index {
+    if (!item) return;
+    
+    if (index < 0) index = 0;
+    if (index > self.items.count) index = self.items.count;
+    
+    NSMutableArray *array = [NSMutableArray arrayWithArray:self.items];
+    [array insertObject:item atIndex:index];
+    self.items = array;
 }
 
 @end

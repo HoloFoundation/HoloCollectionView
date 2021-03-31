@@ -1,38 +1,28 @@
 //
-//  HoloCollectionViewRowMaker.m
+//  HoloCollectionViewItemMaker.m
 //  HoloCollectionView
 //
-//  Created by 与佳期 on 2019/9/13.
+//  Created by 与佳期 on 2021/2/16.
 //
 
-#import "HoloCollectionViewRowMaker.h"
+#import "HoloCollectionViewItemMaker.h"
 #import "HoloCollectionItem.h"
 #import "HoloCollectionItemMaker.h"
 
-@interface HoloCollectionViewRowMaker ()
+@interface HoloCollectionViewItemMaker ()
 
 @property (nonatomic, strong) NSMutableArray<HoloCollectionItem *> *holoItems;
 
 @end
 
-@implementation HoloCollectionViewRowMaker
 
-- (HoloCollectionItemMaker * (^)(Class))row {
+@implementation HoloCollectionViewItemMaker
+
+- (HoloCollectionItemMaker * (^)(Class))item {
     return ^id(Class cls) {
         HoloCollectionItemMaker *itemMaker = [HoloCollectionItemMaker new];
         HoloCollectionItem *collectionItem = [itemMaker fetchCollectionItem];
-        collectionItem.cell = NSStringFromClass(cls);
-        
-        [self.holoItems addObject:collectionItem];
-        return itemMaker;
-    };
-}
-
-- (HoloCollectionItemMaker *(^)(NSString *))rowS {
-    return ^id(id obj) {
-        HoloCollectionItemMaker *itemMaker = [HoloCollectionItemMaker new];
-        HoloCollectionItem *collectionItem = [itemMaker fetchCollectionItem];
-        collectionItem.cell = obj;
+        collectionItem.cell = cls;
         
         [self.holoItems addObject:collectionItem];
         return itemMaker;

@@ -84,6 +84,19 @@
     return [array copy];
 }
 
+- (NSIndexSet *)section:(HoloCollectionSection *)section insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index {
+    if (items.count <= 0) return [NSIndexSet new];
+    
+    if (index < 0) index = 0;
+    if (index > section.items.count) index = section.items.count;
+    
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, items.count)];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:section.items];
+    [array insertObjects:items atIndexes:indexSet];
+    section.items = array;
+    return indexSet;
+}
+
 #pragma mark - getter
 - (NSArray<HoloCollectionSection *> *)sections {
     if (!_sections) {
