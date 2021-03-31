@@ -29,7 +29,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 // etc...
 ```
 
-`holo_makeItems:` 方法的作用是创建一系列的 `item`，每个 `item` 就是一个 `cell`，你可以方便的通过 for 循环创建一个 `cell` 列表。**关于 item 提供的更多功能参见： [HoloCollectionViewItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionViewItemMaker.h) 及 [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h)**
+`holo_makeItems:` 方法的作用是创建一系列的 `item`，每个 `item` 就是一个 `cell`，你可以方便的通过 for 循环创建一个 `cell` 列表。**关于 item 提供的更多功能参见： [HoloCollectionViewItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Item/HoloCollectionViewItemMaker.h) 及 [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Item/HoloCollectionItemMaker.h)**
 
 
 ### 对 Cell 的要求
@@ -51,9 +51,9 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 + (CGSize)holo_sizeForCellWithModel:(id)model;
 ```
 
- **`HoloCollectionViewCellProtocol` 协议更多方法参见：[HoloCollectionViewCellProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Holo/HoloProtocol/HoloCollectionViewCellProtocol.h)**
+ **`HoloCollectionViewCellProtocol` 协议更多方法参见：[HoloCollectionViewCellProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/Protocol/HoloCollectionViewCellProtocol.h)**
 
-你也可以通过配置 `configSEL` 、 `sizeSEL` 等属性去调用你自己的方法。更多功能同样可以在 [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h) 里找到。
+你也可以通过配置 `configSEL` 、 `sizeSEL` 等属性去调用你自己的方法。更多功能同样可以在 [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Item/HoloCollectionItemMaker.h) 里找到。
 
 注意像：`size`、`shouldHighlight` 等存在 `SEL` 的属性存在优先级：
 1. 优先判断 `cell` 是否实现了 `sizeSEL` 方法
@@ -90,7 +90,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 [collectionView reloadData];
 ```
 
-`holo_makeSections:` 方法的作用是创建一系列的 `section`，你可以方便的通过 for 循环创建一个 `section` 列表。**关于 section 提供的更多功能参见：[HoloCollectionViewSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionViewSectionMaker.h) 及  [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionSectionMaker.h)**
+`holo_makeSections:` 方法的作用是创建一系列的 `section`，你可以方便的通过 for 循环创建一个 `section` 列表。**关于 section 提供的更多功能参见：[HoloCollectionViewSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Section/HoloCollectionViewSectionMaker.h) 及  [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Section/HoloCollectionSectionMaker.h)**
 
 
 ### 对 header、footer 的要求
@@ -130,10 +130,10 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 ```
 
 
- **`HoloCollectionViewHeaderProtocol`、`HoloCollectionViewFooterProtocol` 协议更多方法参见：[HoloCollectionViewHeaderProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Holo/HoloProtocol/HoloCollectionViewHeaderProtocol.h) 及 [HoloCollectionViewFooterProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Holo/HoloProtocol/HoloCollectionViewFooterProtocol.h)**
+ **`HoloCollectionViewHeaderProtocol`、`HoloCollectionViewFooterProtocol` 协议更多方法参见：[HoloCollectionViewHeaderProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/Protocol/HoloCollectionViewHeaderProtocol.h) 及 [HoloCollectionViewFooterProtocol](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/Protocol/HoloCollectionViewFooterProtocol.h)**
  
  
-你也可以通过配置 `headerConfigSEL` 、 `footerConfigSEL` 等属性去调用你自己的方法。更多功能同样可以在 [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionSectionMaker.h) 里找到。
+你也可以通过配置 `headerConfigSEL` 、 `footerConfigSEL` 等属性去调用你自己的方法。更多功能同样可以在 [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Section/HoloCollectionSectionMaker.h) 里找到。
 
 和 `cell` 一样，包含 `SEL` 的属性同样存在优先级。
 
@@ -172,7 +172,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 [self.collectionView reloadData];
 ```
 
-`UICollectionView+HoloCollectionView.h` 提供了一系列的操作 `section` 的方法，包括添加、插入、更新、重置、删除等操作，**关于操作 section 的更多方法参见：[UICollectionView+HoloCollectionView.h (section 部分)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L24-L145)**
+`UICollectionView+HoloCollectionView.h` 提供了一系列的操作 `section` 的方法，包括添加、插入、更新、重置、删除等操作，**关于操作 section 的更多方法参见：[UICollectionView+HoloCollectionView.h (section 部分)](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/UICollectionView%2BHoloCollectionView.h#L24-L145)**
 
 
 ## 4、cell 的增删改
@@ -218,12 +218,12 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 [self.collectionView reloadData];
 ```
 
-`UICollectionView+HoloCollectionView.h` 提供了一系列的操作 `item` 的方法，包括添加、插入、更新、重置、删除等操作，**关于操作 item 的更多方法参见：[UICollectionView+HoloCollectionView.h (item 部分)](https://github.com/HoloFoundation/HoloCollectionView/blob/ce4a62e040817e520e839583c97db012666d0ca4/HoloCollectionView/Classes/Holo/UICollectionView%2BHoloCollectionView.h#L147-L329)**
+`UICollectionView+HoloCollectionView.h` 提供了一系列的操作 `item` 的方法，包括添加、插入、更新、重置、删除等操作，**关于操作 item 的更多方法参见：[UICollectionView+HoloCollectionView.h (item 部分)](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/UICollectionView%2BHoloCollectionView.h#L147-L329)**
 
 
 ## 5、全量用法：创建 section，设置 header、footer、item
 
-参见：[HoloCollectionViewSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionViewSectionMaker.h) 及  [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Section/HoloCollectionSectionMaker.h) 
+参见：[HoloCollectionViewSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Section/HoloCollectionViewSectionMaker.h) 及  [HoloCollectionSectionMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Section/HoloCollectionSectionMaker.h) 
 
 
 ```objc
@@ -336,7 +336,7 @@ UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.
 
 ## 6、全量用法：创建 item
 
-参见：[HoloCollectionViewItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionViewItemMaker.h) 及 [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloMaker/Item/HoloCollectionItemMaker.h)
+参见：[HoloCollectionViewItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Item/HoloCollectionViewItemMaker.h) 及 [HoloCollectionItemMaker.h](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Maker/Item/HoloCollectionItemMaker.h)
 
 
 ```objc
@@ -473,4 +473,4 @@ self.collectionView.holo_proxy.scrollDelegate = self;
 }];
 ```
 
-一旦你设置了 `dataSource`、`delegate`、`scrollDelegate` 并实现了其中某个方法，`HoloCollectionView` 将优先使用你的方法及返回值。具体逻辑参见：[HoloCollectionViewProxy.m](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/HoloProxy/HoloCollectionViewProxy.m)
+一旦你设置了 `dataSource`、`delegate`、`scrollDelegate` 并实现了其中某个方法，`HoloCollectionView` 将优先使用你的方法及返回值。具体逻辑参见：[HoloCollectionViewProxy.m](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/HoloCollectionViewProxy.m)
