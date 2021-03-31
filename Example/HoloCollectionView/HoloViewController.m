@@ -34,11 +34,11 @@
     [self.view addSubview:self.addButton];
     [self.view addSubview:self.collectionView];
     
-//    [self makeSectionByMaker];
+    [self makeSectionByMaker];
     
 //    [self makeRowListWithDefaultSection];
     
-    [self makeSectionListByObject];
+//    [self makeSectionListByObject];
 }
 
 #pragma mark - Maker

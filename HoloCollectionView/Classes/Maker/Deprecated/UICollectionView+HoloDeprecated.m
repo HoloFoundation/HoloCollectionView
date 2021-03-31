@@ -124,14 +124,14 @@
     
     // append rows and refresh view
     BOOL isNewOne = NO;
-    HoloCollectionSection *targetSection = [self.holo_proxy.proxyData sectionWithTag:tag];
+    HoloCollectionSection *targetSection = [self _holo_deprecated_sectionWithTag:tag];
     if (!targetSection) {
         targetSection = [HoloCollectionSection new];
         targetSection.tag = tag;
-        [self.holo_proxy.proxyData insertSections:@[targetSection] anIndex:NSIntegerMax];
+        [self _holo_deprecated_insertSections:@[targetSection] anIndex:NSIntegerMax];
         isNewOne = YES;
     }
-    NSIndexSet *indexSet = [self.holo_proxy.proxyData section:targetSection insertItems:rows atIndex:index];
+    NSIndexSet *indexSet = [self _holo_deprecated_section:targetSection insertItems:rows atIndex:index];
     NSInteger sectionIndex = [self.holo_proxy.proxyData.sections indexOfObject:targetSection];
     if (autoReload && isNewOne) {
         [self insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
@@ -240,7 +240,7 @@
 
 - (void)_holo_removeAllRowsInSections:(NSArray<NSString *> *)tags
                            autoReload:(BOOL)autoReload {
-    NSArray *indexPaths = [self.holo_proxy.proxyData removeAllItemsInSections:tags];
+    NSArray *indexPaths = [self _holo_deprecated_removeAllItemsInSections:tags];
     if (autoReload && indexPaths.count > 0) {
         [self deleteItemsAtIndexPaths:indexPaths];
     }
@@ -260,12 +260,81 @@
 
 - (void)_holo_removeRow:(NSArray<NSString *> *)tags
              autoReload:(BOOL)autoReload {
-    NSArray *indexPaths = [self.holo_proxy.proxyData removeItems:tags];
+    NSArray *indexPaths = [self _holo_deprecated_removeItems:tags];
     if (indexPaths.count <= 0) {
         HoloLog(@"[HoloCollectionView] No found any row with these tags: %@.", tags);
         return;
     }
     if (autoReload) [self deleteItemsAtIndexPaths:indexPaths];
+}
+
+
+#pragma mark - data
+
+- (NSIndexSet *)_holo_deprecated_insertSections:(NSArray<HoloCollectionSection *> *)sections anIndex:(NSInteger)index {
+    if (sections.count <= 0) return [NSIndexSet new];
+    
+    if (index < 0) index = 0;
+    if (index > self.holo_proxy.proxyData.sections.count) index = self.holo_proxy.proxyData.sections.count;
+    
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, sections.count)];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:self.holo_proxy.proxyData.sections];
+    [array insertObjects:sections atIndexes:indexSet];
+    self.holo_proxy.proxyData.sections = array;
+    return indexSet;
+}
+
+- (HoloCollectionSection *)_holo_deprecated_sectionWithTag:(NSString *)tag {
+    for (HoloCollectionSection *section in self.holo_proxy.proxyData.sections) {
+        if ([section.tag isEqualToString:tag] || (!section.tag && !tag)) return section;
+    }
+    return nil;
+}
+
+- (NSArray<NSIndexPath *> *)_holo_deprecated_removeAllItemsInSections:(NSArray<NSString *> *)tags {
+    NSMutableArray *array = [NSMutableArray new];
+    for (HoloCollectionSection *section in self.holo_proxy.proxyData.sections) {
+        if (section.tag && [tags containsObject:section.tag]) {
+            NSInteger sectionIndex = [self.holo_proxy.proxyData.sections indexOfObject:section];
+            for (NSInteger index = 0; index < section.items.count; index++) {
+                [array addObject:[NSIndexPath indexPathForItem:index inSection:sectionIndex]];
+            }
+            [section removeAllItems];
+        }
+    }
+    return [array copy];
+}
+
+- (NSArray<NSIndexPath *> *)_holo_deprecated_removeItems:(NSArray<NSString *> *)tags {
+    NSMutableArray *array = [NSMutableArray new];
+    for (HoloCollectionSection *section in self.holo_proxy.proxyData.sections) {
+        NSMutableArray<HoloCollectionItem *> *items = [NSMutableArray new];
+        for (HoloCollectionItem *item in section.items) {
+            if (item.tag && [tags containsObject:item.tag]) {
+                NSInteger sectionIndex = [self.holo_proxy.proxyData.sections indexOfObject:section];
+                NSInteger itemIndex = [section.items indexOfObject:item];
+                [array addObject:[NSIndexPath indexPathForItem:itemIndex inSection:sectionIndex]];
+                [items addObject:item];
+            }
+        }
+        for (HoloCollectionItem *item in items) {
+            [section removeItem:item];
+        }
+    }
+    return [array copy];
+}
+
+- (NSIndexSet *)_holo_deprecated_section:(HoloCollectionSection *)section insertItems:(NSArray<HoloCollectionItem *> *)items atIndex:(NSInteger)index {
+    if (items.count <= 0) return [NSIndexSet new];
+    
+    if (index < 0) index = 0;
+    if (index > section.items.count) index = section.items.count;
+    
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, items.count)];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:section.items];
+    [array insertObjects:items atIndexes:indexSet];
+    section.items = array;
+    return indexSet;
 }
 
 @end
