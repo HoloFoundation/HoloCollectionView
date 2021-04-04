@@ -27,6 +27,9 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewUpdateItemMakerType) {
 
 @interface HoloCollectionViewUpdateItemMaker : NSObject
 
+/**
+ *  Fetch a HoloCollectionRow object with the tag.
+ */
 @property (nonatomic, copy, readonly) HoloCollectionItemMaker *(^tag)(NSString *tag);
 
 - (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections

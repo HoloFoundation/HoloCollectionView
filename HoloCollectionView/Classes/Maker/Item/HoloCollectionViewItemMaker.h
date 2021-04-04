@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HoloCollectionViewItemMaker : NSObject
 
+/**
+ * Make a HoloCollectionRow object and set the cell class.
+ */
 @property (nonatomic, copy, readonly) HoloCollectionItemMaker *(^item)(Class item);
 
 - (NSArray<HoloCollectionItem *> *)install;

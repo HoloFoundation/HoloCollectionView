@@ -30,15 +30,24 @@ typedef NSIndexPath * _Nullable (^HoloCollectionViewSectionForSectionIndexTitleH
 
 @interface HoloCollectionViewMaker : NSObject
 
+/**
+ *  Return list of section titles to display in section index view (e.g. "ABCD...Z#").
+ */
 @property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^sectionIndexTitles)(NSArray<NSString *> *sectionIndexTitles);
 
+/**
+ *  Tell table which section corresponds to section title/index (e.g. "B",1)).
+ */
 @property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^indexPathForIndexTitleHandler)(NSIndexPath *(^handler)(NSString *title, NSInteger index));
+
+/**
+ *  The delegate of the scroll-view object.
+ */
+@property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^scrollDelegate)(id<UIScrollViewDelegate> scrollDelegate);
 
 @property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^delegate)(id<HoloCollectionViewDelegateFlowLayout> delegate);
 
 @property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^dataSource)(id<HoloCollectionViewDataSource> dataSource);
-
-@property (nonatomic, copy, readonly) HoloCollectionViewMaker *(^scrollDelegate)(id<UIScrollViewDelegate> scrollDelegate);
 
 - (HoloCollectionViewModel *)install;
 
