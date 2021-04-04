@@ -29,6 +29,9 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewSectionMakerType) {
 
 @interface HoloCollectionViewSectionMaker : NSObject
 
+/**
+ * Make a HoloCollectionSection object and set the section tag.
+ */
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^section)(NSString *tag);
 
 - (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections

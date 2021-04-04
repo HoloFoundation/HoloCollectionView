@@ -34,6 +34,13 @@
     };
 }
 
+- (HoloCollectionViewMaker * (^)(id<UIScrollViewDelegate>))scrollDelegate {
+    return ^id(id obj) {
+        self.collectionViewModel.scrollDelegate = obj;
+        return self;
+    };
+}
+
 - (HoloCollectionViewMaker * (^)(id<HoloCollectionViewDelegateFlowLayout>))delegate {
     return ^id(id obj) {
         self.collectionViewModel.delegate = obj;
@@ -44,13 +51,6 @@
 - (HoloCollectionViewMaker * (^)(id<HoloCollectionViewDataSource>))dataSource {
     return ^id(id obj) {
         self.collectionViewModel.dataSource = obj;
-        return self;
-    };
-}
-
-- (HoloCollectionViewMaker * (^)(id<UIScrollViewDelegate>))scrollDelegate {
-    return ^id(id obj) {
-        self.collectionViewModel.scrollDelegate = obj;
         return self;
     };
 }
