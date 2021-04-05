@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 
 
+## 2.0.0 (05/04/2021)
+
+### Added
+
+- Support to reload a collection view by setting datasource with `HoloCollectionSection` and `HoloCollectionItem`. Add `holo_sections` for `UICollectionView`.
+- Add `holo_sectionIndexTitles` for `UICollectionView`.
+- Add `holo_sectionForSectionIndexTitleHandler` for `UICollectionView`.
+- Add `holo_scrollDelegate` for `UICollectionView`.
+
+### Updated
+
+- Rename `row` with `item`, and replace `holo_makeRows` with `holo_makeItems`.
+
+### Fixed
+
+- Get reuse id from handler, if the handler exists.
+- Register the cell class, header class and footer class, if they haven't been registered before.
+
+### Removed
+
+- No longer support `headerFooterConfigSEL`, `headerFooterHeightSEL` and `headerFooterEstimatedHeightSEL` properties.
+- No longer support `itemS`, `headerS` and `footerS` properties. And no longer support to regist key-Class map (`itemsMap`, `headersMap` and `footersMap`).
+
+
 ## 1.4.0 (16/02/2021)
 
 - Update `HoloCollectionView.h`, use angle-bracketed instead of double-quoted.
