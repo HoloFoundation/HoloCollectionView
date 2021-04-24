@@ -13,8 +13,8 @@
 
 - [x] Provide section and item maker to handle proxy events of `HoloCollectionView`.
 - [x] Provide protocols, implemented in cells, headers and footers to handle proxy events of `HoloCollectionView`.
-- [x] Support to regist maps (key-Class) for item, header and footer.
 - [x] Diff reload data. [HoloCollectionViewDiffPlugin](https://github.com/HoloFoundation/HoloCollectionViewDiffPlugin) to support `DeepDiff`
+- [x] Support to reload a collection view by setting datasource with `HoloCollectionSection` and `HoloCollectionItem`.
 - [ ] Adapt new APIs from iOS 13 and iOS 14.
 - [ ] Modern Objective-C and better Swift support.
 
@@ -267,7 +267,7 @@ self.collectionView.holo_proxy.scrollDelegate = self;
 Once you set up `dataSource`, `delegate`, `scrollDelegate` and implement some of their methods, `HoloCollectionView` will use your methods and return values first. For specific logic, please refer to: [HoloCollectionViewProxy.m](https://github.com/HoloFoundation/HoloCollectionView/blob/master/HoloCollectionView/Classes/Core/HoloCollectionViewProxy.m)
 
 
-### 6. Reload a table view by setting datasource with `HoloCollectionSection` and `HoloCollectionItem`
+### 6. Reload a collection view by setting datasource with `HoloCollectionSection` and `HoloCollectionItem`
 
 Make a section list with `HoloTableSection` and `HoloTableRow`:
 
