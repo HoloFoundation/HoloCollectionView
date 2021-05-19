@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 
+## 2.1.0 (05/20/2021)
+
+### Added
+
+- Support for updating and remaking items for a target section with a tag.
+- Support the `updateItems` and `remakeItems` methods for `sectionMaker`.
+
+### Fixed
+
+- Update sections by `holo_updateSections:` method.
+
+
 ## 2.0.0 (05/04/2021)
 
 ### Added
