@@ -9,6 +9,7 @@
 #import "HoloCollectionSection.h"
 #import "HoloCollectionViewItemMaker.h"
 #import "HoloCollectionViewRowMaker.h"
+#import "HoloCollectionViewUpdateItemMaker.h"
 
 @interface HoloCollectionSectionMaker ()
 
@@ -238,6 +239,30 @@
         NSMutableArray *array = [NSMutableArray arrayWithArray:self.section.items];
         [array addObjectsFromArray:[maker install]];
         self.section.items = array.copy;
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *)))updateItems {
+    return ^id(void(^block)(HoloCollectionViewUpdateItemMaker *make)) {
+        HoloCollectionViewUpdateItemMaker *maker = [[HoloCollectionViewUpdateItemMaker alloc] initWithProxyDataSections:@[self.section]
+                                                                                                              makerType:HoloCollectionViewUpdateItemMakerTypeUpdate
+                                                                                                          targetSection:NO
+                                                                                                             sectionTag:nil];
+        if (block) block(maker);
+        
+        return self;
+    };
+}
+
+- (HoloCollectionSectionMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *)))remakeItems {
+    return ^id(void(^block)(HoloCollectionViewUpdateItemMaker *make)) {
+        HoloCollectionViewUpdateItemMaker *maker = [[HoloCollectionViewUpdateItemMaker alloc] initWithProxyDataSections:@[self.section]
+                                                                                                              makerType:HoloCollectionViewUpdateItemMakerTypeUpdate
+                                                                                                          targetSection:NO
+                                                                                                             sectionTag:nil];
+        if (block) block(maker);
+        
         return self;
     };
 }

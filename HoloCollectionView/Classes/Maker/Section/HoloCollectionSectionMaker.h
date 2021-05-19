@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class HoloCollectionSection, HoloCollectionViewItemMaker, HoloCollectionViewRowMaker;
+@class HoloCollectionSection, HoloCollectionViewItemMaker, HoloCollectionViewRowMaker, HoloCollectionViewUpdateItemMaker;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,12 +39,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerModelHandler)(id (^)(void));
 
 /**
- * The header must implement the `headerConfigSEL` property setting method in order for the HoloTableView to pass the model for the header.
+ * The header must implement the `headerConfigSEL` property setting method in order for the HoloCollectionView to pass the model for the header.
  */
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^headerConfigSEL)(SEL headerConfigSEL);
 
 /**
- * The footer must implement the `footerConfigSEL` property setting method in order for the HoloTableView to pass the model for the footer.
+ * The footer must implement the `footerConfigSEL` property setting method in order for the HoloCollectionView to pass the model for the footer.
  */
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^footerConfigSEL)(SEL footerConfigSEL);
 
@@ -141,7 +141,32 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^didEndDisplayingFooterSEL)(SEL didEndDisplayingFooterSEL);
 
 
+/**
+ *  Creates a HoloCollectionViewItemMaker in the callee for current UICollectionView.
+ *  Append these items in the callee to current section.
+ *
+ *  @param block Scope within which you can create some items which you wish to apply to current UICollectionView.
+ */
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^makeItems)(void(NS_NOESCAPE ^)(HoloCollectionViewItemMaker *make));
+
+/**
+ *  Creates a HoloCollectionViewUpdateItemMaker in the callee for current UICollectionView.
+ *  Update these items in the callee for current section.
+ *  If current section don't contain these items, ignore them.
+ *
+ *  @param block Scope within which you can update some items which you wish to apply to current UICollectionView.
+ */
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^updateItems)(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make));
+
+/**
+ *  Creates a HoloCollectionViewUpdateItemMaker in the callee for current UICollectionView.
+ *  Re-create these items in the callee for current section.
+ *  If current section don't contain these items, ignore them.
+ *
+ *  @param block Scope within which you can re-create some items which you wish to apply to current UICollectionView.
+ */
+@property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^remakeItems)(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make));
+
 
 @property (nonatomic, copy, readonly) HoloCollectionSectionMaker *(^makeRows)(void(NS_NOESCAPE ^)(HoloCollectionViewRowMaker *make)) DEPRECATED_MSG_ATTRIBUTE("Please use `makeItems` api instead.");
 
