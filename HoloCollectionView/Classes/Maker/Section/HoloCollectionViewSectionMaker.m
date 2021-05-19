@@ -39,27 +39,26 @@
 - (HoloCollectionSectionMaker *(^)(NSString *))section {
     return ^id(NSString *tag) {
         HoloCollectionSectionMaker *sectionMaker = [HoloCollectionSectionMaker new];
-        HoloCollectionSection *section = [sectionMaker fetchCollectionSection];
-        section.tag = tag;
+        HoloCollectionSection *makerSection = [sectionMaker fetchCollectionSection];
+        makerSection.tag = tag;
         
-        __block HoloCollectionSection *targetSection;
-        __block NSNumber *operateIndex;
+        __block NSNumber *operateIndex = nil;
         if (self.makerType == HoloCollectionViewSectionMakerTypeUpdate || self.makerType == HoloCollectionViewSectionMakerTypeRemake) {
-            [self.dataSections enumerateObjectsUsingBlock:^(HoloCollectionSection * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                if ([obj.tag isEqualToString:tag] || (!obj.tag && !tag)) {
-                    targetSection = obj;
+            [self.dataSections enumerateObjectsUsingBlock:^(HoloCollectionSection * _Nonnull section, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([section.tag isEqualToString:tag] || (!section.tag && !tag)) {
                     operateIndex = @(idx);
+                    
+                    if (self.makerType == HoloCollectionViewSectionMakerTypeUpdate) {
+                        [sectionMaker giveCollectionSection:section];
+                    }
+                    
                     *stop = YES;
                 }
             }];
         }
         
-        if (targetSection && self.makerType == HoloCollectionViewSectionMakerTypeUpdate) {
-            section = targetSection;
-        }
-        
         HoloCollectionViewSectionMakerModel *makerModel = [HoloCollectionViewSectionMakerModel new];
-        makerModel.operateSection = section;
+        makerModel.operateSection = [sectionMaker fetchCollectionSection];
         makerModel.operateIndex = operateIndex;
         [self.makerModels addObject:makerModel];
         
