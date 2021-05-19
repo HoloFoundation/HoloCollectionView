@@ -33,7 +33,9 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewUpdateItemMakerType) {
 @property (nonatomic, copy, readonly) HoloCollectionItemMaker *(^tag)(NSString *tag);
 
 - (instancetype)initWithProxyDataSections:(NSArray<HoloCollectionSection *> *)sections
-                                makerType:(HoloCollectionViewUpdateItemMakerType)makerType;
+                                makerType:(HoloCollectionViewUpdateItemMakerType)makerType
+                            targetSection:(BOOL)targetSection
+                               sectionTag:(NSString * _Nullable)sectionTag;
 
 - (NSArray<HoloCollectionViewUpdateItemMakerModel *> *)install;
 

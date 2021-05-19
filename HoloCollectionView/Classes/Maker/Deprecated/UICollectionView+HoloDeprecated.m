@@ -176,30 +176,27 @@
 - (void)_holo_updateRowsWithMakerType:(HoloCollectionViewUpdateItemMakerType)makerType
                                 block:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateRowMaker *))block
                                reload:(BOOL)reload {
-    HoloCollectionViewUpdateRowMaker *maker = [[HoloCollectionViewUpdateRowMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections makerType:makerType];
+    HoloCollectionViewUpdateRowMaker *maker = [[HoloCollectionViewUpdateRowMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections
+                                                                                                        makerType:makerType
+                                                                                                    targetSection:NO
+                                                                                                       sectionTag:nil];
+    
     if (block) block(maker);
     
     // update data and map
     NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
     NSMutableArray *updateIndexPaths = [NSMutableArray new];
-    NSMutableArray *updateArray = [NSMutableArray arrayWithArray:self.holo_proxy.proxyData.sections];
     for (HoloCollectionViewUpdateItemMakerModel *makerModel in [maker install]) {
         HoloCollectionItem *operateRow = makerModel.operateItem;
         // HoloCollectionViewUpdateRowMakerTypeUpdate || HoloCollectionViewUpdateRowMakerTypeRemake
         if (!makerModel.operateIndexPath) {
-            HoloLog(@"[HoloCollectionView] No found a row with the tag: %@.", operateRow.tag);
+            // Has a log in HoloCollectionViewUpdateItemMaker already, because updateItems / remakeItems in HoloCollectionSectionMaker also need it.
+            // HoloLog(@"[HoloCollectionView] No found a row with the tag: %@.", operateRow.tag);
             continue;
         }
         
         // update || remake
         [updateIndexPaths addObject:makerModel.operateIndexPath];
-        
-        if (makerType == HoloCollectionViewUpdateItemMakerTypeRemake) {
-            HoloCollectionSection *section = updateArray[makerModel.operateIndexPath.section];
-            NSMutableArray *rows = [NSMutableArray arrayWithArray:section.items];
-            [rows replaceObjectAtIndex:makerModel.operateIndexPath.row withObject:operateRow];
-            section.items = rows;
-        }
         
         Class cls = operateRow.cell;
         NSString *key = NSStringFromClass(cls);
@@ -218,7 +215,6 @@
         [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId];
     }
     self.holo_proxy.proxyData.itemsMap = rowsMap;
-    self.holo_proxy.proxyData.sections = updateArray.copy;
     
     // refresh rows
     if (reload && updateIndexPaths.count > 0) {

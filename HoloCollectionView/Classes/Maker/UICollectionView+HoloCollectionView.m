@@ -370,6 +370,8 @@
 - (void)holo_updateItems:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *))block {
     [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeUpdate
                                    block:block
+                           targetSection:NO
+                              sectionTag:nil
                                   reload:NO];
 }
 
@@ -377,6 +379,27 @@
               autoReload:(BOOL)autoReload {
     [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeUpdate
                                    block:block
+                           targetSection:NO
+                              sectionTag:nil
+                                  reload:autoReload];
+}
+
+- (void)holo_updateItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag {
+    [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeUpdate
+                                   block:block
+                           targetSection:YES
+                              sectionTag:tag
+                                  reload:NO];
+}
+
+- (void)holo_updateItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag
+              autoReload:(BOOL)autoReload {
+    [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeUpdate
+                                   block:block
+                           targetSection:YES
+                              sectionTag:tag
                                   reload:autoReload];
 }
 
@@ -384,6 +407,8 @@
 - (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block {
     [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeRemake
                                    block:block
+                           targetSection:NO
+                              sectionTag:nil
                                   reload:NO];
 }
 
@@ -391,37 +416,56 @@
               autoReload:(BOOL)autoReload {
     [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeRemake
                                    block:block
+                           targetSection:NO
+                              sectionTag:nil
                                   reload:autoReload];
 }
 
+- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag {
+    [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeRemake
+                                   block:block
+                           targetSection:YES
+                              sectionTag:tag
+                                  reload:NO];
+}
+
+- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag
+              autoReload:(BOOL)autoReload {
+    [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeRemake
+                                   block:block
+                           targetSection:YES
+                              sectionTag:tag
+                                  reload:autoReload];
+}
 
 - (void)_holo_updateItemsWithMakerType:(HoloCollectionViewUpdateItemMakerType)makerType
                                  block:(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *))block
+                         targetSection:(BOOL)targetSection
+                            sectionTag:(NSString * _Nullable)sectionTag
                                 reload:(BOOL)reload {
-    HoloCollectionViewUpdateItemMaker *maker = [[HoloCollectionViewUpdateItemMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections makerType:makerType];
+    HoloCollectionViewUpdateItemMaker *maker = [[HoloCollectionViewUpdateItemMaker alloc] initWithProxyDataSections:self.holo_proxy.proxyData.sections
+                                                                                                          makerType:makerType
+                                                                                                      targetSection:targetSection
+                                                                                                         sectionTag:sectionTag];
+    
     if (block) block(maker);
     
     // update data and map
     NSMutableDictionary *itemsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
     NSMutableArray *updateIndexPaths = [NSMutableArray new];
-    NSMutableArray *updateArray = [NSMutableArray arrayWithArray:self.holo_proxy.proxyData.sections];
     for (HoloCollectionViewUpdateItemMakerModel *makerModel in [maker install]) {
         HoloCollectionItem *operateItem = makerModel.operateItem;
         // HoloCollectionViewUpdateItemMakerTypeUpdate || HoloCollectionViewUpdateItemMakerTypeRemake
         if (!makerModel.operateIndexPath) {
-            HoloLog(@"[HoloCollectionView] No found a item with the tag: %@.", operateItem.tag);
+            // Has a log in HoloCollectionViewUpdateItemMaker already, because updateItems / remakeItems in HoloCollectionSectionMaker also need it.
+            // HoloLog(@"[HoloCollectionView] No found a item with the tag: %@.", operateItem.tag);
             continue;
         }
         
         // update || remake
         [updateIndexPaths addObject:makerModel.operateIndexPath];
-        
-        if (makerType == HoloCollectionViewUpdateItemMakerTypeRemake) {
-            HoloCollectionSection *section = updateArray[makerModel.operateIndexPath.section];
-            NSMutableArray *items = [NSMutableArray arrayWithArray:section.items];
-            [items replaceObjectAtIndex:makerModel.operateIndexPath.item withObject:operateItem];
-            section.items = items;
-        }
         
         Class cls = operateItem.cell;
         NSString *key = NSStringFromClass(cls);
@@ -440,7 +484,6 @@
         [self registerClass:cls forCellWithReuseIdentifier:operateItem.reuseId];
     }
     self.holo_proxy.proxyData.itemsMap = itemsMap;
-    self.holo_proxy.proxyData.sections = updateArray.copy;
     
     // refresh items
     if (reload && updateIndexPaths.count > 0) {
