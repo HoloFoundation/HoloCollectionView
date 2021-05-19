@@ -63,10 +63,10 @@
                     operateIndexPath = [NSIndexPath indexPathForItem:itemIdx inSection:sectionIdx];
                     
                     if (self.makerType == HoloCollectionViewUpdateItemMakerTypeUpdate) {
-                        // update: give the row object to maker from datasource
+                        // update: set the item object to maker from datasource
                         [itemMaker giveCollectionItem:item];
                     } else if (self.makerType == HoloCollectionViewUpdateItemMakerTypeRemake) {
-                        // remake: give the row object to datasource from maker
+                        // remake: set the item object to datasource from maker
                         NSMutableArray *items = [NSMutableArray arrayWithArray:section.items];
                         [items replaceObjectAtIndex:operateIndexPath.item withObject:makerItem];
                         section.items = items.copy;

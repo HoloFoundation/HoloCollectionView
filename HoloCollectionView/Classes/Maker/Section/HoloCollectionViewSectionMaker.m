@@ -49,6 +49,7 @@
                     operateIndex = @(idx);
                     
                     if (self.makerType == HoloCollectionViewSectionMakerTypeUpdate) {
+                        // update: set the item object to maker from datasource
                         [sectionMaker giveCollectionSection:section];
                     }
                     
