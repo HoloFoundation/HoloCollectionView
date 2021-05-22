@@ -197,6 +197,59 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)holo_removeRows:(NSArray<NSString *> *)tags
              autoReload:(BOOL)autoReload DEPRECATED_MSG_ATTRIBUTE("Please use `holo_removeRows:autoReload:` api instead.");
 
+
+/**
+ *  Creates a HoloCollectionViewUpdateItemMaker in the callee for current UICollectionView.
+ *  Update these items in the callee for the section according to the tag.
+ *  If the section according to the tag don't contain these items, ignore them.
+ *
+ *  @param block Scope within which you can update some items which you wish to apply to current UICollectionView.
+ *  @param tag The tag of section which you wish to update rows.
+ */
+- (void)holo_updateItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag;
+
+/**
+ *  Creates a HoloCollectionViewUpdateItemMaker in the callee for current UICollectionView.
+ *  Update these items in the callee for the section according to the tag.
+ *  If the section according to the tag don't contain these items, ignore them.
+ *
+ *  Refresh current UICollectionView automatically.
+ *
+ *  @param block Scope within which you can update some items which you wish to apply to current UICollectionView.
+ *  @param tag The tag of section which you wish to update rows.
+ *  @param autoReload Auto reload view if YES.
+ */
+- (void)holo_updateItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag
+              autoReload:(BOOL)autoReload;
+
+/**
+ *  Creates a HoloCollectionViewUpdateItemMaker in the callee for current UICollectionView.
+ *  Re-create these items in the callee for the section according to the tag.
+ *  If the section according to the tag don't contain these items, ignore them.
+ *
+ *  @param block Scope within which you can re-create some items which you wish to apply to current UICollectionView.
+ *  @param tag The tag of section which you wish to remake items.
+*/
+- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag;
+
+/**
+ *  Creates a HoloCollectionViewUpdateItemMaker in the callee for current UICollectionView.
+ *  Re-create these items in the callee for the section according to the tag.
+ *  If the section according to the tag don't contain these items, ignore them.
+ *
+ *  Refresh current UICollectionView automatically.
+ *
+ *  @param block Scope within which you can re-create some items which you wish to apply to current UICollectionView.
+ *  @param tag The tag of section which you wish to remake items.
+ *  @param autoReload Auto reload view if YES.
+ */
+- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag
+              autoReload:(BOOL)autoReload;
+
 @end
 
 NS_ASSUME_NONNULL_END

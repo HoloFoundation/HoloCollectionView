@@ -264,6 +264,27 @@
     if (autoReload) [self deleteItemsAtIndexPaths:indexPaths];
 }
 
+- (void)holo_updateItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag {
+    [self holo_updateItemsInSection:tag block:block];
+}
+
+- (void)holo_updateItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag
+              autoReload:(BOOL)autoReload {
+    [self holo_updateItemsInSection:tag block:block autoReload:autoReload];
+}
+
+- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag {
+    [self holo_remakeItemsInSection:tag block:block];
+}
+
+- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+               inSection:(NSString *)tag
+              autoReload:(BOOL)autoReload {
+    [self holo_remakeItemsInSection:tag block:block autoReload:autoReload];
+}
 
 #pragma mark - data
 
