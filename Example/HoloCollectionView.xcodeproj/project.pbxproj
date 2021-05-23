@@ -27,6 +27,16 @@
 		754D35A5232DF88D00C80A11 /* HoloExampleCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 754D35A4232DF88D00C80A11 /* HoloExampleCollectionViewCell.m */; };
 		75AF9FA2232E166300FF4083 /* HoloExampleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 75AF9FA1232E166300FF4083 /* HoloExampleHeaderView.m */; };
 		75AF9FA5232E171B00FF4083 /* HoloExampleFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 75AF9FA4232E171B00FF4083 /* HoloExampleFooterView.m */; };
+		75FD062F265A367F0043B36D /* HoloCollectionSectionMakerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD062E265A367F0043B36D /* HoloCollectionSectionMakerTest.m */; };
+		75FD0639265A3A5A0043B36D /* HoloCollectionSectionUpdaterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD0638265A3A5A0043B36D /* HoloCollectionSectionUpdaterTest.m */; };
+		75FD063D265A3F910043B36D /* HoloCollectionSectionRemakerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD063C265A3F910043B36D /* HoloCollectionSectionRemakerTest.m */; };
+		75FD0641265A40FD0043B36D /* HoloCollectionSectionInsterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD0640265A40FD0043B36D /* HoloCollectionSectionInsterTest.m */; };
+		75FD0645265A41A10043B36D /* HoloCollectionSectionRemoverTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD0644265A41A10043B36D /* HoloCollectionSectionRemoverTest.m */; };
+		75FD0649265A42140043B36D /* HoloCollectionItemMakerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD0648265A42140043B36D /* HoloCollectionItemMakerTest.m */; };
+		75FD064D265A43860043B36D /* HoloCollectionItemUpdaterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD064C265A43860043B36D /* HoloCollectionItemUpdaterTest.m */; };
+		75FD0651265A44DB0043B36D /* HoloCollectionItemRemakerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD0650265A44DB0043B36D /* HoloCollectionItemRemakerTest.m */; };
+		75FD065A265A4A830043B36D /* HoloCollectionItemInsterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD0659265A4A830043B36D /* HoloCollectionItemInsterTest.m */; };
+		75FD065E265A4B6F0043B36D /* HoloCollectionItemRemoverTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FD065D265A4B6F0043B36D /* HoloCollectionItemRemoverTest.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		A9D62D49525ECE28A2104515 /* libPods-HoloCollectionView_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F61742975DB99BCEFB0DE6 /* libPods-HoloCollectionView_Example.a */; };
 /* End PBXBuildFile section */
@@ -73,6 +83,16 @@
 		75AF9FA1232E166300FF4083 /* HoloExampleHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloExampleHeaderView.m; sourceTree = "<group>"; };
 		75AF9FA3232E171B00FF4083 /* HoloExampleFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HoloExampleFooterView.h; sourceTree = "<group>"; };
 		75AF9FA4232E171B00FF4083 /* HoloExampleFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloExampleFooterView.m; sourceTree = "<group>"; };
+		75FD062E265A367F0043B36D /* HoloCollectionSectionMakerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionSectionMakerTest.m; sourceTree = "<group>"; };
+		75FD0638265A3A5A0043B36D /* HoloCollectionSectionUpdaterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionSectionUpdaterTest.m; sourceTree = "<group>"; };
+		75FD063C265A3F910043B36D /* HoloCollectionSectionRemakerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionSectionRemakerTest.m; sourceTree = "<group>"; };
+		75FD0640265A40FD0043B36D /* HoloCollectionSectionInsterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionSectionInsterTest.m; sourceTree = "<group>"; };
+		75FD0644265A41A10043B36D /* HoloCollectionSectionRemoverTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionSectionRemoverTest.m; sourceTree = "<group>"; };
+		75FD0648265A42140043B36D /* HoloCollectionItemMakerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionItemMakerTest.m; sourceTree = "<group>"; };
+		75FD064C265A43860043B36D /* HoloCollectionItemUpdaterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionItemUpdaterTest.m; sourceTree = "<group>"; };
+		75FD0650265A44DB0043B36D /* HoloCollectionItemRemakerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionItemRemakerTest.m; sourceTree = "<group>"; };
+		75FD0659265A4A830043B36D /* HoloCollectionItemInsterTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionItemInsterTest.m; sourceTree = "<group>"; };
+		75FD065D265A4B6F0043B36D /* HoloCollectionItemRemoverTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HoloCollectionItemRemoverTest.m; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9DBB489FB4FE3FC8AC7A7AA2 /* HoloCollectionView.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = HoloCollectionView.podspec; path = ../HoloCollectionView.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B8EC033386862F5C4866E66E /* Pods-HoloCollectionView_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HoloCollectionView_Tests.debug.xcconfig"; path = "Target Support Files/Pods-HoloCollectionView_Tests/Pods-HoloCollectionView_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -174,6 +194,16 @@
 			isa = PBXGroup;
 			children = (
 				6003F5BB195388D20070C39A /* Tests.m */,
+				75FD062E265A367F0043B36D /* HoloCollectionSectionMakerTest.m */,
+				75FD0638265A3A5A0043B36D /* HoloCollectionSectionUpdaterTest.m */,
+				75FD063C265A3F910043B36D /* HoloCollectionSectionRemakerTest.m */,
+				75FD0640265A40FD0043B36D /* HoloCollectionSectionInsterTest.m */,
+				75FD0644265A41A10043B36D /* HoloCollectionSectionRemoverTest.m */,
+				75FD0648265A42140043B36D /* HoloCollectionItemMakerTest.m */,
+				75FD064C265A43860043B36D /* HoloCollectionItemUpdaterTest.m */,
+				75FD0650265A44DB0043B36D /* HoloCollectionItemRemakerTest.m */,
+				75FD0659265A4A830043B36D /* HoloCollectionItemInsterTest.m */,
+				75FD065D265A4B6F0043B36D /* HoloCollectionItemRemoverTest.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -388,7 +418,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75FD065E265A4B6F0043B36D /* HoloCollectionItemRemoverTest.m in Sources */,
+				75FD0645265A41A10043B36D /* HoloCollectionSectionRemoverTest.m in Sources */,
+				75FD0639265A3A5A0043B36D /* HoloCollectionSectionUpdaterTest.m in Sources */,
+				75FD062F265A367F0043B36D /* HoloCollectionSectionMakerTest.m in Sources */,
+				75FD065A265A4A830043B36D /* HoloCollectionItemInsterTest.m in Sources */,
+				75FD0641265A40FD0043B36D /* HoloCollectionSectionInsterTest.m in Sources */,
+				75FD064D265A43860043B36D /* HoloCollectionItemUpdaterTest.m in Sources */,
 				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				75FD063D265A3F910043B36D /* HoloCollectionSectionRemakerTest.m in Sources */,
+				75FD0649265A42140043B36D /* HoloCollectionItemMakerTest.m in Sources */,
+				75FD0651265A44DB0043B36D /* HoloCollectionItemRemakerTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
