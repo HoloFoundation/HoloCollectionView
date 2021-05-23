@@ -16,7 +16,7 @@
         _shouldHighlight = YES;
         _shouldSelect = YES;
         _shouldDeselect = YES;
-        _canMove = YES;
+        _canMove = NO;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
         _configSEL = @selector(holo_configureCellWithModel:);
