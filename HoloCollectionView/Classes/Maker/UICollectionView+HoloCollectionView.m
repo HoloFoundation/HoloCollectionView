@@ -384,8 +384,8 @@
                                   reload:autoReload];
 }
 
-- (void)holo_updateItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
-               inSection:(NSString *)tag {
+- (void)holo_updateItemsInSection:(NSString *)tag
+                            block:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block {
     [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeUpdate
                                    block:block
                            targetSection:YES
@@ -393,9 +393,9 @@
                                   reload:NO];
 }
 
-- (void)holo_updateItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
-               inSection:(NSString *)tag
-              autoReload:(BOOL)autoReload {
+- (void)holo_updateItemsInSection:(NSString *)tag
+                            block:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+                       autoReload:(BOOL)autoReload {
     [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeUpdate
                                    block:block
                            targetSection:YES
@@ -421,8 +421,8 @@
                                   reload:autoReload];
 }
 
-- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
-               inSection:(NSString *)tag {
+- (void)holo_remakeItemsInSection:(NSString *)tag
+                            block:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block {
     [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeRemake
                                    block:block
                            targetSection:YES
@@ -430,9 +430,9 @@
                                   reload:NO];
 }
 
-- (void)holo_remakeItems:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
-               inSection:(NSString *)tag
-              autoReload:(BOOL)autoReload {
+- (void)holo_remakeItemsInSection:(NSString *)tag
+                            block:(void(NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *make))block
+                       autoReload:(BOOL)autoReload {
     [self _holo_updateItemsWithMakerType:HoloCollectionViewUpdateItemMakerTypeRemake
                                    block:block
                            targetSection:YES
