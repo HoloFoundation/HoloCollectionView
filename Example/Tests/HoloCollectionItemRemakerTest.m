@@ -94,7 +94,7 @@
 
 - (void)testRemakeItems {
     [self.collectionView holo_remakeItems:^(HoloCollectionViewUpdateItemMaker * _Nonnull make) {
-        make.tag(TAG).item(TestCollectionViewCell2.class);
+        make.tag(TAG).item(TestCollectionViewCell2.class).reuseId(@"reuseId-new");
     }];
     
     XCTAssertEqual(self.collectionView.holo_sections.count, 3);
@@ -108,9 +108,7 @@
     
     XCTAssertEqual(item.cell, TestCollectionViewCell2.class);
     XCTAssertNil(item.model);
-    
-    // by UICollectionView+HoloCollectionView
-    XCTAssertEqual(item.reuseId, NSStringFromClass(TestCollectionViewCell2.class));
+    XCTAssertEqual(item.reuseId, @"reuseId-new");
     XCTAssertEqual(item.size.width, CGFLOAT_MIN);
     XCTAssertEqual(item.size.height, CGFLOAT_MIN);
     XCTAssertEqual(item.shouldHighlight, YES);
