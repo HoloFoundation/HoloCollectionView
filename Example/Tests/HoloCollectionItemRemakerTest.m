@@ -28,7 +28,7 @@
     
     UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-
+    
     [self.collectionView holo_makeItems:^(HoloCollectionViewItemMaker * _Nonnull make) {
         make.item(UICollectionViewCell.class)
         .model(@"model")
@@ -48,9 +48,19 @@
             return CGSizeMake(11, 11);
         })
         
-        .shouldHighlight(YES)
+        .shouldHighlight(NO)
         .shouldHighlightHandler(^BOOL(id  _Nullable model) {
-            return YES;
+            return NO;
+        })
+        
+        .shouldSelect(NO)
+        .shouldSelectHandler(^BOOL(id  _Nullable model) {
+            return NO;
+        })
+        
+        .shouldDeselect(NO)
+        .shouldDeselectHandler(^BOOL(id  _Nullable model) {
+            return NO;
         })
         
         .canMove(YES)
@@ -60,7 +70,7 @@
     }];
     
     
-    // remake items in section
+    // make items in section
     
     [self.collectionView holo_makeSections:^(HoloCollectionViewSectionMaker * _Nonnull make) {
         make.section(@"section-1").headerSize(CGSizeMake(100, 100)).makeItems(^(HoloCollectionViewItemMaker * _Nonnull make) {
@@ -104,6 +114,8 @@
     XCTAssertEqual(item.size.width, CGFLOAT_MIN);
     XCTAssertEqual(item.size.height, CGFLOAT_MIN);
     XCTAssertEqual(item.shouldHighlight, YES);
+    XCTAssertEqual(item.shouldSelect, YES);
+    XCTAssertEqual(item.shouldDeselect, YES);
     XCTAssertEqual(item.canMove, NO);
     
     

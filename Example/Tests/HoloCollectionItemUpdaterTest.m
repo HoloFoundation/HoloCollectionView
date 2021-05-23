@@ -48,9 +48,19 @@
             return CGSizeMake(11, 11);
         })
         
-        .shouldHighlight(YES)
+        .shouldHighlight(NO)
         .shouldHighlightHandler(^BOOL(id  _Nullable model) {
-            return YES;
+            return NO;
+        })
+        
+        .shouldSelect(NO)
+        .shouldSelectHandler(^BOOL(id  _Nullable model) {
+            return NO;
+        })
+        
+        .shouldDeselect(NO)
+        .shouldDeselectHandler(^BOOL(id  _Nullable model) {
+            return NO;
         })
         
         .canMove(YES)
@@ -91,7 +101,9 @@
             return @"reuseIdHandler-new";
         })
         .size(CGSizeMake(101, 101))
-        .shouldHighlight(NO)
+        .shouldHighlight(YES)
+        .shouldSelect(YES)
+        .shouldDeselect(YES)
         .canMove(NO);
     }];
     
@@ -110,7 +122,9 @@
     XCTAssertEqual(item.reuseId, @"reuseIdHandler-new");
     XCTAssertEqual(item.size.width, 101);
     XCTAssertEqual(item.size.height, 101);
-    XCTAssertEqual(item.shouldHighlight, NO);
+    XCTAssertEqual(item.shouldHighlight, YES);
+    XCTAssertEqual(item.shouldSelect, YES);
+    XCTAssertEqual(item.shouldDeselect, YES);
     XCTAssertEqual(item.canMove, NO);
     
     

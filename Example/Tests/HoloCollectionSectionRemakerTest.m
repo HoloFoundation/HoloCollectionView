@@ -52,6 +52,21 @@
         .footerSize(CGSizeMake(20, 20))
         .footerSizeHandler(^CGSize(id  _Nullable model) {
             return CGSizeMake(21, 21);
+        })
+        
+        .inset(UIEdgeInsetsMake(1, 1, 1, 1))
+        .insetHandler(^UIEdgeInsets{
+            return UIEdgeInsetsMake(2, 2, 2, 2);
+        })
+        
+        .minimumLineSpacing(10)
+        .minimumLineSpacingHandler(^CGFloat{
+            return 11;
+        })
+        
+        .minimumInteritemSpacing(20)
+        .minimumInteritemSpacingHandler(^CGFloat{
+            return 21;
         });
     }];
     
@@ -91,6 +106,14 @@
     XCTAssertEqual(section.headerSize.height, CGFLOAT_MIN);
     XCTAssertEqual(section.footerSize.width, CGFLOAT_MIN);
     XCTAssertEqual(section.footerSize.height, CGFLOAT_MIN);
+    
+    XCTAssertEqual(section.inset.top, CGFLOAT_MIN);
+    XCTAssertEqual(section.inset.left, CGFLOAT_MIN);
+    XCTAssertEqual(section.inset.bottom, CGFLOAT_MIN);
+    XCTAssertEqual(section.inset.right, CGFLOAT_MIN);
+
+    XCTAssertEqual(section.minimumLineSpacing, CGFLOAT_MIN);
+    XCTAssertEqual(section.minimumInteritemSpacing, CGFLOAT_MIN);
         
     
     // multiple sections with the same tag

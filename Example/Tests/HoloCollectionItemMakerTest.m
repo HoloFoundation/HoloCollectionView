@@ -42,9 +42,19 @@
             return CGSizeMake(11, 11);
         })
         
-        .shouldHighlight(YES)
+        .shouldHighlight(NO)
         .shouldHighlightHandler(^BOOL(id  _Nullable model) {
-            return YES;
+            return NO;
+        })
+        
+        .shouldSelect(NO)
+        .shouldSelectHandler(^BOOL(id  _Nullable model) {
+            return NO;
+        })
+        
+        .shouldDeselect(NO)
+        .shouldDeselectHandler(^BOOL(id  _Nullable model) {
+            return NO;
         })
         
         .canMove(YES)
@@ -94,7 +104,9 @@
     XCTAssertEqual(item.tag, TAG);
     XCTAssertEqual(item.size.width, 10);
     XCTAssertEqual(item.size.height, 10);
-    XCTAssertEqual(item.shouldHighlight, YES);
+    XCTAssertEqual(item.shouldHighlight, NO);
+    XCTAssertEqual(item.shouldSelect, NO);
+    XCTAssertEqual(item.shouldDeselect, NO);
     XCTAssertEqual(item.canMove, YES);
 }
 

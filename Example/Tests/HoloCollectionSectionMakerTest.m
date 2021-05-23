@@ -52,6 +52,21 @@
         .footerSize(CGSizeMake(20, 20))
         .footerSizeHandler(^CGSize(id  _Nullable model) {
             return CGSizeMake(21, 21);
+        })
+        
+        .inset(UIEdgeInsetsMake(1, 1, 1, 1))
+        .insetHandler(^UIEdgeInsets{
+            return UIEdgeInsetsMake(2, 2, 2, 2);
+        })
+        
+        .minimumLineSpacing(10)
+        .minimumLineSpacingHandler(^CGFloat{
+            return 11;
+        })
+        
+        .minimumInteritemSpacing(20)
+        .minimumInteritemSpacingHandler(^CGFloat{
+            return 21;
         });
     }];
     
@@ -98,6 +113,15 @@
     XCTAssertEqual(section.headerSize.height, 10);
     XCTAssertEqual(section.footerSize.width, 20);
     XCTAssertEqual(section.footerSize.height, 20);
+    
+    XCTAssertEqual(section.inset.top, 1);
+    XCTAssertEqual(section.inset.left, 1);
+    XCTAssertEqual(section.inset.bottom, 1);
+    XCTAssertEqual(section.inset.right, 1);
+
+    XCTAssertEqual(section.minimumLineSpacing, 10);
+    XCTAssertEqual(section.minimumInteritemSpacing, 20);
+
 }
 
 

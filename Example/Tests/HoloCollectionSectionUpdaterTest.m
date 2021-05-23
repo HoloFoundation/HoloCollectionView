@@ -63,6 +63,21 @@
         .footerSize(CGSizeMake(20, 20))
         .footerSizeHandler(^CGSize(id  _Nullable model) {
             return CGSizeMake(21, 21);
+        })
+        
+        .inset(UIEdgeInsetsMake(1, 1, 1, 1))
+        .insetHandler(^UIEdgeInsets{
+            return UIEdgeInsetsMake(2, 2, 2, 2);
+        })
+        
+        .minimumLineSpacing(10)
+        .minimumLineSpacingHandler(^CGFloat{
+            return 11;
+        })
+        
+        .minimumInteritemSpacing(20)
+        .minimumInteritemSpacingHandler(^CGFloat{
+            return 21;
         });
     }];
     
@@ -104,7 +119,22 @@
         .footerModel(@"footerModel-new")
         
         .headerSize(CGSizeMake(101, 101))
-        .footerSize(CGSizeMake(201, 201));
+        .footerSize(CGSizeMake(201, 201))
+        
+        .inset(UIEdgeInsetsMake(10, 10, 10, 10))
+        .insetHandler(^UIEdgeInsets{
+            return UIEdgeInsetsMake(20, 20, 20, 20);
+        })
+        
+        .minimumLineSpacing(100)
+        .minimumLineSpacingHandler(^CGFloat{
+            return 110;
+        })
+        
+        .minimumInteritemSpacing(200)
+        .minimumInteritemSpacingHandler(^CGFloat{
+            return 210;
+        });
     }];
     
     XCTAssertEqual(self.collectionView.holo_sections.count, 2);
@@ -126,6 +156,14 @@
     XCTAssertEqual(section.headerSize.height, 101);
     XCTAssertEqual(section.footerSize.width, 201);
     XCTAssertEqual(section.footerSize.height, 201);
+    
+    XCTAssertEqual(section.inset.top, 10);
+    XCTAssertEqual(section.inset.left, 10);
+    XCTAssertEqual(section.inset.bottom, 10);
+    XCTAssertEqual(section.inset.right, 10);
+
+    XCTAssertEqual(section.minimumLineSpacing, 100);
+    XCTAssertEqual(section.minimumInteritemSpacing, 200);
 
     // multiple sections with the same tag
     
