@@ -258,7 +258,7 @@
 - (HoloCollectionSectionMaker * (^)(void (NS_NOESCAPE ^)(HoloCollectionViewUpdateItemMaker *)))remakeItems {
     return ^id(void(^block)(HoloCollectionViewUpdateItemMaker *make)) {
         HoloCollectionViewUpdateItemMaker *maker = [[HoloCollectionViewUpdateItemMaker alloc] initWithProxyDataSections:@[self.section]
-                                                                                                              makerType:HoloCollectionViewUpdateItemMakerTypeUpdate
+                                                                                                              makerType:HoloCollectionViewUpdateItemMakerTypeRemake
                                                                                                           targetSection:NO
                                                                                                              sectionTag:nil];
         if (block) block(maker);
