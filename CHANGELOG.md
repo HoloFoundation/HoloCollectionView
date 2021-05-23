@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 
+## 2.1.1 (05/23/2021)
+
+### Updated
+
+- Change api: 1, replace `holo_updateItems:inSection:` with `holo_updateItemsInSection:block:`; 2, replace `holo_remakeItems:inSection:` with `holo_remakeItemsInSection:block:`.
+- Change the default value of the `HoloCollectionItem` property: `canMove` from `YES` to `NO`.
+
+### Fixed
+
+- Fix `remakeItems:` method of `HoloCollectionSectionMaker`.
+
+
 ## 2.1.0 (05/20/2021)
 
 ### Added
