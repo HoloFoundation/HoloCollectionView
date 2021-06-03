@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 
+## 2.1.2 (06/03/2021)
+
+### Updated
+
+- Check the cell class type and so on after the list appears.
+- Provide default cell class for item and default header and footer class for section.
+
+### Fixed
+
+- Fix the check of headersMap and footersMap when header and footer are reused.
+
+
 ## 2.1.1 (05/23/2021)
 
 ### Updated
