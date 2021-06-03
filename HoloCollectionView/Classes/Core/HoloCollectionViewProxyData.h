@@ -28,11 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSIndexPath *(^indexPathForIndexTitleHandler)(NSString *title, NSInteger index);
 
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *itemsMap;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, Class> *itemsMap;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *headersMap;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, Class> *headersMap;
 
-@property (nonatomic, copy) NSDictionary<NSString *, Class> *footersMap;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, Class> *footersMap;
 
 @end
 

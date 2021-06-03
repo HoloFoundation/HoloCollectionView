@@ -12,6 +12,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        _cell = UICollectionViewCell.class;
         _size = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
         _shouldHighlight = YES;
         _shouldSelect = YES;

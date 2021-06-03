@@ -25,12 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Header class.
  */
-@property (nonatomic, assign, nullable) Class header;
+@property (nonatomic, assign) Class header;
 
 /**
  *  Footer class.
  */
-@property (nonatomic, assign, nullable) Class footer;
+@property (nonatomic, assign) Class footer;
 
 /**
  *  Set the data for the header using the `headerModel` property.
