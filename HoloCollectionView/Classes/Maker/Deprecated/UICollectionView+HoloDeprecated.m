@@ -96,31 +96,8 @@
     HoloCollectionViewRowMaker *maker = [HoloCollectionViewRowMaker new];
     if (block) block(maker);
     
-    // update cell-cls map and register class
-    NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
-    NSMutableArray *rows = [NSMutableArray new];
-    for (HoloCollectionItem *row in [maker install]) {
-        Class cls = row.cell;
-        NSString *key = NSStringFromClass(cls);
-        if (rowsMap[key]) {
-            [rows addObject:row];
-            continue;
-        }
-        
-        if (!cls) {
-            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", key);
-        }
-        if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", key);
-        }
-        rowsMap[key] = cls;
-        
-        if (row.reuseIdHandler) row.reuseId = row.reuseIdHandler(row.model);
-        if (!row.reuseId) row.reuseId = key;
-        [self registerClass:cls forCellWithReuseIdentifier:row.reuseId];
-        [rows addObject:row];
-    }
-    self.holo_proxy.proxyData.itemsMap = rowsMap;
+    // update data
+    NSArray<HoloCollectionItem *> *rows = [maker install];
     
     // append rows and refresh view
     BOOL isNewOne = NO;
@@ -183,38 +160,8 @@
     
     if (block) block(maker);
     
-    // update data and map
-    NSMutableDictionary *rowsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
-    NSMutableArray *updateIndexPaths = [NSMutableArray new];
-    for (HoloCollectionViewUpdateItemMakerModel *makerModel in [maker install]) {
-        HoloCollectionItem *operateRow = makerModel.operateItem;
-        // HoloCollectionViewUpdateRowMakerTypeUpdate || HoloCollectionViewUpdateRowMakerTypeRemake
-        if (!makerModel.operateIndexPath) {
-            // Has a log in HoloCollectionViewUpdateItemMaker already, because updateItems / remakeItems in HoloCollectionSectionMaker also need it.
-            // HoloLog(@"[HoloCollectionView] No found a row with the tag: %@.", operateRow.tag);
-            continue;
-        }
-        
-        // update || remake
-        [updateIndexPaths addObject:makerModel.operateIndexPath];
-        
-        Class cls = operateRow.cell;
-        NSString *key = NSStringFromClass(cls);
-        if (rowsMap[key]) continue;
-        
-        if (!cls) {
-            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", key);
-        }
-        if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", key);
-        }
-        rowsMap[key] = cls;
-        
-        if (operateRow.reuseIdHandler) operateRow.reuseId = operateRow.reuseIdHandler(operateRow.model);
-        if (!operateRow.reuseId) operateRow.reuseId = key;
-        [self registerClass:cls forCellWithReuseIdentifier:operateRow.reuseId];
-    }
-    self.holo_proxy.proxyData.itemsMap = rowsMap;
+    // update data
+    NSArray<NSIndexPath *> *updateIndexPaths = [maker install];
     
     // refresh rows
     if (reload && updateIndexPaths.count > 0) {
@@ -258,7 +205,7 @@
              autoReload:(BOOL)autoReload {
     NSArray *indexPaths = [self _holo_deprecated_removeItems:tags];
     if (indexPaths.count <= 0) {
-        HoloLog(@"[HoloCollectionView] No found any row with these tags: %@.", tags);
+        HoloLog(@"[HoloCollectionView] No row found with these tags: `%@`.", tags);
         return;
     }
     if (autoReload) [self deleteItemsAtIndexPaths:indexPaths];

@@ -16,19 +16,10 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewUpdateItemMakerType) {
 };
 
 
-@interface HoloCollectionViewUpdateItemMakerModel : NSObject
-
-@property (nonatomic, strong, nullable) HoloCollectionItem *operateItem;
-
-@property (nonatomic, strong, nullable) NSIndexPath *operateIndexPath;
-
-@end
-
-
 @interface HoloCollectionViewUpdateItemMaker : NSObject
 
 /**
- *  Fetch a HoloCollectionRow object with the tag.
+ *  Fetch a HoloCollectionItem object with the tag.
  */
 @property (nonatomic, copy, readonly) HoloCollectionItemMaker *(^tag)(NSString *tag);
 
@@ -37,7 +28,7 @@ typedef NS_ENUM(NSInteger, HoloCollectionViewUpdateItemMakerType) {
                             targetSection:(BOOL)targetSection
                                sectionTag:(NSString * _Nullable)sectionTag;
 
-- (NSArray<HoloCollectionViewUpdateItemMakerModel *> *)install;
+- (NSArray<NSIndexPath *> *)install;
 
 @end
 

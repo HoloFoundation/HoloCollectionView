@@ -13,6 +13,8 @@
     self = [super init];
     if (self) {
         _items = [NSArray new];
+        _header = UICollectionReusableView.class;
+        _footer = UICollectionReusableView.class;
         _inset = UIEdgeInsetsMake(CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN, CGFLOAT_MIN);
         _headerSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);
         _footerSize = CGSizeMake(CGFLOAT_MIN, CGFLOAT_MIN);

@@ -11,18 +11,13 @@
 #import "HoloCollectionItemMaker.h"
 #import "HoloCollectionViewMacro.h"
 
-@implementation HoloCollectionViewUpdateItemMakerModel
-
-@end
-
-
 @interface HoloCollectionViewUpdateItemMaker ()
 
 @property (nonatomic, copy) NSArray<HoloCollectionSection *> *dataSections;
 
 @property (nonatomic, assign) HoloCollectionViewUpdateItemMakerType makerType;
 
-@property (nonatomic, strong) NSMutableArray<HoloCollectionViewUpdateItemMakerModel *> *makerModels;
+@property (nonatomic, strong) NSMutableArray<NSIndexPath *> *updateIndexPaths;
 
 // has target section or not
 @property (nonatomic, assign) BOOL targetSection;
@@ -78,29 +73,26 @@
             }];
         }];
         
-        if (!operateIndexPath) {
-            HoloLog(@"[HoloCollectionView] No found a item with the tag: %@.", tag);
+        if (operateIndexPath) {
+            [self.updateIndexPaths addObject:operateIndexPath];
+        } else {
+            HoloLog(@"[HoloCollectionView] No item found with the tag: `%@`.", tag);
         }
-        
-        HoloCollectionViewUpdateItemMakerModel *makerModel = [HoloCollectionViewUpdateItemMakerModel new];
-        makerModel.operateItem = [itemMaker fetchCollectionItem];
-        makerModel.operateIndexPath = operateIndexPath;
-        [self.makerModels addObject:makerModel];
         
         return itemMaker;
     };
 }
 
-- (NSArray<HoloCollectionViewUpdateItemMakerModel *> *)install {
-    return self.makerModels.copy;
+- (NSArray<NSIndexPath *> *)install {
+    return self.updateIndexPaths.copy;
 }
 
 #pragma mark - getter
-- (NSMutableArray<HoloCollectionViewUpdateItemMakerModel *> *)makerModels {
-    if (!_makerModels) {
-        _makerModels = [NSMutableArray new];
+- (NSMutableArray<NSIndexPath *> *)updateIndexPaths {
+    if (!_updateIndexPaths) {
+        _updateIndexPaths = [NSMutableArray new];
     }
-    return _makerModels;
+    return _updateIndexPaths;
 }
 
 @end

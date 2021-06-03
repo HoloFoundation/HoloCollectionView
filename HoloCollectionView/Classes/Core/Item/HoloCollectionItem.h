@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Cell class.
  */
-@property (nonatomic, assign, nullable) Class cell;
+@property (nonatomic, assign) Class cell;
 
 /**
  *  Set the data for the cell using the `model` property.

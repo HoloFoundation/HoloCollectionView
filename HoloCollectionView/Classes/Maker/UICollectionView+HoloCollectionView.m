@@ -108,16 +108,14 @@
                                              makerType:makerType];
     if (block) block(maker);
     
-    // update data and map
-    NSMutableDictionary *headersMap = self.holo_proxy.proxyData.headersMap.mutableCopy;
-    NSMutableDictionary *footersMap = self.holo_proxy.proxyData.footersMap.mutableCopy;
-    NSMutableArray *updateArray = [NSMutableArray arrayWithArray:self.holo_proxy.proxyData.sections];
+    // update data
     NSMutableArray *addArray = [NSMutableArray new];
     NSMutableIndexSet *updateIndexSet = [NSMutableIndexSet new];
+    NSMutableArray *updateArray = [NSMutableArray arrayWithArray:self.holo_proxy.proxyData.sections];
     for (HoloCollectionViewSectionMakerModel *makerModel in [maker install]) {
         HoloCollectionSection *operateSection = makerModel.operateSection;
         if (!makerModel.operateIndex && (makerType == HoloCollectionViewSectionMakerTypeUpdate || makerType == HoloCollectionViewSectionMakerTypeRemake)) {
-            HoloLog(@"[HoloCollectionView] No found a section with the tag: %@.", operateSection.tag);
+            HoloLog(@"[HoloCollectionView] No section found with the tag: `%@`.", operateSection.tag);
             continue;
         }
         
@@ -131,44 +129,7 @@
             // make || insert
             [addArray addObject:operateSection];
         }
-        
-        if (operateSection.headerReuseIdHandler) operateSection.headerReuseId = operateSection.headerReuseIdHandler(operateSection.headerModel);
-        if (!operateSection.headerReuseId) operateSection.headerReuseId = NSStringFromClass(operateSection.header);
-        if (operateSection.footerReuseIdHandler) operateSection.footerReuseId = operateSection.footerReuseIdHandler(operateSection.footerModel);
-        if (!operateSection.footerReuseId) operateSection.footerReuseId = NSStringFromClass(operateSection.footer);
-        
-        if (operateSection.header) [self _registerHeaderFooter:operateSection.header
-                                    forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                          withHeaderFootersMap:headersMap
-                                                       reuseId:operateSection.headerReuseId];
-        if (operateSection.footer) [self _registerHeaderFooter:operateSection.footer
-                                    forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                          withHeaderFootersMap:footersMap
-                                                       reuseId:operateSection.footerReuseId];
-        
-        // update map
-        NSMutableDictionary *itemsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
-        for (HoloCollectionItem *item in operateSection.items) {
-            Class cls = item.cell;
-            NSString *key = NSStringFromClass(cls);
-            if (itemsMap[key]) continue;
-            
-            if (!cls) {
-                NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", key);
-            }
-            if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-                NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", key);
-            }
-            itemsMap[key] = cls;
-            
-            if (item.reuseIdHandler) item.reuseId = item.reuseIdHandler(item.model);
-            if (!item.reuseId) item.reuseId = key;
-            [self registerClass:cls forCellWithReuseIdentifier:item.reuseId];
-        }
-        self.holo_proxy.proxyData.itemsMap = itemsMap;
     }
-    self.holo_proxy.proxyData.headersMap = headersMap;
-    self.holo_proxy.proxyData.footersMap = footersMap;
     self.holo_proxy.proxyData.sections = updateArray.copy;
     
     // update sections
@@ -180,25 +141,6 @@
     if (reload && addIndexSet.count > 0) {
         [self insertSections:addIndexSet];
     }
-}
-
-// _registerHeaderFooter
-- (void)_registerHeaderFooter:(Class)headerFooter
-   forSupplementaryViewOfKind:(NSString *)elementKind
-         withHeaderFootersMap:(NSMutableDictionary *)headerFootersMap
-                      reuseId:(NSString *)reuseId {
-    Class cls = headerFooter;
-    NSString *key = NSStringFromClass(cls);
-    if (headerFootersMap[key]) return;
-    
-    if (!cls) {
-        NSAssert(NO, @"[HoloCollectionView] No found a headerFooter class with the name: %@.", key);
-    }
-    if (![cls.new isKindOfClass:UICollectionReusableView.class]) {
-        NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionReusableView nor its subclasses.", key);
-    }
-    headerFootersMap[key] = cls;
-    [self registerClass:cls forSupplementaryViewOfKind:elementKind withReuseIdentifier:reuseId ?: key];
 }
 
 // holo_removeAllSections
@@ -234,7 +176,7 @@
 - (void)_holo_removeSections:(NSArray<NSString *> *)tags autoReload:(BOOL)autoReload {
     NSIndexSet *indexSet = [self _holo_removeSections:tags];
     if (indexSet.count <= 0) {
-        HoloLog(@"[HoloCollectionView] No found any section with these tags: %@.", tags);
+        HoloLog(@"[HoloCollectionView] No section found with these tags: `%@`.", tags);
         return;
     }
     if (autoReload) [self deleteSections:indexSet];
@@ -318,31 +260,8 @@
     HoloCollectionViewItemMaker *maker = [HoloCollectionViewItemMaker new];
     if (block) block(maker);
     
-    // update cell-cls map and register class
-    NSMutableDictionary *itemsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
-    NSMutableArray *items = [NSMutableArray new];
-    for (HoloCollectionItem *item in [maker install]) {
-        Class cls = item.cell;
-        NSString *key = NSStringFromClass(cls);
-        if (itemsMap[key]) {
-            [items addObject:item];
-            continue;
-        }
-        
-        if (!cls) {
-            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", key);
-        }
-        if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", key);
-        }
-        itemsMap[key] = cls;
-        
-        if (item.reuseIdHandler) item.reuseId = item.reuseIdHandler(item.model);
-        if (!item.reuseId) item.reuseId = key;
-        [self registerClass:cls forCellWithReuseIdentifier:item.reuseId];
-        [items addObject:item];
-    }
-    self.holo_proxy.proxyData.itemsMap = itemsMap;
+    // update data
+    NSArray<HoloCollectionItem *> *items = [maker install];
     
     // append items and refresh view
     BOOL isNewOne = NO;
@@ -452,38 +371,8 @@
     
     if (block) block(maker);
     
-    // update data and map
-    NSMutableDictionary *itemsMap = self.holo_proxy.proxyData.itemsMap.mutableCopy;
-    NSMutableArray *updateIndexPaths = [NSMutableArray new];
-    for (HoloCollectionViewUpdateItemMakerModel *makerModel in [maker install]) {
-        HoloCollectionItem *operateItem = makerModel.operateItem;
-        // HoloCollectionViewUpdateItemMakerTypeUpdate || HoloCollectionViewUpdateItemMakerTypeRemake
-        if (!makerModel.operateIndexPath) {
-            // Has a log in HoloCollectionViewUpdateItemMaker already, because updateItems / remakeItems in HoloCollectionSectionMaker also need it.
-            // HoloLog(@"[HoloCollectionView] No found a item with the tag: %@.", operateItem.tag);
-            continue;
-        }
-        
-        // update || remake
-        [updateIndexPaths addObject:makerModel.operateIndexPath];
-        
-        Class cls = operateItem.cell;
-        NSString *key = NSStringFromClass(cls);
-        if (itemsMap[key]) continue;
-        
-        if (!cls) {
-            NSAssert(NO, @"[HoloCollectionView] No found a cell class with the name: %@.", key);
-        }
-        if (![cls.new isKindOfClass:UICollectionViewCell.class]) {
-            NSAssert(NO, @"[HoloCollectionView] The class: %@ is neither UICollectionViewCell nor its subclasses.", key);
-        }
-        itemsMap[key] = cls;
-        
-        if (operateItem.reuseIdHandler) operateItem.reuseId = operateItem.reuseIdHandler(operateItem.model);
-        if (!operateItem.reuseId) operateItem.reuseId = key;
-        [self registerClass:cls forCellWithReuseIdentifier:operateItem.reuseId];
-    }
-    self.holo_proxy.proxyData.itemsMap = itemsMap;
+    // update data
+    NSArray<NSIndexPath *> *updateIndexPaths = [maker install];
     
     // refresh items
     if (reload && updateIndexPaths.count > 0) {
@@ -527,7 +416,7 @@
               autoReload:(BOOL)autoReload {
     NSArray *indexPaths = [self _holo_removeItems:tags];
     if (indexPaths.count <= 0) {
-        HoloLog(@"[HoloCollectionView] No found any item with these tags: %@.", tags);
+        HoloLog(@"[HoloCollectionView] No item found with these tags: `%@`.", tags);
         return;
     }
     if (autoReload) [self deleteItemsAtIndexPaths:indexPaths];
