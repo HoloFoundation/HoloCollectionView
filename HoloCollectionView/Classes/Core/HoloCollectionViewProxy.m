@@ -166,9 +166,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
             NSAssert(NO, @"[HoloCollectionView] The class: `%@` is neither UICollectionViewCell nor its subclasses.", cls);
         }
         [collectionView registerClass:cls forCellWithReuseIdentifier:holoItem.reuseId];
-        NSMutableDictionary *itemsMap = [NSMutableDictionary dictionaryWithDictionary:self.proxyData.itemsMap];
-        itemsMap[holoItem.reuseId] = cls;
-        self.proxyData.itemsMap = itemsMap.copy;
+        self.proxyData.itemsMap[holoItem.reuseId] = cls;
     }
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:holoItem.reuseId forIndexPath:indexPath];
@@ -219,9 +217,7 @@ static void HoloProxyViewPerformWithView(UIView *view, SEL sel, void (^handler)(
                 NSAssert(NO, @"[HoloCollectionView] The class: `%@` is neither UICollectionReusableView nor its subclasses.", cls);
             }
             [collectionView registerClass:cls forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:reuseIdentifier];
-            NSMutableDictionary *headersMap = [NSMutableDictionary dictionaryWithDictionary:self.proxyData.headersMap];
-            headersMap[reuseIdentifier] = cls;
-            self.proxyData.headersMap = headersMap.copy;
+            self.proxyData.headersMap[reuseIdentifier] = cls;
         }
     } else {
         if (holoSection.footerModelHandler) {

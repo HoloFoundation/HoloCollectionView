@@ -17,23 +17,23 @@
     return _sections;
 }
 
-- (NSDictionary<NSString *, Class> *)itemsMap {
+- (NSMutableDictionary<NSString *, Class> *)itemsMap {
     if (!_itemsMap) {
-        _itemsMap = [NSDictionary new];
+        _itemsMap = [NSMutableDictionary new];
     }
     return _itemsMap;
 }
 
-- (NSDictionary<NSString *,Class> *)headersMap {
+- (NSMutableDictionary<NSString *,Class> *)headersMap {
     if (!_headersMap) {
-        _headersMap = [NSDictionary new];
+        _headersMap = [NSMutableDictionary new];
     }
     return _headersMap;
 }
 
-- (NSDictionary<NSString *,Class> *)footersMap {
+- (NSMutableDictionary<NSString *,Class> *)footersMap {
     if (!_footersMap) {
-        _footersMap = [NSDictionary new];
+        _footersMap = [NSMutableDictionary new];
     }
     return _footersMap;
 }
