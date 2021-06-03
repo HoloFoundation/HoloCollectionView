@@ -118,8 +118,7 @@
         
     XCTAssertEqual(item.cell, TestCollectionViewCell.class);
     XCTAssertEqual(item.model, @"model-new");
-    // reuseIdHandler
-    XCTAssertEqual(item.reuseId, @"reuseIdHandler-new");
+    XCTAssertEqual(item.reuseId, @"reuseId-new");
     XCTAssertEqual(item.size.width, 101);
     XCTAssertEqual(item.size.height, 101);
     XCTAssertEqual(item.shouldHighlight, YES);

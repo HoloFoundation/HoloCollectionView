@@ -93,8 +93,8 @@
     }];
     HoloCollectionSection *section = self.collectionView.holo_sections.firstObject;
     
-    XCTAssertNil(section.header);
-    XCTAssertNil(section.footer);
+    XCTAssertEqual(section.header, UICollectionReusableView.class);
+    XCTAssertEqual(section.footer, UICollectionReusableView.class);
     
     XCTAssertNil(section.headerReuseId);
     XCTAssertNil(section.footerReuseId);

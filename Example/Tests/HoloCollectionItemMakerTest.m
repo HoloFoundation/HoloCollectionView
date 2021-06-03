@@ -99,8 +99,7 @@
     
     XCTAssertEqual(item.cell, UICollectionViewCell.class);
     XCTAssertEqual(item.model, @"model");
-    // reuseIdHandler
-    XCTAssertEqual(item.reuseId, @"reuseIdHandler");
+    XCTAssertEqual(item.reuseId, @"reuseId");
     XCTAssertEqual(item.tag, TAG);
     XCTAssertEqual(item.size.width, 10);
     XCTAssertEqual(item.size.height, 10);

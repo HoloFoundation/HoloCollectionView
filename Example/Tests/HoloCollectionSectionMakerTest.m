@@ -101,10 +101,8 @@
     XCTAssertEqual(section.header, UICollectionReusableView.class);
     XCTAssertEqual(section.footer, UICollectionReusableView.class);
     
-    // headerReuseIdHandler
-    XCTAssertEqual(section.headerReuseId, @"headerReuseIdHandler");
-    // footerReuseIdHandler
-    XCTAssertEqual(section.footerReuseId, @"footerReuseIdHandler");
+    XCTAssertEqual(section.headerReuseId, @"headerReuseId");
+    XCTAssertEqual(section.footerReuseId, @"footerReuseId");
        
     XCTAssertEqual(section.headerModel, @"headerModel");
     XCTAssertEqual(section.footerModel, @"footerModel");

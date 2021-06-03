@@ -144,10 +144,8 @@
     XCTAssertEqual(section.header, TestHeaderView.class);
     XCTAssertEqual(section.footer, TestFooterView.class);
     
-    // headerReuseIdHandler
-    XCTAssertEqual(section.headerReuseId, @"headerReuseIdHandler-new");
-    // footerReuseIdHandler
-    XCTAssertEqual(section.footerReuseId, @"footerReuseIdHandler-new");
+    XCTAssertEqual(section.headerReuseId, @"headerReuseId-new");
+    XCTAssertEqual(section.footerReuseId, @"footerReuseId-new");
        
     XCTAssertEqual(section.headerModel, @"headerModel-new");
     XCTAssertEqual(section.footerModel, @"footerModel-new");
