@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 
+
+## 2.1.3 (07/05/2021)
+
+### Fixed
+
+- Fix retain cycle.
+
+
 ## 2.1.2 (06/03/2021)
 
 ### Updated
