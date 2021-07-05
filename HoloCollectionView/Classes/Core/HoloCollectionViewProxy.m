@@ -12,7 +12,7 @@
 
 @interface HoloCollectionViewProxy ()
 
-@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, weak) UICollectionView *collectionView;
 
 @end
 
